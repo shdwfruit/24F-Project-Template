@@ -4,7 +4,7 @@ from modules.nav import SideBarLinks
 # set page layout
 st.set_page_config(layout = 'wide')
 
-SideBarLinks(show_home=False)
+SideBarLinks(show_home=True)
 
 st.title('Warehouse Manager Portal')
 
