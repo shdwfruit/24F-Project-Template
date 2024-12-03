@@ -1,18 +1,37 @@
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
 from modules.nav import SideBarLinks
 
-SideBarLinks()
+# set page layout
+st.set_page_config(layout = 'wide')
 
-st.write("# About this App")
+SideBarLinks(show_home=False)
 
-st.markdown (
-    """
-    This is a demo app for CS 3200 Course Project.  
+st.title('Warehouse Manager Portal')
 
-    The goal of this demo is to provide information on the tech stack 
-    being used as well as demo some of the features of the various platforms. 
+st.write('')
+st.write('')
+st.write('### Reports')
 
-    Stay tuned for more information and features to come!
-    """
-        )
+if st.button('Show All Reorders',
+        type = 'primary',
+        use_container_width=True):
+    st.switch_page('pages/41_Reorders.py')
+
+if st.button('Show Low Stock',
+        type = 'primary',
+        use_container_width=True):
+    st.switch_page('pages/42_Low_Stock.py')
+
+st.write('')
+st.write('')
+st.write('### New Products and Categories')
+
+if st.button('Add New Product Category',
+        type = 'primary',
+        use_container_width=True):
+    st.switch_page('pages/43_New_Cat.py')
+
+if st.button('Add New Product',
+        type = 'primary',
+        use_container_width=True):
+    st.switch_page('pages/44_New_Product.py')
