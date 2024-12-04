@@ -1,3 +1,118 @@
+
+NU Global Connect - CS 3200 Fall 2024 Project
+
+This repository contains the project NU Global Connect, a data-driven application designed to help Northeastern students prepare for international internships and co-ops by enhancing cultural awareness and adaptability.
+Project Overview
+
+NU Global Connect is a data-driven application designed to prepare Northeastern students for international internships and co-ops by fostering cultural awareness and adaptability. With Northeastern’s expanding global footprint—including 13 campuses across the U.S., U.K., and Canada, and over 70 Dialogue of Civilizations programs worldwide—students frequently engage in diverse cultural environments. However, many lack the structured resources needed to navigate new workplace cultures and communicate effectively in intercultural settings.
+This app bridges that gap by providing a comprehensive, personalized, and interactive approach to cultural preparedness. Leveraging student progress and engagement data, NU Global Connect adapts its content to ensure relevance and impact. It addresses critical pain points, such as limited access to tailored cultural training and language practice tools specific to a student’s target country.
+
+Through features like interactive cultural etiquette modules, AI-driven language practice, and a progress-tracking dashboard, students gain practical skills in intercultural communication. The platform empowers them to transition seamlessly into international settings with confidence and competence.
+
+NU Global Connect caters to diverse user personas, including students, language mentors, system administrators, and decision-makers. Tailored features like culture-specific training, personalized language matching, and competency tracking align with Northeastern’s commitment to global experiential learning, ensuring smooth and successful student transitions across regions.
+
+Team Members
+Yu-Hsiang Huang (Point Person) - huang.yu-h@northeastern.edu
+Rick Xie - xie.ri@northeastern.edu
+Arnav Mehta - mehta.arn@northeastern.edu
+Honglin Chen - chen.hongli@northeastern.edu
+Damanbir Anand - anand.da@northeastern.edu
+
+
+Project Components
+The project is divided into three main components, each running in a separate Docker container:
+-Streamlit Application (./app) - Front-end interface for users.
+-Flask REST API (./api) - Back-end services for handling business logic and database interactions.
+-MySQL Database (./database-files) - Storage for all application data, including users, sessions, feedback, and analytics.
+
+
+Prerequisites
+Ensure you have the following installed:
+-Docker and Docker Compose
+-Python (minimum version 3.9)
+-Git client 
+
+Project Setup
+Follow these steps to set up and run the project locally:
+Clone the repository:
+bash
+Copy code
+git clone https://github.com/<your-team-repo>.git
+cd <your-team-repo>
+
+
+Navigate to the api/ folder and create a .env file based on .env.template:
+bash
+Copy code
+cp api/.env.template api/.env
+Update the .env file with the necessary database credentials.
+Start all services using Docker Compose:
+bash
+Copy code
+docker compose up -d
+
+
+Access the application:
+
+Streamlit App: http://localhost:8501
+Flask API: http://localhost:5000
+Features and Functionality
+
+
+
+User Personas
+Mentees: Students preparing for global experiences can access cultural learning paths, vocabulary practice, and mentor sessions.
+Mentors: Experienced peers who guide mentees in language and cultural preparation.
+System Administrators: Maintain the app and monitor performance, content updates, and bug reports.
+Decision Makers: Analyze progress data and refine cultural modules to improve outcomes.
+
+
+REST API
+The REST API is organized into Blueprints based on personas:
+Mentors: Fetch and manage mentor-related data.
+Sessions: Handle scheduling, updates, and cancellations.
+Feedback: Manage session feedback.
+Analytics: Provide insights into engagement and progress.
+Refer to the api/ folder for the complete API documentation.
+
+
+Streamlit Front-End
+The application includes the following pages:
+Landing Page: Role selection for mentees, mentors, administrators, and decision-makers.
+Feature Pages: Custom functionality for each persona, including:
+Session scheduling and management
+Interactive cultural scenarios
+Analytics dashboards
+
+
+Sample Data
+Mockaroo-generated sample data is included in the database-files/ folder. It contains:
+30-40 rows for strong entities (e.g., mentors, mentees).
+40-50 rows for weak entities.
+100+ rows for bridge tables (e.g., sessions, progress).
+Controlling the Containers
+Use the following commands to manage Docker containers:
+Start all services: docker compose up -d
+Stop services: docker compose stop
+Restart specific containers (e.g., database): docker compose up db -d
+Shut down and remove containers: docker compose down
+
+
+
+Demo Video
+Project Demo Video
+(Replace with the public link to your demo video)
+The video includes:
+A brief introduction to the project and team.
+Overview of the REST API and implemented routes.
+A demo of the Streamlit front-end and interaction with the database.
+
+
+
+
+
+
+
 # Fall 2024 CS 3200 Project Template Repository
 
 This repo is a template for your semester project.  It includes most of the infrastructure setup (containers) and sample code and data throughout.  Explore it fully and ask questions.
@@ -74,5 +189,9 @@ Wrapping your head around this will take a little time and exploration of this c
 1. Check out the  `api/backend/ml_models` module.  In this folder, I've put a sample (read *fake*) ML model in `model01.py`.  The `predict` function will be called by the Flask REST API to perform '*real-time*' prediction based on model parameter values that are stored in the database.  **Important**: you would never want to hard code the model parameter weights directly in the prediction function.  tl;dr - take some time to look over the code in `model01.py`.  
 1. The prediction route for the REST API is in `api/backend/customers/customer_routes.py`. Basically, it accepts two URL parameters and passes them to the `prediction` function in the `ml_models` module. The `prediction` route/function packages up the value(s) it receives from the model's `predict` function and send its back to Streamlit as JSON. 
 1. Back in streamlit, check out `app/src/pages/11_Prediction.py`.  Here, I create two numeric input fields.  When the button is pressed, it makes a request to the REST API URL `/c/prediction/.../...` function and passes the values from the two inputs as URL parameters.  It gets back the results from the route and displays them. Nothing fancy here. 
+
+
+
+
 
  
