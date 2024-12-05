@@ -10,5 +10,8 @@ from backend.db_connection import db
 # Contains: 
 mentors = Blueprint('mentor', __name__)
 
+
 #------------------------------------------------------------
+# mentor routes
+# Get mentors by language level, location, and teaching language
 
