@@ -35,6 +35,19 @@ def view_analytics_page():
         connection.close()
         return result
 
+    # Display engagement data
+    st.write("### Engagement and Completion Rates")
+    engagement_data = fetch_engagement_data()
+    if engagement_data:
+        for data in engagement_data:
+            st.write(f"**Module Name:** {data['module_name']}")
+            st.write(f"**Engaged Students:** {data['engaged_students']}")
+            st.write(f"**Completed Students:** {data['completed_students']}")
+            st.divider()
+    else:
+        st.write("No analytics data available.")
+
+    # Fetch progress data over time
     @st.cache_data
     def fetch_progress_data():
         connection = connect_to_db()
