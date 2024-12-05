@@ -1,3 +1,4 @@
+USE global;
 INSERT INTO system_administrator VALUES
 ('john12@example.net', 'Lisa', 'Rocha', 'Content Manager'),
 ('galvancathy@example.net', 'Katherine', 'Proctor', 'Content Manager'),
