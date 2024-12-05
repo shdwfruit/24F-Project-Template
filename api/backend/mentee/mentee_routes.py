@@ -16,6 +16,9 @@ mentees = Blueprint('mentee', __name__)
 # gets mentees based on language & language level
 @mentees.route('/mentee', methods=['GET'])
 def get_mentees(lang, lang_lvl):
+    """
+    This route is used by mentors to find mentees.
+    """
 
     query = f'''select *
                 from mentee
