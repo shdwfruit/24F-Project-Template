@@ -52,3 +52,19 @@ def content_updates_page():
         st.experimental_rerun()
 
     st.divider()
+    # Update an existing content update
+    st.subheader("Update an Existing Content Update")
+    update_id = st.number_input("Content Update ID to Modify", min_value=1, step=1)
+    new_description = st.text_area("New Description")
+    if st.button("Update Content Update"):
+        connection = connect_to_db()
+        cursor = connection.cursor()
+        query = "UPDATE content_updates SET description = %s WHERE id = %s;"
+        cursor.execute(query, (new_description, update_id))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        st.success("Content update updated successfully!")
+        st.experimental_rerun()
+
+    st.divider()
