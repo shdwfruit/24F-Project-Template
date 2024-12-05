@@ -35,3 +35,20 @@ def content_updates_page():
         st.write("No content updates found.")
 
     st.divider()
+
+    # Add a new content update
+    st.subheader("Add a New Content Update")
+    path_id = st.number_input("Learning Path ID", min_value=1, step=1)
+    description = st.text_area("Description")
+    if st.button("Add Content Update"):
+        connection = connect_to_db()
+        cursor = connection.cursor()
+        query = "INSERT INTO content_updates (path_id, updated_by, description) VALUES (%s, %s, %s);"
+        cursor.execute(query, (path_id, 1, description))  # Replace "1" with the appropriate admin_id
+        connection.commit()
+        cursor.close()
+        connection.close()
+        st.success("Content update added successfully!")
+        st.experimental_rerun()
+
+    st.divider()
