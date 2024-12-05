@@ -26,3 +26,21 @@ def get_student_engagement():
     response.status_code = 200
     return response
 
+
+# Route: Visualization of student progress over time
+@decision_maker.route('/analytics/progress/<int:mentee_id>', methods=['GET'])
+def get_student_progress(mentee_id):
+    query = '''
+        SELECT mentee_id, status, completion_date
+        FROM progress
+        WHERE mentee_id = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (mentee_id,))
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
