@@ -67,6 +67,19 @@ with tab2:
     else:
         st.write("No progress data available for visualization.")
 
+# Tab 3: Feedback Analysis
+with tab3:
+    st.subheader("Review and Organize Student Feedback")
+
+    # Display feedback data
+    if feedback_data:
+        df_feedback = pd.DataFrame(feedback_data)
+        st.write("**Feedback Overview**")
+        st.dataframe(df_feedback, use_container_width=True)
+
+        # Allow the decision maker to filter feedback
+        feedback_filter = st.text_input("Filter feedback by keywords")
+        if feedback_filter:
             filtered_feedback = df_feedback[df_feedback["description"].str.contains(feedback_filter, case=False, na=False)]
             st.write(f"Filtered Feedback for: {feedback_filter}")
             st.dataframe(filtered_feedback, use_container_width=True)
