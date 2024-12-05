@@ -32,6 +32,8 @@ st.write("""
 - Strengthen your soft skills for a global career.
 """)
 
+st.write('')
+
 # Mock Data for Workshops
 mock_workshops = [
     {"title": "Cross-Cultural Communication", "host": "Alejandro Martinez", "description": "Learn how to communicate effectively across cultures."},
