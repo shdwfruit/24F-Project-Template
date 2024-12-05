@@ -12,7 +12,7 @@ sessions = Blueprint('session', __name__)
 
 #------------------------------------------------------------
 # Get sessions for mentors and mentees
-@sessions.route('/sessions', methods=['GET'])
+@sessions.route('/sessions/<int:user_id>', methods=['GET'])
 def get_sessions(user_id):
     """
     This route is used by mentors/mentees to retrieve their sessions.
