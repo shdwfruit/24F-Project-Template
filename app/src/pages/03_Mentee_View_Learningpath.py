@@ -6,6 +6,15 @@ st.set_page_config(page_title="View Learning Path", layout="wide")
 # Page Title
 st.title("My Learning Path")
 st.divider()
+# Buttons for Scenario and Vocabulary Practice
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("Access Scenario Practice"):
+        st.write("Redirecting to Scenario Practice...")
+
+with col2:
+    if st.button("Access Vocabulary Practice"):
+        st.write("Redirecting to Vocabulary Practice...")
 
 # Mock Learning Path Data
 learning_paths = [
@@ -47,14 +56,3 @@ for path in learning_paths:
         st.checkbox(milestone, value=(path["status"] == "Completed"))
 
     st.divider()
-
-# Buttons for Scenario and Vocabulary Practice
-col1, col2 = st.columns(2)
-with col1:
-    if st.button("Access Scenario Practice"):
-        st.write("Redirecting to Scenario Practice...")
-
-with col2:
-    if st.button("Access Vocabulary Practice"):
-        st.write("Redirecting to Vocabulary Practice...")
-
