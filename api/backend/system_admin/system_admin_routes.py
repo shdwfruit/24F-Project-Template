@@ -158,4 +158,18 @@ def update_content_update(update_id):
     response.status_code = 200
     return response
 
+
+# Route: Delete a content update
+@sys_admin.route('/content/updates/<int:update_id>', methods=['DELETE'])
+def delete_content_update(update_id):
+    query = '''
+        DELETE FROM content_updates
+        WHERE id = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (update_id,))
+    db.get_db().commit()
+
+    response = make_response(jsonify({'message': 'Content update deleted successfully!'}))
+    response.status_code = 200
     return response
