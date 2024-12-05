@@ -80,3 +80,22 @@ def get_cultural_competence_trends():
     response.status_code = 200
     return response
 
+
+# Route: Track completion rates by student demographics
+@decision_maker.route('/analytics/completion-rates', methods=['GET'])
+def get_completion_rates():
+    query = '''
+        SELECT mentee_id, COUNT(p.id) AS total_completions
+        FROM progress p
+        WHERE p.status = 'Completed'
+        GROUP BY mentee_id
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+
