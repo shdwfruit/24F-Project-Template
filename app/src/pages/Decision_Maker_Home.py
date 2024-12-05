@@ -50,6 +50,23 @@ with tab1:
         st.dataframe(df_engagement, use_container_width=True)
     else:
         st.write("No data available for student engagement.")
+
+# Tab 2: Progress Visualization
+with tab2:
+    st.subheader("Visualization of Student Progress Over Time")
+
+    # Display progress data
+    if progress_data:
+        df_progress = pd.DataFrame(progress_data)
+        st.write("**Progress Data**")
+        st.dataframe(df_progress, use_container_width=True)
+
+        # Visualization: Progress over time (example: status count)
+        progress_counts = df_progress["status"].value_counts()
+        st.bar_chart(progress_counts)
+    else:
+        st.write("No progress data available for visualization.")
+
             filtered_feedback = df_feedback[df_feedback["description"].str.contains(feedback_filter, case=False, na=False)]
             st.write(f"Filtered Feedback for: {feedback_filter}")
             st.dataframe(filtered_feedback, use_container_width=True)
