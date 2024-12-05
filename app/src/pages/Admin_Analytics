@@ -15,6 +15,26 @@ def view_analytics_page():
         app = {}  # Mock app for demo
         mysql.init_app(app)
         return mysql.get_db()
+
+    # Fetch engagement data
+    @st.cache_data
+    def fetch_engagement_data():
+        connection = connect_to_db()
+        cursor = connection.cursor()
+        query = """
+        SELECT lp.module_name, 
+               COUNT(p.id) AS engaged_students,
+               SUM(p.status = 'Completed') AS completed_students
+        FROM learning_path lp
+        LEFT JOIN progress p ON lp.id = p.path_id
+        GROUP BY lp.module_name;
+        """
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return result
+
     @st.cache_data
     def fetch_progress_data():
         connection = connect_to_db()
