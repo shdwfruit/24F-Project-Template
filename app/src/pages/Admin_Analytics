@@ -4,6 +4,17 @@ import streamlit as st
 def view_analytics_page():
     st.title("Analytics Dashboard")
     st.divider()
+
+    # Connect to the shared MySQL
+    def connect_to_db():
+        from flaskext.mysql import MySQL
+        from pymysql import cursors
+
+        # Initialize MySQL connection
+        mysql = MySQL(cursorclass=cursors.DictCursor)
+        app = {}  # Mock app for demo
+        mysql.init_app(app)
+        return mysql.get_db()
     @st.cache_data
     def fetch_progress_data():
         connection = connect_to_db()
