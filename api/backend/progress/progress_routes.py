@@ -15,7 +15,7 @@ progress = Blueprint('progress', __name__)
 @progress.route('/progress/<mentee_id>', methods=['GET'])
 def get_progress(mentee_id):
     """
-    This route is used by mentors to retrieve progress data for a mentee.
+    This route is used by mentors to retrieve progress data of a mentee.
     """
 
     query = f'''select *
