@@ -73,3 +73,24 @@ def update_session(session_id, session_date, session_time):
     response = make_response(jsonify({"message": "Session updated successfully!!"}))
     response.status_code = 200
     return response
+
+
+#------------------------------------------------------------
+# Delete a session
+@sessions.route('/sessions', methods=['DELETE'])
+def delete_session(session_id):
+    """
+    This route is used by mentors/mentees to delete a session.
+    """
+
+    query = f'''delete from session
+                where session_id = {str(session_id)}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    response = make_response(jsonify({"message": "Session deleted successfully!!"}))
+    response.status_code = 200
+    return response
