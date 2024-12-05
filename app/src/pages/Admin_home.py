@@ -23,3 +23,20 @@ with col3:
         st.experimental_set_query_params(page="analytics")
 
 st.divider()
+
+# Navigation Logic Based on Query Params
+params = st.experimental_get_query_params()
+page = params.get("page", [""])[0]
+
+if page == "content_updates":
+    st.experimental_set_query_params()
+    from pages.admin_content_updates import content_updates_page
+    content_updates_page()
+elif page == "reported_issues":
+    st.experimental_set_query_params()
+    from pages.admin_reported_issues import reported_issues_page
+    reported_issues_page()
+elif page == "analytics":
+    st.experimental_set_query_params()
+    from pages.admin_analytics import analytics_page
+    analytics_page()
