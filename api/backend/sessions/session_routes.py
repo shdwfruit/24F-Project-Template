@@ -54,7 +54,7 @@ def create_session(mentor_id, mentee_id, session_date, session_time):
 
 #------------------------------------------------------------
 # Update session details
-@sessions.route('/sessions', methods=['PUT'])
+@sessions.route('/update', methods=['PUT'])
 def update_session(session_id, session_date, session_time):
     """
     This route is used by mentors/mentees to update a session.
@@ -77,7 +77,7 @@ def update_session(session_id, session_date, session_time):
 
 #------------------------------------------------------------
 # Delete a session
-@sessions.route('/sessions', methods=['DELETE'])
+@sessions.route('/delete', methods=['DELETE'])
 def delete_session(session_id):
     """
     This route is used by mentors/mentees to delete a session.
