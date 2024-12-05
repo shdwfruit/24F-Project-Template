@@ -137,4 +137,25 @@ def create_content_update():
     response = make_response(jsonify({'message': 'Content update created successfully!'}))
     response.status_code = 201
     return response
+
+
+# Route: Modify a content update
+@sys_admin.route('/content/updates/<int:update_id>', methods=['PUT'])
+def update_content_update(update_id):
+    details = request.json
+    new_description = details.get('description')
+
+    query = '''
+        UPDATE content_updates
+        SET description = %s, timestamp = CURRENT_TIMESTAMP
+        WHERE id = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (new_description, update_id))
+    db.get_db().commit()
+
+    response = make_response(jsonify({'message': 'Content update modified successfully!'}))
+    response.status_code = 200
+    return response
+
     return response
