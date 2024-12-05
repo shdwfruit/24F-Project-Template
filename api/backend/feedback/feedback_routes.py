@@ -30,3 +30,7 @@ def get_feedback(session_id):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Add feedback from a mentee or mentor
+@feedbacks.route('/feedback', methods=['POST'])
