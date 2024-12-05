@@ -19,7 +19,6 @@ def view_analytics_page():
         """
         cursor.execute(query)
         result = cursor.fetchall()
-        cursor.close()
         return result
 
     # Display engagement data
