@@ -117,4 +117,24 @@ def get_content_updates():
     response.status_code = 200
     return response
 
+
+# Route: Add a new content update
+@sys_admin.route('/content/updates', methods=['POST'])
+def create_content_update():
+    details = request.json
+    path_id = details.get('path_id')
+    updated_by = details.get('updated_by')
+    description = details.get('description')
+
+    query = '''
+        INSERT INTO content_updates (path_id, updated_by, description)
+        VALUES (%s, %s, %s)
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (path_id, updated_by, description))
+    db.get_db().commit()
+
+    response = make_response(jsonify({'message': 'Content update created successfully!'}))
+    response.status_code = 201
+    return response
     return response
