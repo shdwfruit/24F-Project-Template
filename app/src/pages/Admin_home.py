@@ -12,31 +12,29 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("Manage Content Updates", type="primary"):
-        st.query_params(page="content_updates")
+        st.query_params["first_key"] = "content_updates"
 
 with col2:
     if st.button("View Reported Issues", type="primary"):
-        st.query_params(page="reported_issues")
+        st.query_params["first_key"] = "reported_issues"
 
 with col3:
     if st.button("View Analytics", type="primary"):
-        st.query_params(page="analytics")
+        st.query_params["first_key"] = "analytics"
 
 st.divider()
 
 # Navigation Logic Based on Query Params
-params = st.query_params()
-page = params.get("page", [""])[0]
 
-if page == "content_updates":
-    st.experimental_set_query_params()
-    from pages.admin_content_updates import content_updates_page
+if st.query_params["first_key"] == "content_updates":
+    st.query_params["first_key"] = ""
+    from pages.Admin_content_updates import content_updates_page
     content_updates_page()
-elif page == "reported_issues":
-    st.experimental_set_query_params()
-    from pages.admin_reported_issues import reported_issues_page
+elif st.query_params["first_key"] == "reported_issues":
+    st.query_params()
+    from pages.Admin_reported_issues import reported_issues_page
     reported_issues_page()
-elif page == "analytics":
-    st.experimental_set_query_params()
-    from pages.admin_analytics import analytics_page
+elif st.query_params["first_key"] == "analytics":
+    st.query_params()
+    from pages.Admin_Analytics import analytics_page
     analytics_page()
