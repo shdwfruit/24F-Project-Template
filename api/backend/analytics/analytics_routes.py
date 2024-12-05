@@ -11,3 +11,23 @@ from backend.db_connection import db
 analytics = Blueprint('analytics', __name__)
 
 #------------------------------------------------------------
+
+@analytics.routes('/analytics/engagement_data')
+def get_engagement_data():
+
+    query = ''' SELECT lp.module_name, 
+                COUNT(p.id) AS engaged_students,
+                SUM(p.status = 'Completed') AS completed_students
+                FROM learning_path lp
+                LEFT JOIN progress p ON lp.id = p.path_id
+                GROUP BY lp.module_name;
+        '''
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
