@@ -65,4 +65,24 @@ def create_issue_report():
     return response
 
 
+# Route: Update issue report status
+@sys_admin.route('/issues/reports/<int:report_id>', methods=['PUT'])
+def update_issue_status(report_id):
+    details = request.json
+    new_status = details.get('status')
+    resolved_by = details.get('resolved_by')
+
+    query = '''
+        UPDATE issue_report
+        SET status = %s, resolved_by = %s
+        WHERE id = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (new_status, resolved_by, report_id))
+    db.get_db().commit()
+
+    response = make_response(jsonify({'message': 'Issue report updated successfully!'}))
+    response.status_code = 200
+    return response
+
     return response
