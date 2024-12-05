@@ -13,3 +13,14 @@ feedbacks = Blueprint('feedback', __name__)
 #------------------------------------------------------------
 # Get feedback from mentors or mentees for sessions
 @feedbacks.route('/feedback', methods=['GET'])
+def get_feedback(session_id):
+    """
+    This route is used by mentors and mentees to leave feedback for each other.
+    """
+
+    query = f'''select *
+                from feedback
+                where session_id = {str(session_id)}
+    '''
+
+ 
