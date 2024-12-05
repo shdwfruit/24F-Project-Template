@@ -68,3 +68,17 @@ def content_updates_page():
         st.experimental_rerun()
 
     st.divider()
+
+    # Delete a content update
+    st.subheader("Delete a Content Update")
+    delete_id = st.number_input("Content Update ID to Delete", min_value=1, step=1)
+    if st.button("Delete Content Update"):
+        connection = connect_to_db()
+        cursor = connection.cursor()
+        query = "DELETE FROM content_updates WHERE id = %s;"
+        cursor.execute(query, (delete_id,))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        st.success("Content update deleted successfully!")
+        st.experimental_rerun()
