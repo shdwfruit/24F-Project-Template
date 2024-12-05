@@ -32,9 +32,9 @@ if st.query_params["first_key"] == "content_updates":
     content_updates_page()
 elif st.query_params["first_key"] == "reported_issues":
     st.query_params["first_key"] = ""
-    from pages.Admin_reported_issues import reported_issues_page
-    reported_issues_page()
+    from pages.Admin_reported_issues import view_reported_issues_page
+    view_reported_issues_page()
 elif st.query_params["first_key"] == "analytics":
     st.query_params["first_key"] = ""
-    from pages.Admin_Analytics import analytics_page
-    analytics_page()
+    from pages.Admin_Analytics import view_analytics_page
+    view_analytics_page()
