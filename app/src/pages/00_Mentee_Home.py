@@ -15,12 +15,12 @@ with col1:
         st.switch_page("pages/01_Mentee_FindMentor.py")
 
 with col2:
-    if st.button("Browse Workshops", type="primary"):
-        st.write("Workshop button clicked!")  # Add navigation logic here
+    if st.button("View My Sessions", type="primary"):
+        st.switch_page("pages/02_Mentee_View_Sessions.py")  # Add navigation logic here
 
 with col3:
-    if st.button("View My Profile", type="primary"):
-        st.write("Profile button clicked!")  # Add navigation logic here
+    if st.button("View My Learning Path", type="primary"):
+        st.switch_page("pages/03_Mentee_View_Learningpath.py")  # Add navigation logic here
 
 st.divider()
 
