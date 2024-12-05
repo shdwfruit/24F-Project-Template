@@ -12,20 +12,20 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("Manage Content Updates", type="primary"):
-        st.experimental_set_query_params(page="content_updates")
+        st.query_params(page="content_updates")
 
 with col2:
     if st.button("View Reported Issues", type="primary"):
-        st.experimental_set_query_params(page="reported_issues")
+        st.query_params(page="reported_issues")
 
 with col3:
     if st.button("View Analytics", type="primary"):
-        st.experimental_set_query_params(page="analytics")
+        st.query_params(page="analytics")
 
 st.divider()
 
 # Navigation Logic Based on Query Params
-params = st.experimental_get_query_params()
+params = st.query_params()
 page = params.get("page", [""])[0]
 
 if page == "content_updates":
