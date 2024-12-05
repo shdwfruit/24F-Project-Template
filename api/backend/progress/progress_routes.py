@@ -75,4 +75,19 @@ def delete_progress(progress_id):
     response.status_code = 200
     return response
 
-                
+@progress.route('/progress_data')
+def get_progress_data():
+
+    query = '''
+    SELECT lp.module_name, p.status, p.completion_date
+    FROM progress p
+    JOIN learning_path lp ON p.path_id = lp.id
+    WHERE p.completion_date IS NOT NULL
+    ORDER BY p.completion_date ASC;
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    response = make_response(jsonify(theData))
+    return response
