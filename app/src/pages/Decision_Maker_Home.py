@@ -38,6 +38,18 @@ competence_data = [
 tab1, tab2, tab3, tab4 = st.tabs(
     ["Student Engagement Insights", "Progress Visualization", "Feedback Analysis", "Cultural Competence Trends"]
 )
+
+# Tab 1: Student Engagement Insights
+with tab1:
+    st.subheader("Insights on Student Engagement with Modules")
+
+    # Display engagement data
+    if engagement_data:
+        st.write("**Engagement Overview**")
+        df_engagement = pd.DataFrame(engagement_data)
+        st.dataframe(df_engagement, use_container_width=True)
+    else:
+        st.write("No data available for student engagement.")
             filtered_feedback = df_feedback[df_feedback["description"].str.contains(feedback_filter, case=False, na=False)]
             st.write(f"Filtered Feedback for: {feedback_filter}")
             st.dataframe(filtered_feedback, use_container_width=True)
