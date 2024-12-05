@@ -52,3 +52,24 @@ def create_session(mentor_id, mentee_id, session_date, session_time):
     response.status_code = 200
     return response
 
+#------------------------------------------------------------
+# Update session details
+@sessions.route('/sessions', methods=['PUT'])
+def update_session(session_id, session_date, session_time):
+    """
+    This route is used by mentors/mentees to update a session.
+    """
+
+    query = f'''update session
+                set session_date = {str(session_date)},
+                    session_time = {str(session_time)}
+                where session_id = {str(session_id)}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    response = make_response(jsonify({"message": "Session updated successfully!!"}))
+    response.status_code = 200
+    return response
