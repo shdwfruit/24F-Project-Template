@@ -6,6 +6,10 @@ fake = Faker()
 
 # Number of rows to generate
 num_rows = 40
+num_admins = 10
+num_badges = 10
+num_mentors = 10
+num_paths = 40
 
 # Helper functions
 def generate_language_level(table_type):
@@ -25,9 +29,9 @@ def generate_difficulty():
 # Generate mock data for each table
 def generate_system_admin_data():
     data = []
-    for _ in range(10):
+    for _ in range(num_admins):
         data.append({
-            "email": fake.email(),
+            "email": fake.unique.email(),
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
             "role": random.choice(["System Admin", "Content Manager", "Support Specialist"]),
@@ -38,11 +42,11 @@ def generate_mentee_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "mentor_id": random.randint(1, 10),
-            "admin_id": random.randint(1, 10),
+            "mentor_id": random.randint(1, num_mentors),
+            "admin_id": random.randint(1, num_admins),
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
-            "email": fake.email(),
+            "email": fake.unique.email(),
             "learning_language": random.choice(["Japanese", "Spanish", "Chinese", "French"]),
             "language_level": generate_language_level("mentee"),
         })
@@ -50,13 +54,13 @@ def generate_mentee_data():
 
 def generate_mentor_data():
     data = []
-    for _ in range(num_rows):
+    for _ in range(num_mentors):
         data.append({
-            "admin_id": random.randint(1, 10),
-            "badge_id": random.randint(1, 10),
+            "admin_id": random.randint(1, num_admins),
+            "badge_id": random.randint(1, num_badges),
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
-            "email": fake.email(),
+            "email": fake.unique.email(),
             "teaching_language": random.choice(["Japanese", "Spanish", "Chinese", "French"]),
             "location": f"{fake.city()}, {fake.country()}",
             "language_level": generate_language_level("mentor"),
@@ -65,10 +69,10 @@ def generate_mentor_data():
 
 def generate_learning_path_data():
     data = []
-    for _ in range(num_rows):
+    for _ in range(num_paths):
         data.append({
-            "mentee_id": random.randint(1, 40),
-            "dm_id": random.randint(1, 10),
+            "mentee_id": random.randint(1, num_rows),
+            "dm_id": random.randint(1, num_admins),
             "module_name": f"Module {random.randint(1, 5)}",
             "description": fake.text(max_nb_chars=50),
             "milestones": ", ".join([f"Milestone {i}" for i in range(1, 4)]),
@@ -80,8 +84,8 @@ def generate_progress_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "mentee_id": random.randint(1, 40),
-            "path_id": random.randint(1, 40),
+            "mentee_id": random.randint(1, num_rows),
+            "path_id": random.randint(1, num_paths),
             "status": generate_status(),
             "completion_date": fake.date_between(start_date='-1y', end_date='today') if random.random() > 0.3 else None,
         })
@@ -91,8 +95,8 @@ def generate_issue_report_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "reported_by": random.randint(1, 40),
-            "resolved_by": random.randint(1, 10) if random.random() > 0.5 else None,
+            "reported_by": random.randint(1, num_rows),
+            "resolved_by": random.randint(1, num_admins) if random.random() > 0.5 else None,
             "status": generate_status(),
             "description": fake.text(max_nb_chars=100),
         })
@@ -102,8 +106,8 @@ def generate_content_update_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "path_id": random.randint(1, 40),
-            "updated_by": random.randint(1, 10),
+            "path_id": random.randint(1, num_paths),
+            "updated_by": random.randint(1, num_admins),
             "description": fake.text(max_nb_chars=100),
         })
     return data
@@ -112,8 +116,8 @@ def generate_session_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "mentee_id": random.randint(1, 40),
-            "mentor_id": random.randint(1, 40),
+            "mentee_id": random.randint(1, num_rows),
+            "mentor_id": random.randint(1, num_mentors),
             "purpose": fake.text(max_nb_chars=50),
             "date": fake.date_between(start_date='-1y', end_date='today'),
             "duration": f"{random.randint(0, 3):02}:{random.randint(0, 59):02}:00",
@@ -124,7 +128,7 @@ def generate_feedback_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "session_id": random.randint(1, 40),
+            "session_id": random.randint(1, num_rows),
             "description": fake.text(max_nb_chars=100),
         })
     return data
@@ -133,7 +137,7 @@ def generate_scenario_practice_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "path_id": random.randint(1, 40),
+            "path_id": random.randint(1, num_paths),
             "description": fake.text(max_nb_chars=50),
             "difficulty_level": generate_difficulty(),
         })
@@ -143,7 +147,7 @@ def generate_vocab_practice_data():
     data = []
     for _ in range(num_rows):
         data.append({
-            "path_id": random.randint(1, 40),
+            "path_id": random.randint(1, num_paths),
             "context": fake.text(max_nb_chars=50),
             "difficulty_level": generate_difficulty(),
         })
