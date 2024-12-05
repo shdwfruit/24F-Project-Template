@@ -59,3 +59,8 @@ def view_analytics_page():
             st.divider()
     else:
         st.write("No progress data available.")
+
+try:
+  data = requests.get('http://api:4000/data').json()
+except:
+  st.write("**Important**: Could not connect to sample api, so using dummy data.")
