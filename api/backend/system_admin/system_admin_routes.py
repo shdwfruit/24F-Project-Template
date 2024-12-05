@@ -85,4 +85,19 @@ def update_issue_status(report_id):
     response.status_code = 200
     return response
 
+# Route: Delete an issue report
+@sys_admin.route('/issues/reports/<int:report_id>', methods=['DELETE'])
+def delete_issue_report(report_id):
+    query = '''
+        DELETE FROM issue_report
+        WHERE id = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (report_id,))
+    db.get_db().commit()
+
+    response = make_response(jsonify({'message': 'Issue report deleted successfully!'}))
+    response.status_code = 200
+    return response
+
     return response
