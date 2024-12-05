@@ -61,3 +61,22 @@ def get_student_feedback():
     response.status_code = 200
     return response
 
+
+# Route: Automated reports on cultural competence trends
+@decision_maker.route('/analytics/trends', methods=['GET'])
+def get_cultural_competence_trends():
+    query = '''
+        SELECT lp.module_name, COUNT(p.id) AS completions, 
+               AVG(DATEDIFF(p.completion_date, lp.last_updated)) AS avg_completion_time
+        FROM learning_path lp
+        JOIN progress p ON lp.id = p.path_id
+        GROUP BY lp.module_name
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
