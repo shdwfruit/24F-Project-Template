@@ -7,15 +7,19 @@ st.divider()
 
 # Display engagement data
 st.write("### Engagement and Completion Rates")
+
+engagement_data = {}
+
 try:
-    engagement_data = requests.get('http://api:4000/analytics/engagement_data').json()
-    for data in engagement_data:
-        st.write(f"**Module Name:** {data['module_name']}")
-        st.write(f"**Engaged Students:** {data['engaged_students']}")
-        st.write(f"**Completed Students:** {data['completed_students']}")
-        st.divider()
+    engagement_data = requests.get('http://web-api:4000/analytics/engagement_data').json()
 except:
     st.write("**Important**: Could not connect to api")
+
+for data in engagement_data:
+    st.write(f"**Module Name:** {data['module_name']}")
+    st.write(f"**Engaged Students:** {data['engaged_students']}")
+    st.write(f"**Completed Students:** {data['completed_students']}")
+    st.divider()
 
 # Fetch progress data over time
 @st.cache_data
