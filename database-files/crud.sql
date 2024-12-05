@@ -1,3 +1,8 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
+USE `global`;
+
 -- CRUD statements for each user story in each persona
 -- Query for Persona 1: Mentee (Emma)
 -- User Story 1: Search for mentors

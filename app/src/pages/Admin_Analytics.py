@@ -11,7 +11,7 @@ st.write("### Engagement and Completion Rates")
 engagement_data = {}
 
 try:
-    engagement_data = requests.get('http://web-api:4000/a/analytics/engagement_data').json()
+    engagement_data = requests.get('http://api:4000/a/engagement_data').json()
 except:
     st.write("**Important**: Could not connect to api")
 

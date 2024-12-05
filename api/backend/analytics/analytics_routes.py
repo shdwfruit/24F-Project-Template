@@ -12,7 +12,7 @@ analytics = Blueprint('analytics', __name__)
 
 #------------------------------------------------------------
 
-@analytics.route('/analytics/engagement_data', methods=['GET'])
+@analytics.route('/engagement_data', methods=['GET'])
 def get_engagement_data():
 
     query = ''' SELECT lp.module_name, 
