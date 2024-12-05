@@ -10,11 +10,11 @@ st.divider()
 col1, col2 = st.columns(2)
 with col1:
     if st.button("Access Scenario Practice"):
-        st.write("Redirecting to Scenario Practice...")
+        st.switch_page("pages/04_Mentee_Scenario.py")
 
 with col2:
     if st.button("Access Vocabulary Practice"):
-        st.write("Redirecting to Vocabulary Practice...")
+        st.switch_page("pages/05_Mentee_Vocab.py")
 
 # Mock Learning Path Data
 learning_paths = [
