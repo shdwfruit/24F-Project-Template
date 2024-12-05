@@ -57,7 +57,7 @@ if st.button('Act as Alejandro, a Mentor',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'mentor'
     st.session_state['first_name'] = 'Alejandro'
-    st.switch_page('pages/00_Explore.py')
+    st.switch_page('pages/10_Mentor_Home.py')
 
 if st.button('Act as System Administrator', 
             type = 'primary', 
