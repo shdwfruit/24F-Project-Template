@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # Set page title
 st.title("Analytics Dashboard")
@@ -6,15 +7,15 @@ st.divider()
 
 # Display engagement data
 st.write("### Engagement and Completion Rates")
-engagement_data = fetch_engagement_data()
-if engagement_data:
+try:
+    engagement_data = requests.get('http://api:4000/data').json()
     for data in engagement_data:
         st.write(f"**Module Name:** {data['module_name']}")
         st.write(f"**Engaged Students:** {data['engaged_students']}")
         st.write(f"**Completed Students:** {data['completed_students']}")
         st.divider()
-else:
-    st.write("No analytics data available.")
+except:
+    st.write("**Important**: Could not connect to api")
 
 # Fetch progress data over time
 @st.cache_data
