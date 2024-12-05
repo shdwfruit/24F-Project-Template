@@ -26,3 +26,12 @@ def content_updates_page():
         result = cursor.fetchall()
         cursor.close()
         return result
+    # Display content updates
+    content_updates = fetch_content_updates()
+    if content_updates:
+        st.write("### Content Updates")
+        st.write(content_updates)
+    else:
+        st.write("No content updates found.")
+
+    st.divider()
