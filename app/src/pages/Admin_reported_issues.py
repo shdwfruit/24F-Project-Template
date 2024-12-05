@@ -34,3 +34,17 @@ def view_reported_issues_page():
         connection.close()
         return result
 
+    # Display reported issues
+    reported_issues = fetch_reported_issues()
+    if reported_issues:
+        st.write("### Open Reported Issues")
+        for issue in reported_issues:
+            st.write(f"**Issue ID:** {issue['id']}")
+            st.write(f"**Description:** {issue['description']}")
+            st.write(f"**Status:** {issue['status']}")
+            st.write(f"**Timestamp:** {issue['timestamp']}")
+            st.write(f"**Resolved By:** {issue['resolved_by'] if issue['resolved_by'] else 'Unresolved'}")
+            st.divider()
+    else:
+        st.write("No open reported issues found.")
+
