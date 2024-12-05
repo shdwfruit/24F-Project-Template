@@ -48,4 +48,6 @@ def add_feedback(session_id, feedback):
     cursor.execute(query)
     db.get_db().commit()
 
- 
+    response = make_response(jsonify({"message": "Feedback added successfully!!"}))
+    response.status_code = 200
+    return response
