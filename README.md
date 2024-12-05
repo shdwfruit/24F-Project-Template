@@ -59,12 +59,39 @@ Flask API: http://localhost:5000
 Features and Functionality
 
 
+Application Features
 
-User Personas
+User Personas description:
+
 Mentees: Students preparing for global experiences can access cultural learning paths, vocabulary practice, and mentor sessions.
+
 Mentors: Experienced peers who guide mentees in language and cultural preparation.
 System Administrators: Maintain the app and monitor performance, content updates, and bug reports.
+
 Decision Makers: Analyze progress data and refine cultural modules to improve outcomes.
+
+Persona functions - 
+
+Emma (Mentee):
+- Search for mentors.
+- Access scenario practice and vocabulary modules.
+- Track the learning progress with feedback.
+
+Alejandro (Mentor):
+- Match with mentees.
+- Provide feedback and track mentee progress.
+- Get recognition for mentoring hours.
+
+Priya (System Administrator):
+- Manage the content updates.
+- Monitor and resolve issue reports.
+- View engagement analytics.
+
+Dr. Smith (Decision Maker):
+- Analyze student engagement and module performance.
+- Receive feedback to improve the curriculum.
+- Generate insightful reports on student progress.
+
 
 
 REST API
@@ -111,7 +138,7 @@ A demo of the Streamlit front-end and interaction with the database.
 
 
 
-
+-----------------------------------------------------------------------
 
 # Fall 2024 CS 3200 Project Template Repository
 
