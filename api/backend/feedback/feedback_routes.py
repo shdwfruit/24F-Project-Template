@@ -23,4 +23,10 @@ def get_feedback(session_id):
                 where session_id = {str(session_id)}
     '''
 
- 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
