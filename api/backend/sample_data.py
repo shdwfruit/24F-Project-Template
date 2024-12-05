@@ -158,5 +158,37 @@ def format_sql_inserts(table_name, data):
         rows.append(f"({values})")
     sql += ',\n'.join(rows) + ";"
     return sql
+
+# Generate and print SQL for each table
+print("-- System Administrator Data")
+print(format_sql_inserts("system_administrator", generate_system_admin_data()))
+
+print("\n-- Mentee Data")
+print(format_sql_inserts("mentee", generate_mentee_data()))
+
+print("\n-- Mentor Data")
+print(format_sql_inserts("mentor", generate_mentor_data()))
+
+print("\n-- Learning Path Data")
+print(format_sql_inserts("learning_path", generate_learning_path_data()))
+
+print("\n-- Progress Data")
+print(format_sql_inserts("progress", generate_progress_data()))
+
+print("\n-- Issue Report Data")
+print(format_sql_inserts("issue_report", generate_issue_report_data()))
+
+print("\n-- Content Updates Data")
+print(format_sql_inserts("content_updates", generate_content_update_data()))
+
+print("\n-- Session Data")
+print(format_sql_inserts("session", generate_session_data()))
+
+print("\n-- Feedback Data")
+print(format_sql_inserts("feedback", generate_feedback_data()))
+
+print("\n-- Scenario Practice Data")
+print(format_sql_inserts("scenario_practice", generate_scenario_practice_data()))
+
 print("\n-- Vocabulary Practice Data")
 print(format_sql_inserts("vocab_practice", generate_vocab_practice_data()))
