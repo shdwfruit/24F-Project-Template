@@ -26,4 +26,22 @@ def get_module_engagement():
     response.status_code = 200
     return response
 
+
+# Route: View reported issues (bugs and feedback)
+@sys_admin.route('/issues/reports', methods=['GET'])
+def get_reported_issues():
+    query = '''
+        SELECT ir.id, ir.description, ir.status, sa.first_name AS resolved_by
+        FROM issue_report ir
+        LEFT JOIN system_administrator sa ON ir.resolved_by = sa.id
+        WHERE ir.status = 'Open'
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
     return response
