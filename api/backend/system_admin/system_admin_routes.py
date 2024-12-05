@@ -100,4 +100,21 @@ def delete_issue_report(report_id):
     response.status_code = 200
     return response
 
+
+# Route: Retrieve a list of content updates
+@sys_admin.route('/content/updates', methods=['GET'])
+def get_content_updates():
+    query = '''
+        SELECT cu.id, cu.description, cu.timestamp, sa.first_name AS updated_by
+        FROM content_updates cu
+        JOIN system_administrator sa ON cu.updated_by = sa.id
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
     return response
