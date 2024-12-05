@@ -26,6 +26,7 @@ def content_updates_page():
         result = cursor.fetchall()
         cursor.close()
         return result
+
     # Display content updates
     content_updates = fetch_content_updates()
     if content_updates:
@@ -52,6 +53,7 @@ def content_updates_page():
         st.experimental_rerun()
 
     st.divider()
+
     # Update an existing content update
     st.subheader("Update an Existing Content Update")
     update_id = st.number_input("Content Update ID to Modify", min_value=1, step=1)
