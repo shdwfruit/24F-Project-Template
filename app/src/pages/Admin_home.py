@@ -12,15 +12,15 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("Manage Content Updates", type="primary"):
-        st.query_params["first_key"] = "content_updates"
+        st.switch_page("pages/Admin_content_updates.py")
 
 with col2:
     if st.button("View Reported Issues", type="primary"):
-        st.query_params["first_key"] = "reported_issues"
+        st.switch_page("pages/Admin_reported_issues.py")
 
 with col3:
     if st.button("View Analytics", type="primary"):
-        st.query_params["first_key"] = "analytics"
+        st.switch_page("pages/Admin_Analytics.py")
 
 st.divider()
 
