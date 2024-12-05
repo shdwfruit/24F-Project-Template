@@ -85,6 +85,7 @@ def update_issue_status(report_id):
     response.status_code = 200
     return response
 
+
 # Route: Delete an issue report
 @sys_admin.route('/issues/reports/<int:report_id>', methods=['DELETE'])
 def delete_issue_report(report_id):
