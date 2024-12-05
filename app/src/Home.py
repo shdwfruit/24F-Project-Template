@@ -65,7 +65,7 @@ if st.button('Act as System Administrator',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'SysAdmin'
-    st.switch_page('pages/00_Explore.py')
+    st.switch_page('pages/Admin_home.py')
 
 if st.button('Act as Decision Maker', 
             type = 'primary', 
@@ -73,7 +73,7 @@ if st.button('Act as Decision Maker',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'decision_maker'
     st.session_state['first_name'] = 'deci_maker'
-    st.switch_page('pages/00_Explore.py')
+    st.switch_page('pages/Decision_Maker_Home.py')
 
 
 
