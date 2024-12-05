@@ -99,3 +99,19 @@ def get_completion_rates():
     return response
 
 
+# Route: Correlations between module performance and success
+@decision_maker.route('/analytics/correlations', methods=['GET'])
+def get_module_performance_correlations():
+    query = '''
+        SELECT lp.module_name, p.status, s.purpose
+        FROM learning_path lp
+        JOIN progress p ON lp.id = p.path_id
+        JOIN session s ON p.mentee_id = s.mentee_id
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
