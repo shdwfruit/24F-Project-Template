@@ -4,17 +4,17 @@ import streamlit as st
 st.set_page_config(page_title="View Learning Path", layout="wide")
 
 # Page Title
-st.title("My Learning Path")
+st.title("My Mentee's Learning Path")
 st.divider()
 # Buttons for Scenario and Vocabulary Practice
 col1, col2 = st.columns(2)
 with col1:
     if st.button("Access Scenario Practice"):
-        st.switch_page("pages/04_Mentee_Scenario.py")
+        st.write("Redirecting to Scenario Practice...")
 
 with col2:
     if st.button("Access Vocabulary Practice"):
-        st.switch_page("pages/05_Mentee_Vocab.py")
+        st.write("Redirecting to Vocabulary Practice...")
 
 # Mock Learning Path Data
 learning_paths = [

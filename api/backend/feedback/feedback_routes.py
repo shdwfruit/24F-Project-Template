@@ -6,9 +6,8 @@ from flask import current_app
 from backend.db_connection import db
 
 #------------------------------------------------------------
-# mentor blueprint
+# feedback blueprint
 # Contains: 
-mentors = Blueprint('mentor', __name__)
+feedbacks = Blueprint('feedback', __name__)
 
 #------------------------------------------------------------
-
