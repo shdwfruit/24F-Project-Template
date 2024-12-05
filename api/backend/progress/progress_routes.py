@@ -75,7 +75,7 @@ def delete_progress(progress_id):
     response.status_code = 200
     return response
 
-@progress.route('/progress_data')
+@progress.route('/progress_data', methods=['GET'])
 def get_progress_data():
 
     query = '''
