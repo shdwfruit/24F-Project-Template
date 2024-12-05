@@ -12,8 +12,9 @@ engagement_data = {}
 
 try:
     engagement_data = requests.get('http://api:4000/a/engagement_data').json()
-except:
+except Exception as e:
     st.write("**Important**: Could not connect to api")
+    st.write(f"Error: {e}")
 
 for data in engagement_data:
     st.write(f"**Module Name:** {data['module_name']}")
@@ -47,8 +48,3 @@ if progress_data:
         st.divider()
 else:
     st.write("No progress data available.")
-
-try:
-    data = requests.get('http://api:4000/data').json()
-except:
-    st.write("**Important**: Could not connect to api")
