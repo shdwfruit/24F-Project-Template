@@ -11,3 +11,5 @@ from backend.db_connection import db
 feedbacks = Blueprint('feedback', __name__)
 
 #------------------------------------------------------------
+# Get feedback from mentors or mentees for sessions
+@feedbacks.route('/feedback', methods=['GET'])
