@@ -44,3 +44,20 @@ def get_student_progress(mentee_id):
     return response
 
 
+# Route: Review and organize student feedback
+@decision_maker.route('/analytics/feedback', methods=['GET'])
+def get_student_feedback():
+    query = '''
+        SELECT f.description AS feedback, f.session_id, s.purpose, s.date
+        FROM feedback f
+        JOIN session s ON f.session_id = s.id
+        WHERE s.date > CURRENT_DATE - INTERVAL 30 DAY
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
