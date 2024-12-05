@@ -8,7 +8,7 @@ st.divider()
 # Display engagement data
 st.write("### Engagement and Completion Rates")
 try:
-    engagement_data = requests.get('http://api:4000/data').json()
+    engagement_data = requests.get('http://api:4000/analytics/engagement_data').json()
     for data in engagement_data:
         st.write(f"**Module Name:** {data['module_name']}")
         st.write(f"**Engaged Students:** {data['engaged_students']}")
