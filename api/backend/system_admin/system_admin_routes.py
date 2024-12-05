@@ -44,4 +44,25 @@ def get_reported_issues():
     response.status_code = 200
     return response
 
+
+# Route: Create a new issue report
+@sys_admin.route('/issues/reports', methods=['POST'])
+def create_issue_report():
+    details = request.json
+    reported_by = details.get('reported_by')
+    description = details.get('description')
+
+    query = '''
+        INSERT INTO issue_report (reported_by, description, status)
+        VALUES (%s, %s, 'Open')
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (reported_by, description))
+    db.get_db().commit()
+
+    response = make_response(jsonify({'message': 'Issue report created successfully!'}))
+    response.status_code = 201
+    return response
+
+
     return response
