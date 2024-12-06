@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # set page layout
 st.set_page_config(layout = 'wide')
@@ -9,36 +10,23 @@ SideBarLinks(show_home=True)
 st.title("View Reported Issues")
 st.divider()
 
-# Fetch reported issues
-def fetch_reported_issues():
-    connection = connect_to_db()
-    cursor = connection.cursor()
-    query = """
-    SELECT ir.id, ir.description, ir.status, ir.timestamp, 
-            sa.first_name AS resolved_by
-    FROM issue_report ir
-    LEFT JOIN system_administrator sa ON ir.resolved_by = sa.id
-    WHERE ir.status = 'Open';
-    """
-    cursor.execute(query)
-    result = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return result
-
 # Display reported issues
-reported_issues = fetch_reported_issues()
-if reported_issues:
-    st.write("### Open Reported Issues")
-    for issue in reported_issues:
-        st.write(f"**Issue ID:** {issue['id']}")
-        st.write(f"**Description:** {issue['description']}")
-        st.write(f"**Status:** {issue['status']}")
-        st.write(f"**Timestamp:** {issue['timestamp']}")
-        st.write(f"**Resolved By:** {issue['resolved_by'] if issue['resolved_by'] else 'Unresolved'}")
-        st.divider()
-else:
-    st.write("No open reported issues found.")
+reported_issues = {}
+
+try:
+    reported_issues = requests.get('http://api:4000/ir/get_reports').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to api")
+    st.write(f"Error: {e}")
+
+st.write("### Open Reported Issues")
+for issue in reported_issues:
+    st.write(f"**Issue ID:** {issue['id']}")
+    st.write(f"**Description:** {issue['description']}")
+    st.write(f"**Status:** {issue['status']}")
+    st.write(f"**Timestamp:** {issue['timestamp']}")
+    st.write(f"**Resolved By:** {issue['resolved_by'] if issue['resolved_by'] else 'Unresolved'}")
+    st.divider()
 
 # Resolve an issue
 st.subheader("Resolve an Issue")

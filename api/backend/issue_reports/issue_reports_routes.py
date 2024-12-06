@@ -29,3 +29,23 @@ def fetch_reported_issues():
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+@issue_reports.route('/resolve', methods=['PUT'])
+def resolve_issue():
+
+    resolved_by = request.args.get('resolved_by_admin_id')
+    id = request.args.get('issue_id_to_resolve')
+
+    query = ''' 
+                UPDATE issue_report 
+                SET status = 'Resolved', resolved_by = %s WHERE id = %s;
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (resolved_by, id))
+    cursor.commit()
+
+    response = make_response(jsonify({"message": "Issue successfully resolved!"}))
+    response.status_code = 200
+    return response
+
