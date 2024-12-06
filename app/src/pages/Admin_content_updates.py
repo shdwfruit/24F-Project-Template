@@ -19,20 +19,22 @@ content_updates = {}
 
 try:
     content_updates = requests.get('http://api:4000/c/content_updates').json()
+    st.subheader("Content Updates List")
+    with st.expander("Show All Content Updates"):
+        for content in content_updates:
+            st.divider()
+            st.write(f"**Description:** {content['description']}")
+            st.write(f"**Path ID:** {content['path_id']}")
+            st.write(f"**Timestamp:** {content['timestamp']}")
+            st.write(f"**Updated By:** {content['updated_by']}")
 except Exception as e:
     st.write("**Important**: Could not connect to api")
     st.write(f"Error: {e}")
 
-for content in content_updates:
-    st.write(f"**Description:** {content['description']}")
-    st.write(f"**Path ID:** {content['path_id']}")
-    st.write(f"**Timestamp:** {content['timestamp']}")
-    st.write(f"**Updated By:** {content['updated_by']}")
-    st.divider()
-
 st.divider()
 
-with st.form("Add a New Content Update"):
+with st.form("Content Update Form"):
+    st.subheader("Add a New Content Update")
     path_id = st.number_input("Learning Path ID", min_value=1, step=1)
     description = st.text_area("Description")
     submit_button = st.form_submit_button("Add Content")
