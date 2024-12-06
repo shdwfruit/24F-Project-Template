@@ -20,7 +20,7 @@ content_updates = {}
 try:
     content_updates = requests.get('http://api:4000/c/content_updates').json()
     st.subheader("Content Updates List")
-    with st.expander("Show All Content Updates"):
+    with st.expander("All Content Updates"):
         for content in content_updates:
             st.divider()
             st.write(f"**Description:** {content['description']}")
