@@ -12,7 +12,7 @@ sessions = Blueprint('session', __name__)
 
 #------------------------------------------------------------
 # Get sessions for mentors and mentees
-@sessions.route('/sessions/<int:user_id>', methods=['GET'])
+@sessions.route('/<int:user_id>', methods=['GET'])
 def get_sessions(user_id):
     """
     This route is used by mentors/mentees to retrieve their sessions.
@@ -34,7 +34,7 @@ def get_sessions(user_id):
 
 #------------------------------------------------------------
 # Create a new session
-@sessions.route('/sessions', methods=['POST'])
+@sessions.route('/sessions_create', methods=['POST'])
 def create_session(mentor_id, mentee_id, session_date, session_time):
     """
     This route is used by mentors/mentees to create a new session.
@@ -54,7 +54,7 @@ def create_session(mentor_id, mentee_id, session_date, session_time):
 
 #------------------------------------------------------------
 # Update session details
-@sessions.route('/sessions', methods=['PUT'])
+@sessions.route('/sessions_update', methods=['PUT'])
 def update_session(session_id, session_date, session_time):
     """
     This route is used by mentors/mentees to update a session.
@@ -77,7 +77,7 @@ def update_session(session_id, session_date, session_time):
 
 #------------------------------------------------------------
 # Delete a session
-@sessions.route('/sessions', methods=['DELETE'])
+@sessions.route('/sessions_delete', methods=['DELETE'])
 def delete_session(session_id):
     """
     This route is used by mentors/mentees to delete a session.

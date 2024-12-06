@@ -43,11 +43,9 @@ if st.button("Search"):
 st.divider()
 
 #get mentors from the database
-mentor_data = []  # Placeholder for mentor data
+mentor_data = {}  # Placeholder for mentor data
 try:
-    response = requests.get("http://api:4000/mo/get_mentees")
-    response.raise_for_status()  # Raise an error for bad status codes
-    mentor_data = response.json()
+    mentor_data = requests.get("http://api:4000/mo/get_mentees")
 except requests.exceptions.RequestException as e:
     st.write("**Important**: Could not connect to API")
     st.write(f"Error: {e}")
@@ -57,6 +55,7 @@ except requests.exceptions.RequestException as e:
 # Mentor List Display
 st.subheader("Mentee Results")
 mentor_cols = st.columns(3)
+
 
 for i, mentor in enumerate(mentor_data):
     with mentor_cols[i % 3]:
