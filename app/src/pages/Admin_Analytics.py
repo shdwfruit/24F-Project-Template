@@ -17,7 +17,7 @@ st.write("### Engagement and Completion Rates")
 engagement_data = {}
 
 try:
-    engagement_data = requests.get('http://localhost:4000/a/engagement_data').json()
+    engagement_data = requests.get('http://api:4000/a/engagement_data').json()
 except Exception as e:
     st.write("**Important**: Could not connect to api")
     st.write(f"Error: {e}")
@@ -34,7 +34,7 @@ st.write("### Progress Over Time")
 progress_data = {}
 
 try:
-    progress_data = requests.get('http://localhost:4000/p/progress_data').json()
+    progress_data = requests.get('http://api:4000/p/progress_data').json()
 except Exception as e:
     st.write("**Important**: Could not connect to api")
     st.write(f"Error: {e}")
