@@ -48,7 +48,7 @@ if not st.session_state.mentee_info:
 
 # Show session management after verification
 elif st.session_state.mentee_info:
-    st.write(f"Welcome, {st.session_state.mentee_info.get('first_name', '')} {st.session_state.mentee_info.get('last_name', '')}")
+    st.write(f"Welcome, {st.session_state.first_name}")
     
     # Create new session section
     st.write("### Schedule New Session")
@@ -77,24 +77,30 @@ elif st.session_state.mentee_info:
             st.write("Debug - ID value:", st.session_state.mentee_info)
             st.write("Debug - ID type:", type(st.session_state.mentee_info))
             try:
-                payload = {
-                        'mentee_id': st.session_state.mentee_info['id'],
-                        'mentor_id': st.session_state.mentee_info['id'],
+                try:
+                    data = requests.get(f'http://api:4000/me/get_mentor_id/{st.session_state.id}').json()
+                    mentor_id = data['mentor_id']
+                    payload = {
+                        'mentee_id': st.session_state.id,
+                        'mentor_id': mentor_id,
                         'purpose': purpose,
                         'date': date.strftime('%Y-%m-%d'),
                         'duration': duration
-                }
-                st.write(f"Debug - Sending payload: {payload}")
-                response = requests.post(
-                    'http://api:4000/s/create',
-                    json=payload
-                )
-                st.write(f"Debug - Response status: {response.status_code}")  # Debug print
-                st.write(f"Debug - Response content: {response.text}")
-                if response.status_code == 200:
-                    st.success("Session scheduled successfully!")
-                else:
-                    st.error(f"Failed to schedule session. Server response: {response.text}")
+                    }
+                    st.write(f"Debug - Sending payload: {payload}")
+                    response = requests.post(
+                        'http://api:4000/s/create',
+                        json=payload
+                    )
+                    st.write(f"Debug - Response status: {response.status_code}")  # Debug print
+                    st.write(f"Debug - Response content: {response.text}")
+                    if response.status_code == 200:
+                        st.success("Session scheduled successfully!")
+                    else:
+                        st.error(f"Failed to schedule session. Server response: {response.text}")
+                except Exception as e:
+                    st.error(f"Error getting mentor id: {str(e)}")
+
             except Exception as e:
                 st.error(f"Error scheduling session: {str(e)}")
 

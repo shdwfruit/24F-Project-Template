@@ -135,3 +135,20 @@ def get_mentee_id():
         response = make_response(jsonify({"error": "Mentee not found"}))
         response.status_code = 404  # Changed to 404 for "not found"
     return response
+
+@mentees.route('/get_mentor_id/<int:id>', methods=['GET'])
+def get_mentor_with_mentee_id(id):
+
+    query = f'''
+                SELECT mentor_id
+                FROM mentee
+                WHERE mentee_id = {id};
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
