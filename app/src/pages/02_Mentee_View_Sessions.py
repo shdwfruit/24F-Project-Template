@@ -18,10 +18,10 @@ st.divider()
 
 # Email verification section
 if not st.session_state.mentee_info:
-    st.write("### Please Verify Your Email")
+    st.write("### Retrieve your sessions by email address")
     with st.form("email_verification", clear_on_submit=True):
         email = st.text_input("Enter your email")
-        submit_button = st.form_submit_button("Verify")
+        submit_button = st.form_submit_button("Retrieve Sessions")
         
         mentee_info = requests.get('http://api:4000/me/get_id', email)
         st.session_state.mentee_info = mentee_info
@@ -78,8 +78,8 @@ elif st.session_state.mentee_info:
             st.write("Debug - ID type:", type(st.session_state.mentee_info))
             try:
                 payload = {
-                        'mentee_id': st.session_state.mentee_info,
-                        'mentor_id': st.session_state.mentee_info,
+                        'mentee_id': st.session_state.mentee_info['id'],
+                        'mentor_id': st.session_state.mentee_info['id'],
                         'purpose': purpose,
                         'date': date.strftime('%Y-%m-%d'),
                         'duration': duration
@@ -97,6 +97,8 @@ elif st.session_state.mentee_info:
                     st.error(f"Failed to schedule session. Server response: {response.text}")
             except Exception as e:
                 st.error(f"Error scheduling session: {str(e)}")
+
+                
     # Display existing sessions
     st.write("### My Sessions")
     try:
