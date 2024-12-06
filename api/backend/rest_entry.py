@@ -5,6 +5,7 @@ from backend.analytics.analytics_routes import analytics
 from backend.content.content_routes import contents
 from backend.decision_maker.decision_maker_routes import decision_maker
 from backend.feedback.feedback_routes import feedbacks
+from backend.issue_reports.issue_reports_routes import issue_reports
 from backend.mentee.mentee_routes import mentees
 from backend.mentor.mentor_routes import mentors
 from backend.progress.progress_routes import progress
@@ -50,6 +51,7 @@ def create_app():
     app.register_blueprint(contents,   url_prefix='/c')
     app.register_blueprint(decision_maker,    url_prefix='/dm')
     app.register_blueprint(feedbacks,   url_prefix='/f')
+    app.register_blueprint(issue_reports,   url_prefix='/ir')
     app.register_blueprint(mentees,   url_prefix='/me')
     app.register_blueprint(mentors,   url_prefix='/mo')
     app.register_blueprint(progress,   url_prefix='/p')
