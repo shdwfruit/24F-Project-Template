@@ -8,8 +8,8 @@ SideBarLinks(show_home=True)
 # Page Title
 st.title("My Mentee's Learning Path")
 st.divider()
-# Replace mock data with API call to get learning paths
-mentee_id = st.session_state.get('mentee_id', 1)  # Example mentee_id for testing
+
+mentee_id = st.number_input("Enter Mentee ID for Progress Visualization", min_value=1, step=1, value=1)
 try:
     learning_paths = requests.get(f'http://api:4000/lp/mentee/{mentee_id}').json()
 except Exception as e:
@@ -29,21 +29,6 @@ for path in learning_paths:
         st.checkbox(milestone, value=(path["status"] == "Completed"))
     st.divider()
 
-# Display each module
-for path in learning_paths:
-    st.write(f"### {path['module_name']}")
-    st.write(f"**Description:** {path['description']}")
-    st.write(f"**Status:** {path['status']}")
-    if path['completion_date']:
-        st.write(f"**Completion Date:** {path['completion_date']}")
-    else:
-        st.write("**Completion Date:** Not Completed")
-
-    st.write("**Milestones:**")
-    for milestone in path["milestones"]:
-        st.checkbox(milestone, value=(path["status"] == "Completed"))
-
-    st.divider()
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
