@@ -10,7 +10,7 @@ sys_admin = Blueprint('system_admin', __name__)
 # system administrator routes
 
 # Route: View module usage and completion data
-@sys_admin.route('/analytics/engagement', methods=['GET'])
+@sys_admin.route('/engagement', methods=['GET'])
 def get_module_engagement():
     query = '''
         SELECT path_id, COUNT(*) AS completions
@@ -28,7 +28,7 @@ def get_module_engagement():
 
 
 # Route: View reported issues (bugs and feedback)
-@sys_admin.route('/issues/reports', methods=['GET'])
+@sys_admin.route('/issues_reports', methods=['GET'])
 def get_reported_issues():
     query = '''
         SELECT ir.id, ir.description, ir.status, sa.first_name AS resolved_by
@@ -46,7 +46,7 @@ def get_reported_issues():
 
 
 # Route: Create a new issue report
-@sys_admin.route('/issues/reports', methods=['POST'])
+@sys_admin.route('/issues_reports', methods=['POST'])
 def create_issue_report():
     details = request.json
     reported_by = details.get('reported_by')
@@ -66,7 +66,7 @@ def create_issue_report():
 
 
 # Route: Update issue report status
-@sys_admin.route('/issues/reports/<int:report_id>', methods=['PUT'])
+@sys_admin.route('/issues_reports/<int:report_id>', methods=['PUT'])
 def update_issue_status(report_id):
     details = request.json
     new_status = details.get('status')
