@@ -32,7 +32,5 @@ def get_learning_path(mentee_id):
     return response
 
 
-#not sure how to call implement issue report here 
-
 
 
