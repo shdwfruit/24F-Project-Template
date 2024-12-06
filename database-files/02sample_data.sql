@@ -1,6 +1,6 @@
 use global;
 
-INSERT INTO system_administrator
+INSERT INTO system_administrator (email, first_name, last_name, role)
 VALUES
 ('brooke32@example.net', 'Donald', 'Campbell', 'Support Specialist'),
 ('melissamoore@example.com', 'Paul', 'Andrews', 'Content Manager'),
@@ -13,52 +13,31 @@ VALUES
 ('michael37@example.net', 'Roger', 'Parker', 'Support Specialist'),
 ('simonandrew@example.net', 'Patricia', 'Carrillo', 'Support Specialist');
 
--- Mentee Data
-INSERT INTO mentee
+-- Badge Data
+INSERT INTO badge (title, criteria)
 VALUES
-('8', '10', 'Martin', 'Hill', 'madeline43@example.net', 'French', 'Beginner'),
-('2', '10', 'Brenda', 'Jensen', 'davidtodd@example.org', 'Japanese', 'Beginner'),
-('4', '8', 'Madison', 'Young', 'amanda24@example.net', 'Spanish', 'Beginner'),
-('7', '10', 'Jim', 'Aguilar', 'mfarmer@example.com', 'Chinese', 'Beginner'),
-('6', '10', 'Matthew', 'Baker', 'plyons@example.com', 'Chinese', 'Intermediate'),
-('10', '8', 'Alisha', 'Frank', 'petersonjennifer@example.org', 'Chinese', 'Intermediate'),
-('3', '6', 'Joshua', 'Gallegos', 'davidsonryan@example.com', 'French', 'Intermediate'),
-('7', '8', 'Victoria', 'Sanders', 'jacksonamy@example.net', 'Chinese', 'Beginner'),
-('6', '1', 'James', 'Patel', 'taylordrew@example.org', 'French', 'Advanced'),
-('7', '7', 'Tracey', 'Camacho', 'ereilly@example.com', 'French', 'Fluent'),
-('9', '2', 'Thomas', 'Smith', 'mfrederick@example.org', 'Spanish', 'Intermediate'),
-('4', '1', 'Natalie', 'Poole', 'ksantiago@example.com', 'French', 'Intermediate'),
-('10', '8', 'Chelsey', 'Nguyen', 'jody62@example.net', 'Chinese', 'Fluent'),
-('5', '8', 'Chad', 'Hinton', 'froststuart@example.com', 'Japanese', 'Beginner'),
-('8', '6', 'Donna', 'Crosby', 'davidflores@example.com', 'Spanish', 'Beginner'),
-('5', '5', 'Amy', 'Scott', 'xkennedy@example.com', 'Spanish', 'Advanced'),
-('3', '9', 'David', 'Nelson', 'andrea87@example.org', 'Spanish', 'Intermediate'),
-('8', '6', 'Laura', 'Smith', 'david35@example.com', 'Chinese', 'Advanced'),
-('3', '8', 'Christopher', 'Kramer', 'alleneric@example.org', 'French', 'Advanced'),
-('10', '2', 'Elizabeth', 'Weaver', 'dylandavis@example.org', 'Chinese', 'Intermediate'),
-('4', '4', 'Lisa', 'Padilla', 'dali@example.com', 'French', 'Intermediate'),
-('3', '4', 'Christopher', 'Cochran', 'ztaylor@example.com', 'French', 'Intermediate'),
-('7', '2', 'Daniel', 'Atkinson', 'pgarcia@example.net', 'Chinese', 'Beginner'),
-('2', '1', 'Whitney', 'Hill', 'tranangela@example.com', 'Chinese', 'Fluent'),
-('1', '9', 'Amanda', 'Garcia', 'kathleenhogan@example.net', 'Japanese', 'Fluent'),
-('9', '2', 'Douglas', 'Lawrence', 'martingregory@example.net', 'French', 'Beginner'),
-('10', '3', 'Luis', 'Manning', 'hineskathy@example.org', 'Chinese', 'Intermediate'),
-('2', '8', 'Ann', 'Shah', 'hzhang@example.org', 'French', 'Beginner'),
-('1', '2', 'Leah', 'Daniels', 'hgalvan@example.org', 'French', 'Intermediate'),
-('1', '5', 'Justin', 'Johnson', 'ischwartz@example.org', 'French', 'Fluent'),
-('3', '7', 'Evan', 'Mcdonald', 'paulallen@example.org', 'Spanish', 'Advanced'),
-('10', '3', 'Jose', 'Decker', 'michael18@example.org', 'Japanese', 'Beginner'),
-('3', '10', 'Taylor', 'Mora', 'adamlowe@example.org', 'Japanese', 'Fluent'),
-('10', '2', 'James', 'Clark', 'kristen51@example.net', 'Spanish', 'Fluent'),
-('5', '9', 'Anthony', 'Bell', 'susan08@example.com', 'Chinese', 'Fluent'),
-('10', '10', 'Cassandra', 'Jarvis', 'ericward@example.org', 'Japanese', 'Advanced'),
-('7', '3', 'Christine', 'Holt', 'dennisbarnes@example.net', 'Japanese', 'Beginner'),
-('4', '3', 'Kelly', 'Gomez', 'haneydeborah@example.net', 'Spanish', 'Advanced'),
-('7', '3', 'Joshua', 'Callahan', 'bhutchinson@example.com', 'French', 'Intermediate'),
-('5', '8', 'Richard', 'Robinson', 'thomasmann@example.net', 'Chinese', 'Beginner');
+('Cultural Ambassador', 'Earned by mentors who demonstrate exceptional understanding and ability to teach cultural nuances. Requirements: Successfully conduct at least 20 culture-focused sessions, receive positive feedback on cultural instruction from 90% of mentees, and create at least 5 cultural learning materials.'),
+
+('Language Master', 'Awarded to mentors with proven excellence in language instruction. Must maintain a consistent student success rate of 85% or higher, complete 50 teaching hours, and receive certification in advanced teaching methodologies for their target language.'),
+
+('Student Success Champion', 'Recognizes mentors who excel in student progression. Criteria: Maintain an average student retention rate of 90%, help at least 10 students advance one proficiency level, and receive outstanding feedback from students consistently over 6 months.'),
+
+('Innovation in Teaching', 'Celebrates mentors who develop creative teaching methods. Must create and implement at least 3 new teaching techniques that are adopted by other mentors, receive positive feedback on innovative approaches, and document successful outcomes.'),
+
+('Global Connector', 'Given to mentors who excel in creating international learning communities. Requirements: Successfully manage study groups with students from at least 5 different countries, organize 3 international language exchange events, and maintain high engagement rates.'),
+
+('Pronunciation Expert', 'Awarded for exceptional skill in teaching pronunciation and accent reduction. Must demonstrate proven success in helping students improve pronunciation, complete specialized phonetics training, and develop effective pronunciation teaching materials.'),
+
+('Business Language Specialist', 'Recognizes expertise in teaching business and professional language. Must have experience teaching business professionals, develop industry-specific vocabulary materials, and demonstrate success in helping students achieve professional language goals.'),
+
+('Beginner Mentor Champion', 'Celebrates excellence in teaching absolute beginners. Requirements: Specialized training in teaching beginners, documented success in helping students progress from beginner to intermediate level, and development of beginner-friendly learning materials.'),
+
+('Digital Teaching Excellence', 'Awarded for mastery of online language instruction. Criteria: Maintain high student engagement in virtual sessions, effectively use digital tools and platforms, and receive consistently positive feedback on online teaching methods.'),
+
+('Continuous Learning Advocate', 'Recognizes mentors committed to professional development. Must complete annual teaching methodology updates, participate in mentor development workshops, and implement new research-based teaching strategies.');
 
 -- Mentor Data
-INSERT INTO mentor
+INSERT INTO mentor (admin_id, badge_id, first_name, last_name, email, teaching_language, location, language_level)
 VALUES
 ('6', '3', 'Ebony', 'Reed', 'abradshaw@example.com', 'Japanese', 'Tiffanyton, Guatemala', 'Fluent'),
 ('1', '1', 'Elaine', 'Miller', 'glennraymond@example.com', 'Japanese', 'Jamesville, Anguilla', 'Advanced'),
@@ -101,8 +80,67 @@ VALUES
 ('6', '3', 'Anthony', 'Rivas', 'brendathomas@example.org', 'Spanish', 'South Barbara, Antigua and Barbuda', 'Fluent'),
 ('10', '7', 'Christopher', 'Monroe', 'perezdavid@example.org', 'French', 'North Margaret, Palau', 'Fluent');
 
+
+-- Mentee Data
+INSERT INTO mentee (mentor_id, admin_id, first_name, last_name, email, learning_language, language_level)
+VALUES
+('8', '10', 'Martin', 'Hill', 'madeline43@example.net', 'French', 'Beginner'),
+('2', '10', 'Brenda', 'Jensen', 'davidtodd@example.org', 'Japanese', 'Beginner'),
+('4', '8', 'Madison', 'Young', 'amanda24@example.net', 'Spanish', 'Beginner'),
+('7', '10', 'Jim', 'Aguilar', 'mfarmer@example.com', 'Chinese', 'Beginner'),
+('6', '10', 'Matthew', 'Baker', 'plyons@example.com', 'Chinese', 'Intermediate'),
+('10', '8', 'Alisha', 'Frank', 'petersonjennifer@example.org', 'Chinese', 'Intermediate'),
+('3', '6', 'Joshua', 'Gallegos', 'davidsonryan@example.com', 'French', 'Intermediate'),
+('7', '8', 'Victoria', 'Sanders', 'jacksonamy@example.net', 'Chinese', 'Beginner'),
+('6', '1', 'James', 'Patel', 'taylordrew@example.org', 'French', 'Advanced'),
+('7', '7', 'Tracey', 'Camacho', 'ereilly@example.com', 'French', 'Fluent'),
+('9', '2', 'Thomas', 'Smith', 'mfrederick@example.org', 'Spanish', 'Intermediate'),
+('4', '1', 'Natalie', 'Poole', 'ksantiago@example.com', 'French', 'Intermediate'),
+('10', '8', 'Chelsey', 'Nguyen', 'jody62@example.net', 'Chinese', 'Fluent'),
+('5', '8', 'Chad', 'Hinton', 'froststuart@example.com', 'Japanese', 'Beginner'),
+('8', '6', 'Donna', 'Crosby', 'davidflores@example.com', 'Spanish', 'Beginner'),
+('5', '5', 'Amy', 'Scott', 'xkennedy@example.com', 'Spanish', 'Advanced'),
+('3', '9', 'David', 'Nelson', 'andrea87@example.org', 'Spanish', 'Intermediate'),
+('8', '6', 'Laura', 'Smith', 'david35@example.com', 'Chinese', 'Advanced'),
+('3', '8', 'Christopher', 'Kramer', 'alleneric@example.org', 'French', 'Advanced'),
+('10', '2', 'Elizabeth', 'Weaver', 'dylandavis@example.org', 'Chinese', 'Intermediate'),
+('4', '4', 'Lisa', 'Padilla', 'dali@example.com', 'French', 'Intermediate'),
+('3', '4', 'Christopher', 'Cochran', 'ztaylor@example.com', 'French', 'Intermediate'),
+('7', '2', 'Daniel', 'Atkinson', 'pgarcia@example.net', 'Chinese', 'Beginner'),
+('2', '1', 'Whitney', 'Hill', 'tranangela@example.com', 'Chinese', 'Fluent'),
+('1', '9', 'Amanda', 'Garcia', 'kathleenhogan@example.net', 'Japanese', 'Fluent'),
+('9', '2', 'Douglas', 'Lawrence', 'martingregory@example.net', 'French', 'Beginner'),
+('10', '3', 'Luis', 'Manning', 'hineskathy@example.org', 'Chinese', 'Intermediate'),
+('2', '8', 'Ann', 'Shah', 'hzhang@example.org', 'French', 'Beginner'),
+('1', '2', 'Leah', 'Daniels', 'hgalvan@example.org', 'French', 'Intermediate'),
+('1', '5', 'Justin', 'Johnson', 'ischwartz@example.org', 'French', 'Fluent'),
+('3', '7', 'Evan', 'Mcdonald', 'paulallen@example.org', 'Spanish', 'Advanced'),
+('10', '3', 'Jose', 'Decker', 'michael18@example.org', 'Japanese', 'Beginner'),
+('3', '10', 'Taylor', 'Mora', 'adamlowe@example.org', 'Japanese', 'Fluent'),
+('10', '2', 'James', 'Clark', 'kristen51@example.net', 'Spanish', 'Fluent'),
+('5', '9', 'Anthony', 'Bell', 'susan08@example.com', 'Chinese', 'Fluent'),
+('10', '10', 'Cassandra', 'Jarvis', 'ericward@example.org', 'Japanese', 'Advanced'),
+('7', '3', 'Christine', 'Holt', 'dennisbarnes@example.net', 'Japanese', 'Beginner'),
+('4', '3', 'Kelly', 'Gomez', 'haneydeborah@example.net', 'Spanish', 'Advanced'),
+('7', '3', 'Joshua', 'Callahan', 'bhutchinson@example.com', 'French', 'Intermediate'),
+('5', '8', 'Richard', 'Robinson', 'thomasmann@example.net', 'Chinese', 'Beginner');
+
+-- Decision Maker Data
+INSERT INTO decision_maker (first_name, last_name, email)
+VALUES
+('Dr. William', 'Roberts', 'w.roberts@languageinstitute.edu'),
+('Dr. Sarah', 'Chen', 's.chen@languageinstitute.edu'),
+('Prof. Michael', 'Thompson', 'm.thompson@languageinstitute.edu'),
+('Dr. Elena', 'Rodriguez', 'e.rodriguez@languageinstitute.edu'),
+('Prof. James', 'Wilson', 'j.wilson@languageinstitute.edu'),
+('Dr. Aisha', 'Patel', 'a.patel@languageinstitute.edu'),
+('Prof. David', 'Kim', 'd.kim@languageinstitute.edu'),
+('Dr. Maria', 'Garcia', 'm.garcia@languageinstitute.edu'),
+('Prof. Thomas', 'Anderson', 't.anderson@languageinstitute.edu'),
+('Dr. Lisa', 'Johnson', 'l.johnson@languageinstitute.edu');
+
 -- Learning Path Data
-INSERT INTO learning_path
+INSERT INTO learning_path (mentee_id, dm_id, module_name, description, milestones, status)
 VALUES
 ('40', '10', 'Module 1', 'Pressure name fall if line process.', 'Milestone 1, Milestone 2, Milestone 3', 'Not Started'),
 ('2', '1', 'Module 4', 'Last keep support ability beyond identify.', 'Milestone 1, Milestone 2, Milestone 3', 'Open'),
@@ -146,7 +184,7 @@ VALUES
 ('23', '2', 'Module 2', 'Maintain home move per teach ask population very.', 'Milestone 1, Milestone 2, Milestone 3', 'Open');
 
 -- Progress Data
-INSERT INTO progress
+INSERT INTO progress (mentee_id, path_id, status, completion_date)
 VALUES
 ('12', '18', 'Not Started', '2024-02-24'),
 ('11', '33', 'Open', '2024-05-08'),
@@ -190,7 +228,7 @@ VALUES
 ('13', '40', 'Resolved', '2024-06-10');
 
 -- Issue Report Data
-INSERT INTO issue_report
+INSERT INTO issue_report (reported_by, resolved_by, status, description)
 VALUES
 ('9', NULL, 'In Progress', 'Loss participant goal forward condition in. Receive individual during.'),
 ('26', '3', 'Completed', 'Help region road character performance. Bed candidate despite draw chair front still.'),
@@ -235,7 +273,7 @@ Seem city should recent decision rather.'),
 ('27', '7', 'Completed', 'Road them somebody wish. Stuff just chair cause pattern speech.');
 
 -- Content Updates Data
-INSERT INTO content_updates
+INSERT INTO content_updates (path_id, updated_by, description)
 VALUES
 ('27', '3', 'People feel suddenly environment then benefit source. Cold send gun both executive agent.'),
 ('39', '1', 'Question break a allow cup grow. While result future only. Make owner four official dark.'),
@@ -280,7 +318,7 @@ Forget control very response white fund.'),
 ('38', '8', 'Civil threat imagine will collection prepare loss everyone. Realize language able join prove.');
 
 -- Session Data
-INSERT INTO session
+INSERT INTO session (mentee_id, mentor_id, purpose, date, duration)
 VALUES
 ('16', '22', 'Room carry teach member indicate course.', '2024-01-02', '02:41:00'),
 ('38', '13', 'Deep shoulder offer by official.', '2024-05-10', '02:48:00'),
@@ -324,7 +362,7 @@ VALUES
 ('23', '16', 'Miss meet reason realize third.', '2024-04-18', '01:42:00');
 
 -- Feedback Data
-INSERT INTO feedback
+INSERT INTO feedback (session_id, description)
 VALUES
 ('39', 'Should big such firm. Control book stop may arrive defense car physical.'),
 ('6', 'Stuff total deal its power. Police ball strategy finish. Serious through return message.'),
@@ -368,7 +406,7 @@ VALUES
 ('21', 'Itself build between character message tax pass. Check by state.');
 
 -- Scenario Practice Data
-INSERT INTO scenario_practice
+INSERT INTO scenario_practice (path_id, description, difficulty_level)
 VALUES
 ('17', 'Must short different however hand.', 'Fluent'),
 ('3', 'From both finish. Again scientist eight should.', 'Advanced'),
@@ -412,7 +450,7 @@ VALUES
 ('11', 'Fact provide industry theory.', 'Fluent');
 
 -- Vocabulary Practice Data
-INSERT INTO vocab_practice
+INSERT INTO vocab_practice (path_id, context, difficulty_level)
 VALUES
 ('25', 'Rest significant late report.', 'Fluent'),
 ('21', 'Instead board institution top owner.', 'Intermediate'),
