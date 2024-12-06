@@ -115,13 +115,7 @@ elif st.session_state.mentee_info:
     except Exception as e:
         st.error(f"Error loading sessions: {str(e)}")
 
-<<<<<<< HEAD
-# Logout option
-if st.session_state.mentee_info:
-    if st.button("Log out"):
-=======
     # Logout with unique key
     if st.button("Logout", key="logout_button"):
->>>>>>> 6bd0e75a9e661bb6bd9f1f60c33c5774cc907b17
         st.session_state.mentee_info = None
         st.rerun()
