@@ -68,6 +68,7 @@ with st.form("Add a New Content Update"):
                 response = requests.post('http://api:4000/c/update_content', json=update_data)
                 if response.status_code == 200:
                     st.success("Content added successfully!")
+                    st.balloons()
                 else:
                     st.error(f"Error adding content: {response.text}")
             except requests.exceptions.RequestException as e:

@@ -71,7 +71,7 @@ def add_report():
 
 
     query = '''
-                INSERT INTO issue_reports (reported_by, status, description)
+                INSERT INTO issue_report (reported_by, status, description)
                 VALUES
                 (%s, %s, %s);
         '''
