@@ -46,6 +46,7 @@ if len(reported_issues) > 0:
             response = requests.put('http://api:4000/ir/resolve', json=data)
             if response.status_code == 200:
                 st.success(f"Issue {issue_id_to_resolve} has been resolved!")
+                st.balloons()
             else:
                 st.error("Invalid Admin or Issue ID was entered")
         except Exception as e:
@@ -68,3 +69,7 @@ if len(reported_issues) > 0:
 
 else:
     st.write("### No Open Reported Issues")
+    st.balloons()
+
+st.subheader("Report an issue")
+description = st.text_area("Description")

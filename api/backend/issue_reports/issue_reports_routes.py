@@ -65,20 +65,19 @@ def add_report():
 
     #extracting the variable
     reported_by = data['reported_by']
-    resolved_by = data['resolved_by']
     status = data['status']
     description = data['description']
 
 
 
     query = '''
-                INSERT INTO issue_reports (reported_by, resolved_by, status, description)
+                INSERT INTO issue_reports (reported_by, status, description)
                 VALUES
-                (%s, %s, %s, %s);
+                (%s, %s, %s);
         '''
     
     cursor = db.get_db().cursor()
-    data = (reported_by, resolved_by, status, description)
+    data = (reported_by, status, description)
     cursor.execute(query, data)
     db.get_db().commit()
 
