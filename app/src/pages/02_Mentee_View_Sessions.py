@@ -121,7 +121,7 @@ else:
 
 # Logout option
 if st.session_state.mentee_info:
-    if st.button("Logout"):
+    if st.button("Log out"):
         st.session_state.mentee_info = None
         st.experimental_rerun()
 
