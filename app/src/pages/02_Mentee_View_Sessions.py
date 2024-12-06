@@ -23,8 +23,8 @@ if not st.session_state.mentee_info:
         email = st.text_input("Enter your email")
         submit_button = st.form_submit_button("Retrieve Sessions")
         
-        mentee_info = requests.get('http://api:4000/me/get_id', email)
-        st.session_state.mentee_info = mentee_info
+        data = requests.get('http://api:4000/me/get_id', email).json()
+        st.session_state.mentee_info['id'] = data['id']
 
         if submit_button:
             try:
@@ -74,14 +74,14 @@ elif st.session_state.mentee_info:
             
             st.write("Debug - Session State Info:")
             st.write(st.session_state.mentee_info)
-            st.write("Debug - ID value:", st.session_state.mentee_info)
-            st.write("Debug - ID type:", type(st.session_state.mentee_info))
+            st.write("Debug - ID value:", st.session_state.mentee_info['id'])
+            st.write("Debug - ID type:", type(st.session_state.mentee_info['id']))
             try:
                 try:
                     data = requests.get(f'http://api:4000/me/get_mentor_id/{st.session_state.id}').json()
                     mentor_id = data['mentor_id']
                     payload = {
-                        'mentee_id': st.session_state.id,
+                        'mentee_id': st.session_state.mentee_info['id'],
                         'mentor_id': mentor_id,
                         'purpose': purpose,
                         'date': date.strftime('%Y-%m-%d'),
