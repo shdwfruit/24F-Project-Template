@@ -24,8 +24,7 @@ def get_mentees():
     lang_level = request.args.get('language_level')
 
     query = '''
-        SELECT first_name, last_name, email, 
-               learning_language, language_level
+        SELECT *
         FROM mentee
         WHERE learning_language = %s 
         AND language_level = %s
@@ -36,7 +35,6 @@ def get_mentees():
     theData = cursor.fetchall()
 
     
-
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
