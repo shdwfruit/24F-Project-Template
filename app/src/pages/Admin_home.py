@@ -30,18 +30,3 @@ with col3:
         st.switch_page("pages/Admin_Analytics.py")
 
 st.divider()
-
-# Navigation Logic Based on Query Params
-
-if st.query_params["first_key"] == "content_updates":
-    st.query_params["first_key"] = ""
-    from pages.Admin_content_updates import content_updates_page
-    content_updates_page()
-elif st.query_params["first_key"] == "reported_issues":
-    st.query_params["first_key"] = ""
-    from pages.Admin_reported_issues import view_reported_issues_page
-    view_reported_issues_page()
-elif st.query_params["first_key"] == "analytics":
-    st.query_params["first_key"] = ""
-    from pages.Admin_Analytics import view_analytics_page
-    view_analytics_page()
