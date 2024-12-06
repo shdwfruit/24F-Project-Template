@@ -28,6 +28,8 @@ except Exception as e:
     st.write("**Important**: Could not connect to api")
     st.write(f"Error: {e}")
 
+st.divider()
+
 # Display progress data
 st.write("### Progress Over Time")
 
@@ -44,6 +46,8 @@ try:
 except Exception as e:
     st.write("**Important**: Could not connect to api")
     st.write(f"Error: {e}")
+
+st.divider()
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
