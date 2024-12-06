@@ -107,7 +107,6 @@ if st.session_state.selected_mentor:
                    # Clear the selected mentor and reset search
                    st.session_state.selected_mentor = None
                    st.session_state.show_search_results = False
-                   st.experimental_rerun()
                else:
                    st.error(f"Registration failed. Please try again. Server response: {response.text}")
                    
