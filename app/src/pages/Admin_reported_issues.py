@@ -50,6 +50,21 @@ if len(reported_issues) > 0:
                 st.error("Invalid Admin or Issue ID was entered")
         except Exception as e:
             st.error("Could not connect to API")
+
+    st.subheader("Delete an issue")
+    issue_id_to_delete = st.number_input("Enter Issue ID to Delete", min_value=1, step=1)
+    data = {
+        issue_id_to_delete
+    }
+    if st.button("Delete Issue"):
+        try:
+            response = requests.delete(f'http://api:4000/ir/delete/{issue_id_to_delete}')
+            if response.status_code == 200:
+                st.success(f"Issue {issue_id_to_delete} has been deleted!")
+            else:
+                st.error("Invalid Issue ID was entered")
+        except Exception as e:
+            st.error("Could not connect to API")
+
 else:
     st.write("### No Open Reported Issues")
-

@@ -46,7 +46,7 @@ def resolve_issue():
 
     cursor = db.get_db().cursor()
     data = (resolved_by, id)
-    r = cursor.execute(query, data)
+    cursor.execute(query, data)
     db.get_db().commit()
 
     if cursor.rowcount > 0:
@@ -57,3 +57,51 @@ def resolve_issue():
 
     return response
 
+@issue_reports.route('/report_issue', methods=['POST'])
+def add_report():
+
+    data = request.json
+    current_app.logger.info(data)
+
+    #extracting the variable
+    reported_by = data['reported_by']
+    resolved_by = data['resolved_by']
+    status = data['status']
+    description = data['description']
+
+
+
+    query = '''
+                INSERT INTO issue_reports (reported_by, resolved_by, status, description)
+                VALUES
+                (%s, %s, %s, %s);
+        '''
+    
+    cursor = db.get_db().cursor()
+    data = (reported_by, resolved_by, status, description)
+    cursor.execute(query, data)
+    db.get_db().commit()
+
+    response = make_response(jsonify({"message": "Report added successfully!"}))
+    response.status_code = 200
+    return response
+
+@issue_reports.route('/delete/<int:id>', methods=['DELETE'])
+def delete_report(id):
+
+    query = ''' 
+                DELETE FROM issue_report 
+                WHERE id = %s;
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, id)
+    db.get_db().commit()
+
+    if cursor.rowcount > 0:
+        response = make_response(jsonify({"message": "Issue {id} successfully deleted!"}))
+        response.status_code = 200
+    else: 
+        response = make_response(jsonify({"error": "Invalid Issue ID was entered."}), 400)
+
+    return response

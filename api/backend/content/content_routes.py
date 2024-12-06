@@ -31,22 +31,23 @@ def get_content_updates():
 @contents.route('/update_content', methods=['POST'])
 def update_contents():
 
-    the_data = request.json
-    current_app.logger.info(the_data)
+    data = request.json
+    current_app.logger.info(data)
 
     #extracting the variable
-    path_id = the_data['path_id']
-    updated_by = the_data['updated_by']
-    description = the_data['description']
+    path_id = data['path_id']
+    updated_by = data['updated_by']
+    description = data['description']
 
-    query = f'''
+    query = '''
                 INSERT INTO content_updates (path_id, updated_by, description)
                 VALUES
-                ({str(path_id)}, {str(updated_by)}, {description});
+                (%s, %s, %s);
         '''
     
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    data = (path_id, updated_by, description)
+    cursor.execute(query, data)
     db.get_db().commit()
 
     response = make_response(jsonify({"message": "Content updated added successfully!"}))
