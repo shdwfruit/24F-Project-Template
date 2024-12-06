@@ -45,7 +45,7 @@ st.divider()
 #get mentors from the database
 mentor_data = {}  # Placeholder for mentor data
 try:
-    mentor_data = requests.get("http://api:4000/mo/get_mentors").json()
+    mentor_data = requests.get("http://api:4000/mo/get_mentees").json()
 except Exception as e:
     st.write("**Important**: Could not connect to api")
     st.write(f"Error: {e}")
