@@ -52,7 +52,7 @@ def create_session():
             print(f"ID conversion error: {str(e)}")  # Debug print
             response = make_response(jsonify({
                 "error": "Invalid ID format. Mentee ID and Mentor ID must be numbers."
-            }))
+            })) 
             response.status_code = 400
             return response
         
