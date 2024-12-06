@@ -91,6 +91,8 @@ if st.button("Delete Content Update"):
     except Exception as e:
         st.error("Could not connect to API")
 
+st.divider()
+
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
 status = st.radio("Current Status", 
