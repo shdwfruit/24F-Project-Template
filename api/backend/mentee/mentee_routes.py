@@ -114,3 +114,24 @@ def verify_mentee():
         response.status_code = 404  # Changed to 404 for "not found"
     
     return response
+
+@mentees.route('/get_id', methods=['GET'])
+def get_mentee_id():
+
+    email = request.json()
+
+    query = '''
+        SELECT id
+        FROM mentee
+        WHERE email = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (email,))
+    data = cursor.fetchone()
+    if data:
+        response = make_response(jsonify(data))
+        response.status_code = 200
+    else:
+        response = make_response(jsonify({"error": "Mentee not found"}))
+        response.status_code = 404  # Changed to 404 for "not found"
+    return response
