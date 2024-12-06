@@ -25,7 +25,7 @@ with tab1:
     engagement_data = {}
 
     try:
-        engagement_data = requests.get('http://api:4000/analytics/engagement').json()
+        engagement_data = requests.get('http://api:4000/dm/engagement').json()
     except Exception as e:
         st.write("**Important**: Could not connect to API for engagement data")
         st.write(f"Error: {e}")
@@ -46,7 +46,7 @@ with tab2:
     progress_data = {}
 
     try:
-        progress_data = requests.get(f'http://api:4000/analytics/progress/{mentee_id}').json()
+        progress_data = requests.get(f'http://api:4000/dm/progress/{mentee_id}').json()
     except Exception as e:
         st.write("**Important**: Could not connect to API for progress data")
         st.write(f"Error: {e}")
@@ -67,7 +67,7 @@ with tab3:
     feedback_data = {}
 
     try:
-        feedback_data = requests.get('http://api:4000/a/analytics/feedback').json()
+        feedback_data = requests.get('http://api:4000/dm/feedback').json()
     except Exception as e:
         st.write("**Important**: Could not connect to API for feedback data")
         st.write(f"Error: {e}")
@@ -89,7 +89,7 @@ with tab4:
     competence_data = {}
 
     try:
-        competence_data = requests.get('http://api:4000/a/analytics/trends').json()
+        competence_data = requests.get('http://api:4000/dm/trends').json()
     except Exception as e:
         st.write("**Important**: Could not connect to API for competence trends data")
         st.write(f"Error: {e}")
