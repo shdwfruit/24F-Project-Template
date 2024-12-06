@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # Set page configuration
 st.set_page_config(page_title="Explore Language Partner", layout="wide")
