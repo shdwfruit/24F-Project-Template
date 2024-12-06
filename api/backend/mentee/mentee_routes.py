@@ -7,28 +7,31 @@ from backend.db_connection import db
 
 #------------------------------------------------------------
 # mentee blueprint
-# Contains: 
 mentees = Blueprint('mentee', __name__)
 
 #------------------------------------------------------------
 # mentee routes
 
-# gets mentees based on language & language level
-@mentees.route('/get_mentors', methods=['GET'])
-def get_mentees(lang, lang_lvl, location):
+@mentees.route('/mentors', methods=['GET'])
+def get_mentors():
     """
-    This route is used by mentee to find mentors.
+    This route is used by mentees to find mentors based on 
+    teaching language and language level.
     """
+    # Get query parameters
+    teaching_lang = request.args.get('teaching_language')
+    lang_level = request.args.get('language_level')
 
-    query = f'''select *
-                from mentor
-                where language_level = {str(lang_lvl)}
-                and location = {str(location)}
-                    and teaching_language = {str(lang)}
+    query = '''
+        SELECT first_name, last_name, email, 
+               teaching_language, language_level
+        FROM mentor
+        WHERE teaching_language = %s 
+        AND language_level = %s
     '''
-
+    
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute(query, (teaching_lang, lang_level))
     theData = cursor.fetchall()
 
     response = make_response(jsonify(theData))

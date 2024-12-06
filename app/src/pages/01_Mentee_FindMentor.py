@@ -1,7 +1,8 @@
 import streamlit as st
+import requests
 
-# Set page configuration
-st.set_page_config(page_title="Find a Mentor", layout="wide")
+# Set page config
+st.set_page_config(page_title="Find a Mentor", layout='wide')
 
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
@@ -10,53 +11,38 @@ SideBarLinks(show_home=True)
 st.title("Find a Mentor")
 st.divider()
 
-col1, col2 = st.columns(2)
+# Selection dropdowns
+language = st.selectbox(
+    "Select Teaching Language",
+    options=["Japanese", "Spanish", "Chinese", "French"]
+)
 
-with col1:
-    st.write("### Your Language Proficiency")
-    proficiency = st.multiselect(
-        "Select Proficiency Levels",
-        options=["Beginner", "Intermediate", "Advanced"],
-        default=["Beginner", "Intermediate", "Advanced"],
-    )
+level = st.selectbox(
+    "Select Language Level",
+    options=["Advanced", "Fluent"]
+)
 
-with col2:
-    st.write("### Select Language")
-    languages = st.multiselect(
-        "Select Languages",
-        options=["Japanese", "Spanish", "Chinese"],
-        default=["Japanese", "Spanish", "Chinese"],
-    )
-
-# "Search" Button
+# Display mentor data
 if st.button("Search"):
-    st.session_state["filters"] = {
-        "keywords": keywords_list,
-        "proficiency": proficiency,
-        "languages": languages,
-    }
-    st.success("Filters applied. Mentor list updated!")  # Placeholder for filter logic
-
-st.divider()
-# Mock Mentor Data
-mentors = [
-    {"name": "John Doe", "description": "Fluent in English, located in London.", "badge": "Language Badge"},
-    {"name": "Jane Smith", "description": "Advanced in Spanish, located in Barcelona.", "badge": "Culture Badge"},
-    {"name": "Jim Beam", "description": "Fluent in French, located in Paris.", "badge": "Jack-of-all-Trades Badge"},
-]
-
-
-# Mentor List Display
-st.subheader("Mentor Results")
-mentor_cols = st.columns(3)
-
-for i, mentor in enumerate(mentors):
-    with mentor_cols[i % 3]:
-        st.image("assets/user.png", width=150)
-        st.write(f"### {mentor['name']}")
-        st.write(mentor["description"])
-        st.write(f"**Badge:** {mentor['badge']}")
-
-# Add responsiveness based on screen size
-st.divider()
-st.write("End of results.")
+    try:
+        mentor_data = requests.get(
+            'http://api:4000/me/mentors',
+            params={
+                'teaching_language': language,
+                'language_level': level
+            }
+        ).json()
+        
+        if not mentor_data:
+            st.info("Currently no mentor match")
+        else:
+            for mentor in mentor_data:
+                st.write(f"**Name:** {mentor['first_name']} {mentor['last_name']}")
+                st.write(f"**Email:** {mentor['email']}")
+                st.write(f"**Teaching Language:** {mentor['teaching_language']}")
+                st.write(f"**Language Level:** {mentor['language_level']}")
+                st.divider()
+                
+    except Exception as e:
+        st.write("**Important**: Could not connect to api")
+        st.write(f"Error: {e}")
