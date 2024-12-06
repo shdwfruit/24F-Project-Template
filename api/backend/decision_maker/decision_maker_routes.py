@@ -10,7 +10,7 @@ decision_maker = Blueprint('decision_maker', __name__)
 # decision maker routes
 
 # Route: Insights on student engagement with modules
-@decision_maker.route('/analytics/engagement', methods=['GET'])
+@decision_maker.route('/engagement', methods=['GET'])
 def get_student_engagement():
     query = '''
         SELECT lp.module_name, COUNT(p.id) AS engaged_students
@@ -28,7 +28,7 @@ def get_student_engagement():
 
 
 # Route: Visualization of student progress over time
-@decision_maker.route('/analytics/progress/<int:mentee_id>', methods=['GET'])
+@decision_maker.route('/progress/<int:mentee_id>', methods=['GET'])
 def get_student_progress(mentee_id):
     query = '''
         SELECT mentee_id, status, completion_date
@@ -45,7 +45,7 @@ def get_student_progress(mentee_id):
 
 
 # Route: Review and organize student feedback
-@decision_maker.route('/analytics/feedback', methods=['GET'])
+@decision_maker.route('/feedback', methods=['GET'])
 def get_student_feedback():
     query = '''
         SELECT f.description AS feedback, f.session_id, s.purpose, s.date
@@ -63,7 +63,7 @@ def get_student_feedback():
 
 
 # Route: Automated reports on cultural competence trends
-@decision_maker.route('/analytics/trends', methods=['GET'])
+@decision_maker.route('/trends', methods=['GET'])
 def get_cultural_competence_trends():
     query = '''
         SELECT lp.module_name, COUNT(p.id) AS completions, 
@@ -82,7 +82,7 @@ def get_cultural_competence_trends():
 
 
 # Route: Track completion rates by student demographics
-@decision_maker.route('/analytics/completion-rates', methods=['GET'])
+@decision_maker.route('/completion-rates', methods=['GET'])
 def get_completion_rates():
     query = '''
         SELECT mentee_id, COUNT(p.id) AS total_completions
@@ -100,7 +100,7 @@ def get_completion_rates():
 
 
 # Route: Correlations between module performance and success
-@decision_maker.route('/analytics/correlations', methods=['GET'])
+@decision_maker.route('/correlations', methods=['GET'])
 def get_module_performance_correlations():
     query = '''
         SELECT lp.module_name, p.status, s.purpose
