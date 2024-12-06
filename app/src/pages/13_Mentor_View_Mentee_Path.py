@@ -22,34 +22,36 @@ with tab1:
     st.subheader("View Mentee Learning Paths")
 
     mentee_id = st.number_input("Enter Mentee ID to View Learning Path", min_value=1, step=1, value=1)
-    learning_path_data = {}
+    
+    # Add a search button
+    if st.button("Search for Learning Path"):
+        learning_path_data = {}
 
-    try:
-        # get learning path data for the specified mentee
-        learning_path_data = requests.get(f'http://api:4000/lp/learnmentee/{mentee_id}').json()
-    except Exception as e:
-        st.write("**Important**: Could not connect to API for learning path data")
-        st.write(f"Error: {e}")
+        try:
+            # Get learning path data for the specified mentee
+            learning_path_data = requests.get(f'http://api:4000/lp/learnmentee/{mentee_id}').json()
+        except Exception as e:
+            st.write("**Important**: Could not connect to API for learning path data")
+            st.write(f"Error: {e}")
 
-    if learning_path_data:
-        for path in learning_path_data:
-            st.write(f"### {path['module_name']}")
-            st.write(f"**Description:** {path['description']}")
-            st.write(f"**Status:** {path['status']}")
-            if path['completion_date']:
-                st.write(f"**Completion Date:** {path['completion_date']}")
-            else:
-                st.write("**Completion Date:** Not Completed")
+        # Display learning path data
+        if learning_path_data:
+            for path in learning_path_data:
+                st.write(f"### {path['module_name']}")
+                st.write(f"**Description:** {path['description']}")
+                st.write(f"**Status:** {path['status']}")
+                # Display milestones
+                st.write("**Milestones:**")
+                # all possible display milestones
+                milestones = path['milestones'].split(", ")
+                for milestone in milestones:
+                    st.checkbox(milestone, value=(path["status"] == "Completed"))
 
-            st.write("**Milestones:**")
-            for milestone in path["milestones"]:
-                st.checkbox(milestone, value=(path["status"] == "Completed"))
+                st.divider()
+        else:
+            st.write("No learning paths found for the specified mentee.")
 
-            st.divider()
-    else:
-        st.write("No learning paths found for the specified mentee.")
-
-#Report Issue Section 
+# Report Issue Section 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
 status = st.radio("Current Status", ["Active", "Inactive"])
