@@ -4,6 +4,9 @@ from datetime import datetime
 # Set page configuration
 st.set_page_config(page_title="Manage Sessions", layout="wide")
 
+from modules.nav import SideBarLinks
+SideBarLinks(show_home=True)
+
 # Page Title
 st.title("Manage My Sessions")
 st.divider()

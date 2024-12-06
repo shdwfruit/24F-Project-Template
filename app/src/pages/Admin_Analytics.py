@@ -1,9 +1,15 @@
 import streamlit as st
 import requests
 
+# set page layout
+st.set_page_config(layout = 'wide')
+
 # Set page title
 st.title("Analytics Dashboard")
 st.divider()
+
+from modules.nav import SideBarLinks
+SideBarLinks(show_home=True)
 
 # Display engagement data
 st.write("### Engagement and Completion Rates")
