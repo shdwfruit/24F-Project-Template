@@ -40,29 +40,50 @@ def get_mentee_sessions(mentee_id):
 @sessions.route('/create', methods=['POST'])
 def create_session():
     """Create a new session"""
-    details = request.json
-    
-    query = '''
-        INSERT INTO session (
-            mentee_id,
-            mentor_id,
-            purpose,
-            date,
-            duration
-        ) VALUES (%s, %s, %s, %s, %s)
-    '''
-    
-    cursor = db.get_db().cursor()
-    cursor.execute(query, (
-        details['mentee_id'],
-        details['mentor_id'],
-        details['purpose'],
-        details['date'],
-        details['duration']
-    ))
-    
-    db.get_db().commit()
-    
-    response = make_response(jsonify({"message": "Session created successfully!"}))
-    response.status_code = 201
-    return response
+    try:
+        details = request.json
+        print(f"Received details: {details}")  # Debug print
+        
+        # Validate and convert IDs to integers
+        try:
+            mentee_id = int(details['mentee_id'])
+            mentor_id = int(details['mentor_id'])
+        except (ValueError, TypeError) as e:
+            print(f"ID conversion error: {str(e)}")  # Debug print
+            response = make_response(jsonify({
+                "error": "Invalid ID format. Mentee ID and Mentor ID must be numbers."
+            }))
+            response.status_code = 400
+            return response
+        
+        query = '''
+            INSERT INTO session (
+                mentee_id,
+                mentor_id,
+                purpose,
+                date,
+                duration
+            ) VALUES (%s, %s, %s, %s, %s)
+        '''
+        
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (
+            mentee_id,  # Using converted integer
+            mentor_id,  # Using converted integer
+            details['purpose'],
+            details['date'],
+            details['duration']
+        ))
+        
+        db.get_db().commit()
+        
+        response = make_response(jsonify({"message": "Session created successfully!"}))
+        response.status_code = 201
+        return response
+        
+    except Exception as e:
+        db.get_db().rollback()
+        print(f"Error in create_session: {str(e)}")  # Debug print
+        response = make_response(jsonify({"error": str(e)}))
+        response.status_code = 500
+        return response

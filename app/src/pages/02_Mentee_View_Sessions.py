@@ -10,7 +10,7 @@ SideBarLinks(show_home=True)
 
 # Initialize session state for mentee info
 if 'mentee_info' not in st.session_state:
-    st.session_state.mentee_info = None
+    st.session_state['mentee_info'] = None
 
 # Page Title
 st.title("My Sessions")
@@ -23,6 +23,9 @@ if not st.session_state.mentee_info:
         email = st.text_input("Enter your email")
         submit_button = st.form_submit_button("Verify")
         
+        mentee_info = requests.get('http://api:4000/me/get_id', email)
+        st.session_state.mentee_info = mentee_info
+
         if submit_button:
             try:
                 payload = {'email': email}
@@ -68,24 +71,32 @@ elif st.session_state.mentee_info:
         duration = f"{hours:02d}:{minutes:02d}:00"
         
         if st.form_submit_button("Schedule Session"):
+            
+            st.write("Debug - Session State Info:")
+            st.write(st.session_state.mentee_info)
+            st.write("Debug - ID value:", st.session_state.mentee_info)
+            st.write("Debug - ID type:", type(st.session_state.mentee_info))
             try:
-                response = requests.post(
-                    'http://api:4000/s/create',
-                    json={
-                        'mentee_id': st.session_state.mentee_info['id'],
-                        'mentor_id': st.session_state.mentee_info['mentor_id'],
+                payload = {
+                        'mentee_id': st.session_state.mentee_info,
+                        'mentor_id': st.session_state.mentee_info,
                         'purpose': purpose,
                         'date': date.strftime('%Y-%m-%d'),
                         'duration': duration
-                    }
+                }
+                st.write(f"Debug - Sending payload: {payload}")
+                response = requests.post(
+                    'http://api:4000/s/create',
+                    json=payload
                 )
-                if response.status_code == 201:
+                st.write(f"Debug - Response status: {response.status_code}")  # Debug print
+                st.write(f"Debug - Response content: {response.text}")
+                if response.status_code == 200:
                     st.success("Session scheduled successfully!")
                 else:
-                    st.error("Failed to schedule session. Please try again.")
+                    st.error(f"Failed to schedule session. Server response: {response.text}")
             except Exception as e:
                 st.error(f"Error scheduling session: {str(e)}")
-    
     # Display existing sessions
     st.write("### My Sessions")
     try:
