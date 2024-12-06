@@ -15,7 +15,8 @@ contents = Blueprint('content', __name__)
 @contents.route('/content_updates', methods=['GET'])
 def get_content_updates():
 
-    query = '''SELECT id, path_id, updated_by, timestamp, description 
+    query = '''
+                SELECT id, path_id, updated_by, timestamp, description 
                 FROM content_updates;
     '''
 
@@ -28,10 +29,20 @@ def get_content_updates():
     return response
 
 @contents.route('/update_content', methods=['POST'])
-def update_contents(path_id, updated_by, description):
+def update_contents():
 
-    query = f''' INSERT INTO content_updates (path_id, updated_by, description) 
-                VALUES ({str(path_id)}, {str(updated_by)}, {str(description)});
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    path_id = the_data['path_id']
+    updated_by = the_data['updated_by']
+    description = the_data['description']
+
+    query = f'''
+                INSERT INTO content_updates (path_id, updated_by, description)
+                VALUES 
+                ({str(path_id)}, {str(updated_by)}, {description});
         '''
     
     cursor = db.get_db().cursor()

@@ -48,12 +48,12 @@ with st.form("Add a New Content Update"):
             update_data = {
                 "path_id": path_id,
                 "updated_by": st.session_state['id'],
-                "description": description,
+                "description": description
             }
             
             # printing out the data - will show up in the Docker Desktop logs tab
             # for the web-app container 
-            logger.info(f"Product form submitted with data: {update_data}")
+            logger.info(f"Content submitted with data: {update_data}")
             
             # Now, we try to make a POST request to the proper end point
             try:
@@ -63,9 +63,9 @@ with st.form("Add a New Content Update"):
                 # file found in api/backend/products folder. 
                 response = requests.post('http://api:4000/c/update_content', json=update_data)
                 if response.status_code == 200:
-                    st.success("Product added successfully!")
+                    st.success("Content added successfully!")
                 else:
-                    st.error(f"Error adding product: {response.text}")
+                    st.error(f"Error adding content: {response.text}")
             except requests.exceptions.RequestException as e:
                 st.error(f"Error connecting to server: {str(e)}")
 
