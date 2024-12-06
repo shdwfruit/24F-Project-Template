@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # set page layout
 st.set_page_config(layout = 'wide')
@@ -6,65 +7,97 @@ st.set_page_config(layout = 'wide')
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
-# Set page title
-def view_reported_issues_page():
-    st.title("View Reported Issues")
-    st.divider()
+st.title("View Reported Issues")
+st.divider()
 
-    # Connect to the shared MySQL
-    def connect_to_db():
-        from flaskext.mysql import MySQL
-        from pymysql import cursors
+# Display reported issues
+reported_issues = {}
 
-        # Initialize MySQL connection
-        mysql = MySQL(cursorclass=cursors.DictCursor)
-        app = {}  # Mock app for demo
-        mysql.init_app(app)
-        return mysql.get_db()
+try:
+    reported_issues = requests.get('http://api:4000/ir/get_reports').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to api")
+    st.write(f"Error: {e}")
 
-    # Fetch reported issues
-    @st.cache_data
-    def fetch_reported_issues():
-        connection = connect_to_db()
-        cursor = connection.cursor()
-        query = """
-        SELECT ir.id, ir.description, ir.status, ir.timestamp, 
-               sa.first_name AS resolved_by
-        FROM issue_report ir
-        LEFT JOIN system_administrator sa ON ir.resolved_by = sa.id
-        WHERE ir.status = 'Open';
-        """
-        cursor.execute(query)
-        result = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return result
-
-    # Display reported issues
-    reported_issues = fetch_reported_issues()
-    if reported_issues:
-        st.write("### Open Reported Issues")
+if len(reported_issues) > 0:
+    st.write("### Open Reported Issues")
+    with st.expander("All Reported Issues"):
         for issue in reported_issues:
+            st.divider()
             st.write(f"**Issue ID:** {issue['id']}")
             st.write(f"**Description:** {issue['description']}")
             st.write(f"**Status:** {issue['status']}")
             st.write(f"**Timestamp:** {issue['timestamp']}")
             st.write(f"**Resolved By:** {issue['resolved_by'] if issue['resolved_by'] else 'Unresolved'}")
-            st.divider()
-    else:
-        st.write("No open reported issues found.")
+
+    st.divider()
 
     # Resolve an issue
     st.subheader("Resolve an Issue")
     issue_id_to_resolve = st.number_input("Enter Issue ID to Resolve", min_value=1, step=1)
     resolved_by_admin_id = st.number_input("Enter Admin ID", min_value=1, step=1)
+
+    data = {
+        "issue_id_to_resolve" : issue_id_to_resolve,
+        "resolved_by_admin_id" : resolved_by_admin_id
+    }
+
+    response = {}
+
     if st.button("Resolve Issue"):
-        connection = connect_to_db()
-        cursor = connection.cursor()
-        query = "UPDATE issue_report SET status = 'Resolved', resolved_by = %s WHERE id = %s;"
-        cursor.execute(query, (resolved_by_admin_id, issue_id_to_resolve))
-        connection.commit()
-        cursor.close()
-        connection.close()
-        st.success(f"Issue {issue_id_to_resolve} resolved successfully!")
-        st.experimental_rerun()
+        try:
+            response = requests.put('http://api:4000/ir/resolve', json=data)
+            if response.status_code == 200:
+                st.success(f"Issue {issue_id_to_resolve} has been resolved!")
+                st.balloons()
+            else:
+                st.error("Invalid Admin or Issue ID was entered")
+        except Exception as e:
+            st.error("Could not connect to API")
+
+    st.divider()
+
+    st.subheader("Delete an issue")
+    issue_id_to_delete = st.number_input("Enter Issue ID to Delete", min_value=1, step=1)
+    if st.button("Delete Issue"):
+        try:
+            response = requests.delete(f'http://api:4000/ir/delete/{issue_id_to_delete}')
+            if response.status_code == 200:
+                st.success(f"Issue {issue_id_to_delete} has been deleted!")
+            else:
+                st.error("Invalid Issue ID was entered")
+        except Exception as e:
+            st.error("Could not connect to API")
+
+else:
+    st.write("### No Open Reported Issues")
+    st.balloons()
+
+st.divider()
+
+st.subheader("Report an issue")
+description = st.text_area("Description (Functional, Visual, etc.)")
+status = st.radio("Current Status", 
+                  ["Active", "Inactive"])
+reported_by = st.session_state['id']
+if st.button('Report Issue'):
+    if not description:
+        st.error("Please enter a description")
+    elif not status:
+        st.error("Please choose a status")
+    else:
+        data = {
+            "reported_by": reported_by,
+            "status": status,
+            "description": description
+        }
+        
+        try:
+            response = requests.post('http://api:4000/ir/report_issue', json=data)
+            if response.status_code == 200:
+                st.success("Issue successfully reported!")
+                st.balloons()
+            else:
+                st.error("Error reporting issue")
+        except Exception as e:
+            st.error(f"Error connecting to server: {str(e)}")

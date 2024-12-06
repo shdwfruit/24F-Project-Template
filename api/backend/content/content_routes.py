@@ -31,26 +31,45 @@ def get_content_updates():
 @contents.route('/update_content', methods=['POST'])
 def update_contents():
 
-    the_data = request.json
-    current_app.logger.info(the_data)
+    data = request.json
+    current_app.logger.info(data)
 
     #extracting the variable
-    path_id = the_data['path_id']
-    updated_by = the_data['updated_by']
-    description = the_data['description']
+    path_id = data['path_id']
+    updated_by = data['updated_by']
+    description = data['description']
 
-    query = f'''
+    query = '''
                 INSERT INTO content_updates (path_id, updated_by, description)
                 VALUES
-                ({str(path_id)}, {str(updated_by)}, {description});
+                (%s, %s, %s);
         '''
     
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    data = (path_id, updated_by, description)
+    cursor.execute(query, data)
     db.get_db().commit()
 
     response = make_response(jsonify({"message": "Content updated added successfully!"}))
     response.status_code = 200
     return response
 
+@contents.route('/delete/<int:id>', methods=['DELETE'])
+def delete_report(id):
 
+    query = ''' 
+                DELETE FROM content_updates 
+                WHERE id = %s;
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, id)
+    db.get_db().commit()
+
+    if cursor.rowcount > 0:
+        response = make_response(jsonify({"message": "Content ID: {id} successfully deleted!"}))
+        response.status_code = 200
+    else: 
+        response = make_response(jsonify({"error": "Invalid Content ID was entered."}), 400)
+
+    return response
