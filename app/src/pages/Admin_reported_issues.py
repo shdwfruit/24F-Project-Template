@@ -21,13 +21,16 @@ except Exception as e:
 
 if len(reported_issues) > 0:
     st.write("### Open Reported Issues")
-    for issue in reported_issues:
-        st.write(f"**Issue ID:** {issue['id']}")
-        st.write(f"**Description:** {issue['description']}")
-        st.write(f"**Status:** {issue['status']}")
-        st.write(f"**Timestamp:** {issue['timestamp']}")
-        st.write(f"**Resolved By:** {issue['resolved_by'] if issue['resolved_by'] else 'Unresolved'}")
-        st.divider()
+    with st.expander("All Reported Issues"):
+        for issue in reported_issues:
+            st.divider()
+            st.write(f"**Issue ID:** {issue['id']}")
+            st.write(f"**Description:** {issue['description']}")
+            st.write(f"**Status:** {issue['status']}")
+            st.write(f"**Timestamp:** {issue['timestamp']}")
+            st.write(f"**Resolved By:** {issue['resolved_by'] if issue['resolved_by'] else 'Unresolved'}")
+
+    st.divider()
 
     # Resolve an issue
     st.subheader("Resolve an Issue")
@@ -51,6 +54,8 @@ if len(reported_issues) > 0:
                 st.error("Invalid Admin or Issue ID was entered")
         except Exception as e:
             st.error("Could not connect to API")
+
+    st.divider()
 
     st.subheader("Delete an issue")
     issue_id_to_delete = st.number_input("Enter Issue ID to Delete", min_value=1, step=1)
