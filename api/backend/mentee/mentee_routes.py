@@ -84,3 +84,33 @@ def create_mentee():
         response = make_response(jsonify({"error": str(e)}))
         response.status_code = 500
         return response
+    
+@mentees.route('/verify', methods=['POST'])
+def verify_mentee():
+    """Verify mentee by email and return their info"""
+    print("Received verify request")  # Debug print
+    email = request.json.get('email')
+    print(f"Email received: {email}")  # Debug print
+    
+    query = '''
+        SELECT id, first_name, last_name, email, mentor_id
+        FROM mentee
+        WHERE email = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (email,))
+    result = cursor.fetchone()
+    print(f"Database result: {result}")  # Debug print
+    
+    if result:
+        # Convert result to dictionary with descriptive keys
+        columns = ['id', 'first_name', 'last_name', 'email', 'mentor_id']
+        response_data = dict(zip(columns, result))
+        print(f"Sending response: {response_data}")  # Debug print
+        response = make_response(jsonify(response_data))
+        response.status_code = 200
+    else:
+        response = make_response(jsonify({"error": "Mentee not found"}))
+        response.status_code = 404  # Changed to 404 for "not found"
+    
+    return response

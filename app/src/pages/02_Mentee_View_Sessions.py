@@ -1,84 +1,126 @@
 import streamlit as st
+import requests
 from datetime import datetime, timedelta
 
-# Set page configuration
-st.set_page_config(page_title="View Sessions", layout="wide")
+# Set page config
+st.set_page_config(page_title="My Sessions", layout='wide')
 
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
+
+# Initialize session state for mentee info
+if 'mentee_info' not in st.session_state:
+    st.session_state.mentee_info = None
 
 # Page Title
 st.title("My Sessions")
 st.divider()
 
-# Mock Data for Sessions and Mentors
-mock_mentor = {"id": 1, "name": "John Doe"}  # Single mentor assigned to the mentee
-sessions = [
-    {
-        "purpose": "Language practice",
-        "date": "2024-11-01 10:00",
-        "duration": "01:30:00",
-        "mentor": "John Doe",
-        "feedback": "Great progress made.",
-    },
-    {
-        "purpose": "Cultural immersion",
-        "date": "2024-11-02 14:00",
-        "duration": "02:00:00",
-        "mentor": "John Doe",
-        "feedback": "Needs improvement in grammar.",
-    },
-]
+# Email verification section
+if not st.session_state.mentee_info:
+    st.write("### Please Verify Your Email")
+    with st.form("email_verification"):
+        email = st.text_input("Enter your email")
+        if st.form_submit_button("Verify"):
+            try:
+                st.write("Attempting to verify email...")  # Debug print
+                
+                payload = {'email': email}
+                st.write(f"Sending payload: {payload}")  # Debug print
+                
+                response = requests.post(
+                    'http://api:4000/me/verify',
+                    json=payload,
+                    headers={'Content-Type': 'application/json'}
+                )
+                
+                st.write(f"Response status code: {response.status_code}")  # Debug print
+                st.write(f"Response content: {response.content}")  # Debug print
+                
+                if response.status_code == 200:
+                    response_data = response.json()
+                    if 'error' in response_data:
+                        st.error("Email not found. Please verify your email address.")
+                    else:
+                        st.session_state.mentee_info = response_data
+                else:
+                    st.error(f"Server returned status code: {response.status_code}")
+                    
+            except Exception as e:
+                st.error(f"Could not verify email: {str(e)}")
+                st.write(f"Exception details: {type(e).__name__}")  # Debug print
 
-# Display Existing Sessions
-st.subheader("Your Sessions")
-for session in sessions:
-    st.write(f"**Purpose:** {session['purpose']}")
-    st.write(f"**Date:** {session['date']}")
-    st.write(f"**Duration:** {session['duration']}")
-    st.write(f"**Mentor:** {session['mentor']}")
-    st.write(f"**Feedback:** {session['feedback']}")
-    st.divider()
-
-# Request a New Session Section
-st.subheader("Request a New Session")
-
-# Dropdown for Mentor Selection
-mentor_name = st.selectbox(
-    "Select your mentor", [mock_mentor["name"], "No mentor assigned"]
-)
-
-# Input for Session Purpose
-session_purpose = st.text_input("Session Purpose", placeholder="Enter the purpose of the session")
-
-# Date-Time Picker with Future Validation
-session_datetime = st.date_input("Session Date", min_value=datetime.today().date())
-session_time = st.time_input("Session Time", value=datetime.now().time())
-
-# Combine date and time
-combined_datetime = datetime.combine(session_datetime, session_time)
-
-# Display Combined Date-Time and Check if in the Future
-if combined_datetime < datetime.now():
-    st.warning("The session date and time must be in the future.")
-
-# Fixed Duration for Sessions
-session_duration = "01:00:00"  # Default to 1 hour
-
-# Request Session Button
-if st.button("Request Session"):
-    if mentor_name == "No mentor assigned":
-        st.error("Please select a mentor to request a session.")
-    elif session_purpose.strip() == "":
-        st.error("Please enter a purpose for the session.")
-    elif combined_datetime < datetime.now():
-        st.error("The session date and time must be in the future.")
-    else:
-        # Mock Database Update
-        st.success(
-            f"Session requested successfully with {mentor_name}!\n"
-            f"**Purpose:** {session_purpose}\n"
-            f"**Date and Time:** {combined_datetime.strftime('%Y-%m-%d %H:%M')}\n"
-            f"**Duration:** {session_duration}"
+# Show session management after verification
+else:
+    st.write(f"Welcome, {st.session_state.mentee_info['first_name']} {st.session_state.mentee_info['last_name']}")
+    
+    # Create new session section
+    st.write("### Schedule New Session")
+    with st.form("create_session"):
+        # Purpose
+        purpose = st.text_area("Session Purpose")
+        
+        # Date picker (only future dates)
+        min_date = datetime.now().date()
+        date = st.date_input("Session Date", min_value=min_date)
+        
+        # Duration dropdowns
+        col1, col2 = st.columns(2)
+        with col1:
+            hours = st.selectbox("Hours", range(0, 5))
+        with col2:
+            minutes = st.selectbox("Minutes", [0, 15, 30, 45])
+        
+        # Format duration for MySQL TIME
+        duration = f"{hours:02d}:{minutes:02d}:00"
+        
+        if st.form_submit_button("Schedule Session"):
+            try:
+                response = requests.post(
+                    'http://api:4000/s/create',
+                    json={
+                        'mentee_id': st.session_state.mentee_info['id'],
+                        'mentor_id': st.session_state.mentee_info['mentor_id'],
+                        'purpose': purpose,
+                        'date': date.strftime('%Y-%m-%d'),
+                        'duration': duration
+                    }
+                )
+                if response.status_code == 201:
+                    st.success("Session scheduled successfully!")
+                else:
+                    st.error("Failed to schedule session. Please try again.")
+            except Exception as e:
+                st.error(f"Error scheduling session: {str(e)}")
+    
+    # Display existing sessions
+    st.write("### My Sessions")
+    try:
+        response = requests.get(
+            f"http://api:4000/s/mentee/{st.session_state.mentee_info['id']}"
         )
-        # In real implementation, this is where you'd connect to the database or API.
+        sessions = response.json()
+        
+        if not sessions:
+            st.info("No sessions found.")
+        else:
+            for session in sessions:
+                with st.container():
+                    col1, col2 = st.columns([2, 1])
+                    with col1:
+                        st.write(f"**Date:** {session['date']}")
+                        st.write(f"**Duration:** {session['duration']}")
+                        st.write(f"**Purpose:** {session['purpose']}")
+                    with col2:
+                        st.write(f"**Mentor:** {session['mentor_name']}")
+                        st.write(f"**Mentor Email:** {session['mentor_email']}")
+                    st.divider()
+                    
+    except Exception as e:
+        st.error(f"Error loading sessions: {str(e)}")
+
+# Logout option
+if st.session_state.mentee_info:
+    if st.button("Logout"):
+        st.session_state.mentee_info = None
+        st.experimental_rerun()
