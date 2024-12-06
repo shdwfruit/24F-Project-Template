@@ -19,44 +19,40 @@ st.divider()
 # Email verification section
 if not st.session_state.mentee_info:
     st.write("### Please Verify Your Email")
-    with st.form("email_verification"):
+    with st.form("email_verification", clear_on_submit=True):
         email = st.text_input("Enter your email")
-        if st.form_submit_button("Verify"):
+        submit_button = st.form_submit_button("Verify")
+        
+        if submit_button:
             try:
-                st.write("Attempting to verify email...")  # Debug print
-                
                 payload = {'email': email}
-                st.write(f"Sending payload: {payload}")  # Debug print
                 
                 response = requests.post(
                     'http://api:4000/me/verify',
-                    json=payload,
-                    headers={'Content-Type': 'application/json'}
+                    json=payload
                 )
                 
-                st.write(f"Response status code: {response.status_code}")  # Debug print
-                st.write(f"Response content: {response.content}")  # Debug print
-                
                 if response.status_code == 200:
-                    response_data = response.json()
-                    if 'error' in response_data:
+                    mentee_data = response.json()
+                    if 'error' in mentee_data:
                         st.error("Email not found. Please verify your email address.")
                     else:
-                        st.session_state.mentee_info = response_data
+                        st.session_state.mentee_info = mentee_data
+                        st.success("Email verified successfully!")
+                        st.rerun()  # Changed from experimental_rerun
                 else:
                     st.error(f"Server returned status code: {response.status_code}")
                     
             except Exception as e:
                 st.error(f"Could not verify email: {str(e)}")
-                st.write(f"Exception details: {type(e).__name__}")  # Debug print
 
 # Show session management after verification
-else:
-    st.write(f"Welcome, {st.session_state.mentee_info['first_name']} {st.session_state.mentee_info['last_name']}")
+elif st.session_state.mentee_info:
+    st.write(f"Welcome, {st.session_state.mentee_info.get('first_name', '')} {st.session_state.mentee_info.get('last_name', '')}")
     
     # Create new session section
     st.write("### Schedule New Session")
-    with st.form("create_session"):
+    with st.form("create_session", clear_on_submit=True):
         # Purpose
         purpose = st.text_area("Session Purpose")
         
@@ -67,9 +63,9 @@ else:
         # Duration dropdowns
         col1, col2 = st.columns(2)
         with col1:
-            hours = st.selectbox("Hours", range(0, 5))
+            hours = st.selectbox("Hours", range(0, 5), key="hours_select")
         with col2:
-            minutes = st.selectbox("Minutes", [0, 15, 30, 45])
+            minutes = st.selectbox("Minutes", [0, 15, 30, 45], key="minutes_select")
         
         # Format duration for MySQL TIME
         duration = f"{hours:02d}:{minutes:02d}:00"
@@ -104,7 +100,7 @@ else:
         if not sessions:
             st.info("No sessions found.")
         else:
-            for session in sessions:
+            for idx, session in enumerate(sessions):
                 with st.container():
                     col1, col2 = st.columns([2, 1])
                     with col1:
@@ -119,35 +115,7 @@ else:
     except Exception as e:
         st.error(f"Error loading sessions: {str(e)}")
 
-# Logout option
-if st.session_state.mentee_info:
-    if st.button("Logout"):
+    # Logout with unique key
+    if st.button("Logout", key="logout_button"):
         st.session_state.mentee_info = None
-        st.experimental_rerun()
-
-st.subheader("Report an issue")
-description = st.text_area("Description (Functional, Visual, etc.)")
-status = st.radio("Current Status", 
-                  ["Active", "Inactive"])
-reported_by = st.session_state['id']
-if st.button('Report Issue'):
-    if not description:
-        st.error("Please enter a description")
-    elif not status:
-        st.error("Please choose a status")
-    else:
-        data = {
-            "reported_by": reported_by,
-            "status": status,
-            "description": description
-        }
-        
-        try:
-            response = requests.post('http://api:4000/ir/report_issue', json=data)
-            if response.status_code == 200:
-                st.success("Issue successfully reported!")
-                st.balloons()
-            else:
-                st.error("Error reporting issue")
-        except Exception as e:
-            st.error(f"Error connecting to server: {str(e)}")
+        st.rerun()
