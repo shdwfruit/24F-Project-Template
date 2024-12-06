@@ -1,7 +1,8 @@
 import streamlit as st
+import requests
 
 # Set page configuration
-st.set_page_config(page_title="View Learning Path", layout="wide")
+st.set_page_config(page_title="My Learning Path", layout="wide")
 
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
@@ -9,6 +10,7 @@ SideBarLinks(show_home=True)
 # Page Title
 st.title("My Learning Path")
 st.divider()
+
 # Buttons for Scenario and Vocabulary Practice
 col1, col2 = st.columns(2)
 with col1:
@@ -19,52 +21,45 @@ with col2:
     if st.button("Access Vocabulary Practice"):
         st.switch_page("pages/05_Mentee_Vocab.py")
 
-# Mock Learning Path Data
-learning_paths = [
-    {
-        "module_name": "Module 1",
-        "description": "Introductory course",
-        "milestones": ["Milestone 1", "Milestone 2"],
-        "status": "In Progress",
-        "completion_date": "2024-10-15"
-    },
-    {
-        "module_name": "Module 2",
-        "description": "Intermediate course",
-        "milestones": ["Milestone A", "Milestone B"],
-        "status": "Completed",
-        "completion_date": "2024-10-16"
-    },
-    {
-        "module_name": "Module 3",
-        "description": "Advanced course",
-        "milestones": ["Milestone X", "Milestone Y"],
-        "status": "Not Started",
-        "completion_date": None
-    }
-]
+# Get the mentee's ID from session state
+mentee_id = st.session_state.get('mentee_info', {}).get('id', None)
 
-# Display each module
-for path in learning_paths:
-    st.write(f"### {path['module_name']}")
-    st.write(f"**Description:** {path['description']}")
-    st.write(f"**Status:** {path['status']}")
-    if path['completion_date']:
-        st.write(f"**Completion Date:** {path['completion_date']}")
+if mentee_id is None:
+    st.error("Mentee ID not found in session. Please log in.")
+else:
+    # Fetch learning path data for the mentee
+    try:
+        response = requests.get(f'http://api:4000/lp/learnmentee/{mentee_id}')
+        response.raise_for_status()  # Raise exception for HTTP errors
+        learning_paths = response.json()
+    except requests.exceptions.RequestException as e:
+        st.error("Could not connect to API for learning path data.")
+        st.write(f"Error: {e}")
+        learning_paths = []
+
+    # Display each module
+    if learning_paths:
+        for path in learning_paths:
+            st.write(f"### {path['module_name']}")
+            st.write(f"**Description:** {path['description']}")
+            st.write(f"**Status:** {path['status']}")
+
+            st.write("**Milestones:**")
+            # Parse and display milestones
+            milestones = path['milestones'].split(", ")
+            for milestone in milestones:
+                st.checkbox(milestone, value=(path["status"] == "Completed"))
+
+            st.divider()
     else:
-        st.write("**Completion Date:** Not Completed")
+        st.info("No learning paths found for your account.")
 
-    st.write("**Milestones:**")
-    for milestone in path["milestones"]:
-        st.checkbox(milestone, value=(path["status"] == "Completed"))
-
-st.divider()
-
+# Report an Issue Section
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
-status = st.radio("Current Status", 
-                  ["Active", "Inactive"])
-reported_by = st.session_state['id']
+status = st.radio("Current Status", ["Active", "Inactive"])
+reported_by = mentee_id
+
 if st.button('Report Issue'):
     if not description:
         st.error("Please enter a description")
@@ -76,7 +71,7 @@ if st.button('Report Issue'):
             "status": status,
             "description": description
         }
-        
+
         try:
             response = requests.post('http://api:4000/ir/report_issue', json=data)
             if response.status_code == 200:
