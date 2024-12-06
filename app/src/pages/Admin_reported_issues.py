@@ -54,9 +54,6 @@ if len(reported_issues) > 0:
 
     st.subheader("Delete an issue")
     issue_id_to_delete = st.number_input("Enter Issue ID to Delete", min_value=1, step=1)
-    data = {
-        issue_id_to_delete
-    }
     if st.button("Delete Issue"):
         try:
             response = requests.delete(f'http://api:4000/ir/delete/{issue_id_to_delete}')

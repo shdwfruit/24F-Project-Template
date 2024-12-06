@@ -80,15 +80,14 @@ st.divider()
 st.subheader("Delete a Content Update")
 delete_id = st.number_input("Content Update ID to Delete", min_value=1, step=1)
 if st.button("Delete Content Update"):
-    connection = connect_to_db()
-    cursor = connection.cursor()
-    query = "DELETE FROM content_updates WHERE id = %s;"
-    cursor.execute(query, (delete_id,))
-    connection.commit()
-    cursor.close()
-    connection.close()
-    st.success("Content update deleted successfully!")
-    st.experimental_rerun()
+    try:
+        response = requests.delete(f'http://api:4000/c/delete/{delete_id}')
+        if response.status_code == 200:
+            st.success(f"Content ID: {delete_id} has been deleted!")
+        else:
+            st.error("Invalid Content ID was entered")
+    except Exception as e:
+        st.error("Could not connect to API")
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")

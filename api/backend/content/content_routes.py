@@ -54,4 +54,22 @@ def update_contents():
     response.status_code = 200
     return response
 
+@contents.route('/delete/<int:id>', methods=['DELETE'])
+def delete_report(id):
 
+    query = ''' 
+                DELETE FROM content_updates 
+                WHERE id = %s;
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, id)
+    db.get_db().commit()
+
+    if cursor.rowcount > 0:
+        response = make_response(jsonify({"message": "Content ID: {id} successfully deleted!"}))
+        response.status_code = 200
+    else: 
+        response = make_response(jsonify({"error": "Invalid Content ID was entered."}), 400)
+
+    return response
