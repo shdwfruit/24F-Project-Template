@@ -27,10 +27,7 @@ if not st.session_state.mentee_info:
             try:
                 payload = {'email': email}
                 
-                response = requests.post(
-                    'http://api:4000/me/verify',
-                    json=payload
-                )
+                response = requests.post('http://api:4000/me/verify',json=payload)
                 
                 if response.status_code == 200:
                     mentee_data = response.json()

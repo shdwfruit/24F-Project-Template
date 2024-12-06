@@ -15,19 +15,14 @@ st.divider()
 st.subheader("Vocabulary Practice")
 
 try:
-    vocab = requests.get('http://api:4000/get_vocab')
+    vocab = requests.get('http://api:4000/c/get_vocab').json()
     for word in vocab:
         st.divider()
         st.write(f"**Difficulty Level:** {word['difficulty_level']}")
         st.write(f"**Context:** {word['context']}")
 
 except Exception as e:
-    st.error(f"Could not verify email: {str(e)}")
-
-for word in vocab:
-    st.write(f"**Context:** {word['context']}")
-    st.write(f"**Difficulty Level:** {word['difficulty_level']}")
-    st.divider()
+    st.error(f"Could not connect to API: {str(e)}")
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
