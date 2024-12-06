@@ -5,13 +5,13 @@ logger = logging.getLogger(__name__)
 from modules.nav import SideBarLinks
 
 # Set page configuration
-st.set_page_config(page_title="Find a Mentor", layout="wide")
+st.set_page_config(page_title="Find a Mentee", layout="wide")
 
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
 # Page Title
-st.title("Find a Mentor")
+st.title("Find a Mentee")
 st.divider()
 
 col1, col2 = st.columns(2)
@@ -43,11 +43,13 @@ if st.button("Search"):
 st.divider()
 
 #get mentors from the database
-mentor_data = {}  # Placeholder for mentor data
+mentor_data = []  # Placeholder for mentor data
 try:
-    mentor_data = requests.get("http://api:4000/mo/get_mentees").json()
-except Exception as e:
-    st.write("**Important**: Could not connect to api")
+    response = requests.get("http://api:4000/mo/get_mentees")
+    response.raise_for_status()  # Raise an error for bad status codes
+    mentor_data = response.json()
+except requests.exceptions.RequestException as e:
+    st.write("**Important**: Could not connect to API")
     st.write(f"Error: {e}")
 
 
