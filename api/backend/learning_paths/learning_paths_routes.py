@@ -23,7 +23,14 @@ def get_learning_path(mentee_id):
         FROM learning_path
         WHERE mentee_id = %s
     '''
-  
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (mentee_id,))
+    theData = cursor.fetchall()
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 
 #not sure how to call implement issue report here 
 
