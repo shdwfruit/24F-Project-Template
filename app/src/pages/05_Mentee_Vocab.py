@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # Set page configuration
 st.set_page_config(page_title="View Vocabulary", layout="wide")
@@ -10,19 +11,18 @@ SideBarLinks(show_home=True)
 st.title("View Vocabulary Practice")
 st.divider()
 
-# Mock Data for Vocabulary Practice
-vocab = [
-    {"context": "Daily activities vocabulary", "difficulty_level": "Beginner"},
-    {"context": "Business vocabulary", "difficulty_level": "Intermediate"},
-    {"context": "Technical terms", "difficulty_level": "Advanced"},
-]
-
 # Display Vocabulary
 st.subheader("Vocabulary Practice")
-for word in vocab:
-    st.write(f"**Context:** {word['context']}")
-    st.write(f"**Difficulty Level:** {word['difficulty_level']}")
-    st.divider()
+
+try:
+    vocab = requests.get('http://api:4000/c/get_vocab').json()
+    for word in vocab:
+        st.divider()
+        st.write(f"**Difficulty Level:** {word['difficulty_level']}")
+        st.write(f"**Context:** {word['context']}")
+
+except Exception as e:
+    st.error(f"Could not connect to API: {str(e)}")
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")

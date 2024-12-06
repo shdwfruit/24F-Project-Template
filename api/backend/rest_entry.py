@@ -11,6 +11,7 @@ from backend.mentor.mentor_routes import mentors
 from backend.progress.progress_routes import progress
 from backend.sessions.session_routes import sessions
 from backend.system_admin.system_admin_routes import sys_admin
+from backend.learning_paths.learning_paths_routes import learning_paths
 
 import os
 from dotenv import load_dotenv
@@ -57,6 +58,7 @@ def create_app():
     app.register_blueprint(progress,   url_prefix='/p')
     app.register_blueprint(sessions,   url_prefix='/s')
     app.register_blueprint(sys_admin,   url_prefix='/sys')
+    app.register_blueprint(learning_paths,   url_prefix='/lp')
 
     # Don't forget to return the app object
     return app

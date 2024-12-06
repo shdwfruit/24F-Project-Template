@@ -73,3 +73,19 @@ def delete_report(id):
         response = make_response(jsonify({"error": "Invalid Content ID was entered."}), 400)
 
     return response
+
+@contents.route('/get_vocab', methods=['GET'])
+def get_vocab():
+
+    query = '''
+                SELECT difficulty_level, context
+                FROM vocab_practice
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
