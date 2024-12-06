@@ -12,14 +12,14 @@ learning_paths = Blueprint('learning_paths', __name__)
 
 #------------------------------------------------------------
 # Routes for learning paths
-@learning_paths.route('/mentee/<int:mentee_id>', methods=['GET'])
+@learning_paths.route('/learnmentee/<int:mentee_id>', methods=['GET'])
 def get_learning_path(mentee_id):
     """
     This route is used by mentors to get the learning path 
     of a specific mentee.
     """
     query = '''
-        SELECT module_name, description, milestones, status, completion_date
+        SELECT *
         FROM learning_path
         WHERE mentee_id = %s
     '''
