@@ -58,7 +58,7 @@ for path in learning_paths:
     for milestone in path["milestones"]:
         st.checkbox(milestone, value=(path["status"] == "Completed"))
 
-    st.divider()
+st.divider()
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
