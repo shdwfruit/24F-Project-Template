@@ -23,8 +23,12 @@ except Exception as e:
     st.write("**Important**: Could not connect to api")
     st.write(f"Error: {e}")
 
-st.write("### Content Updates")
-st.write(content_updates)
+for content in content_updates:
+    st.write(f"**Description:** {content['description']}")
+    st.write(f"**Path ID:** {content['path_id']}")
+    st.write(f"**Timestamp:** {content['timestamp']}")
+    st.write(f"**Updated By:** {content['updated_by']}")
+    st.divider()
 
 st.divider()
 
