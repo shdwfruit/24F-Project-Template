@@ -1,4 +1,8 @@
 import streamlit as st
+import requests
+import logging
+logger = logging.getLogger(__name__)
+from modules.nav import SideBarLinks
 
 # Set page configuration
 st.set_page_config(page_title="Find a Mentor", layout="wide")
@@ -31,26 +35,28 @@ with col2:
 # "Search" Button
 if st.button("Search"):
     st.session_state["filters"] = {
-        "keywords": keywords_list,
         "proficiency": proficiency,
         "languages": languages,
     }
     st.success("Filters applied. Mentor list updated!")  # Placeholder for filter logic
 
 st.divider()
-# Mock Mentor Data
-mentors = [
-    {"name": "John Doe", "description": "Fluent in English, located in London.", "badge": "Language Badge"},
-    {"name": "Jane Smith", "description": "Advanced in Spanish, located in Barcelona.", "badge": "Culture Badge"},
-    {"name": "Jim Beam", "description": "Fluent in French, located in Paris.", "badge": "Jack-of-all-Trades Badge"},
-]
+
+#get mentors from the database
+mentor_data = {}  # Placeholder for mentor data
+try:
+    mentor_data = requests.get("http://api:4000/mo/get_mentees").json()
+except Exception as e:
+    st.write("**Important**: Could not connect to api")
+    st.write(f"Error: {e}")
+
 
 
 # Mentor List Display
 st.subheader("Mentee Results")
 mentor_cols = st.columns(3)
 
-for i, mentor in enumerate(mentors):
+for i, mentor in enumerate(mentor_data):
     with mentor_cols[i % 3]:
         st.image("assets/user.png", width=150)
         st.write(f"### {mentor['name']}")
