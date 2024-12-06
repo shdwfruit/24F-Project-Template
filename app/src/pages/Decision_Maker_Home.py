@@ -67,7 +67,7 @@ with tab3:
     feedback_data = {}
 
     try:
-        feedback_data = requests.get('http://api:4000/analytics/feedback').json()
+        feedback_data = requests.get('http://api:4000/a/analytics/feedback').json()
     except Exception as e:
         st.write("**Important**: Could not connect to API for feedback data")
         st.write(f"Error: {e}")
@@ -89,7 +89,7 @@ with tab4:
     competence_data = {}
 
     try:
-        competence_data = requests.get('http://api:4000/analytics/trends').json()
+        competence_data = requests.get('http://api:4000/a/analytics/trends').json()
     except Exception as e:
         st.write("**Important**: Could not connect to API for competence trends data")
         st.write(f"Error: {e}")
