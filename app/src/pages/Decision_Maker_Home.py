@@ -4,6 +4,10 @@ import pandas as pd
 # Set page configuration
 st.set_page_config(page_title="Decision Maker Dashboard", layout="wide")
 
+# Set page title
+st.title("Manage Content Updates")
+st.divider()
+
 # Page Title
 st.title("Decision Maker Dashboard")
 st.write("**Welcome, Dr. Smith!**")

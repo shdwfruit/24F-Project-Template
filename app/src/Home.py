@@ -48,6 +48,7 @@ if st.button("Act as Emma, a Mentee",
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'mentee'
     st.session_state['first_name'] = 'Emma'
+    st.session_state['id'] = '1'
     logger.info("Logging in as Mentee Emma")
     st.switch_page('pages/00_Mentee_Home.py')
 
@@ -57,6 +58,7 @@ if st.button('Act as Alejandro, a Mentor',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'mentor'
     st.session_state['first_name'] = 'Alejandro'
+    st.session_state['id'] = '1'
     st.switch_page('pages/10_Mentor_Home.py')
 
 if st.button('Act as System Administrator', 
@@ -65,6 +67,7 @@ if st.button('Act as System Administrator',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'SysAdmin'
+    st.session_state['id'] = '1'
     st.switch_page('pages/Admin_home.py')
 
 if st.button('Act as Decision Maker', 
@@ -73,6 +76,7 @@ if st.button('Act as Decision Maker',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'decision_maker'
     st.session_state['first_name'] = 'deci_maker'
+    st.session_state['id'] = '1'
     st.switch_page('pages/Decision_Maker_Home.py')
 
 

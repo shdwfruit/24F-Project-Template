@@ -3,6 +3,9 @@ import streamlit as st
 # Set page configuration
 st.set_page_config(page_title="View Learning Path", layout="wide")
 
+from modules.nav import SideBarLinks
+SideBarLinks(show_home=True)
+
 # Page Title
 st.title("My Learning Path")
 st.divider()

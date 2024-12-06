@@ -26,6 +26,8 @@ def SideBarLinks(show_home=False):
     if "authenticated" not in st.session_state:
         st.session_state.authenticated = False
         st.switch_page("Home.py")
+        if "id" not in st.session_state:
+            st.session_state.id = '0'
 
     if show_home:
         # Show the Home page link (the landing page)
@@ -55,4 +57,5 @@ def SideBarLinks(show_home=False):
         if st.sidebar.button("Logout"):
             del st.session_state["role"]
             del st.session_state["authenticated"]
+            del st.session_state["id"]
             st.switch_page("Home.py")

@@ -3,6 +3,9 @@ import streamlit as st
 # Set page configuration
 st.set_page_config(page_title="View Scenarios", layout="wide")
 
+from modules.nav import SideBarLinks
+SideBarLinks(show_home=True)
+
 # Page Title
 st.title("View Scenarios")
 st.divider()

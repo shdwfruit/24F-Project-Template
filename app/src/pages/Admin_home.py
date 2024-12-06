@@ -3,6 +3,13 @@ import streamlit as st
 # Set page configuration
 st.set_page_config(page_title="System Administrator Dashboard", layout="wide")
 
+from modules.nav import SideBarLinks
+SideBarLinks(show_home=True)
+
+# Set page title
+st.title("Manage Content Updates")
+st.divider()
+
 # Page Title
 st.title("System Administrator Dashboard")
 st.write("Welcome, Priya! Choose an action below:")

@@ -1,5 +1,12 @@
 import streamlit as st
 
+# set page layout
+st.set_page_config(layout = 'wide')
+
+# Set page title
+st.title("Manage Content Updates")
+st.divider()
+
 # Set page title
 def view_reported_issues_page():
     st.title("View Reported Issues")

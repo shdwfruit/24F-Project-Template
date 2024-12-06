@@ -3,6 +3,9 @@ import streamlit as st
 # Set page configuration
 st.set_page_config(page_title="Explore Language Partner", layout="wide")
 
+from modules.nav import SideBarLinks
+SideBarLinks(show_home=True)
+
 # Page Title
 st.title("NU Global Connect")
 st.write("I want to...")
