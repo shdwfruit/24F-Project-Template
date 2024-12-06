@@ -68,6 +68,8 @@ else:
     st.write("### No Open Reported Issues")
     st.balloons()
 
+st.divider()
+
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
 status = st.radio("Current Status", 
