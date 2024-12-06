@@ -25,17 +25,12 @@ if not st.session_state.mentee_info:
         
         if submit_button:
             try:
-                st.write("Attempting to verify email...")
-                
                 payload = {'email': email}
-                st.write(f"Sending payload: {payload}")
                 
                 response = requests.post(
                     'http://api:4000/me/verify',
                     json=payload
                 )
-                
-                st.write(f"Response status code: {response.status_code}")
                 
                 if response.status_code == 200:
                     mentee_data = response.json()
@@ -44,6 +39,7 @@ if not st.session_state.mentee_info:
                     else:
                         st.session_state.mentee_info = mentee_data
                         st.success("Email verified successfully!")
+                        st.rerun()  # Changed from experimental_rerun
                 else:
                     st.error(f"Server returned status code: {response.status_code}")
                     
@@ -122,31 +118,4 @@ elif st.session_state.mentee_info:
     # Logout with unique key
     if st.button("Logout", key="logout_button"):
         st.session_state.mentee_info = None
-        st.experimental_rerun()
-
-st.subheader("Report an issue")
-description = st.text_area("Description (Functional, Visual, etc.)")
-status = st.radio("Current Status", 
-                  ["Active", "Inactive"])
-reported_by = st.session_state['id']
-if st.button('Report Issue'):
-    if not description:
-        st.error("Please enter a description")
-    elif not status:
-        st.error("Please choose a status")
-    else:
-        data = {
-            "reported_by": reported_by,
-            "status": status,
-            "description": description
-        }
-        
-        try:
-            response = requests.post('http://api:4000/ir/report_issue', json=data)
-            if response.status_code == 200:
-                st.success("Issue successfully reported!")
-                st.balloons()
-            else:
-                st.error("Error reporting issue")
-        except Exception as e:
-            st.error(f"Error connecting to server: {str(e)}")
+        st.rerun()
