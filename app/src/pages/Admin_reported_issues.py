@@ -32,13 +32,20 @@ for issue in reported_issues:
 st.subheader("Resolve an Issue")
 issue_id_to_resolve = st.number_input("Enter Issue ID to Resolve", min_value=1, step=1)
 resolved_by_admin_id = st.number_input("Enter Admin ID", min_value=1, step=1)
+
+data = {
+    "issue_id_to_resolve" : issue_id_to_resolve,
+    "resolved_by_admin_id" : resolved_by_admin_id
+}
+
+response = {}
+
 if st.button("Resolve Issue"):
-    connection = connect_to_db()
-    cursor = connection.cursor()
-    query = "UPDATE issue_report SET status = 'Resolved', resolved_by = %s WHERE id = %s;"
-    cursor.execute(query, (resolved_by_admin_id, issue_id_to_resolve))
-    connection.commit()
-    cursor.close()
-    connection.close()
-    st.success(f"Issue {issue_id_to_resolve} resolved successfully!")
-    st.experimental_rerun()
+    try:
+        response = requests.put('http://api:4000/ir/resolve', json=data)
+        if response.status_code == 200:
+            st.success(f"Issue {issue_id_to_resolve} has been resolved!")
+        else:
+            st.error("Invalid Admin or Issue ID was entered")
+    except Exception as e:
+        st.error("Could not connect to API")

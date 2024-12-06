@@ -33,19 +33,27 @@ def fetch_reported_issues():
 @issue_reports.route('/resolve', methods=['PUT'])
 def resolve_issue():
 
-    resolved_by = request.args.get('resolved_by_admin_id')
-    id = request.args.get('issue_id_to_resolve')
+    data = request.get_json()
+
+    resolved_by = data.get('resolved_by_admin_id')
+    id = data.get('issue_id_to_resolve')
 
     query = ''' 
                 UPDATE issue_report 
-                SET status = 'Resolved', resolved_by = %s WHERE id = %s;
+                SET status = 'Resolved', resolved_by = %s 
+                WHERE id = %s;
     '''
 
     cursor = db.get_db().cursor()
-    cursor.execute(query, (resolved_by, id))
-    cursor.commit()
+    data = (resolved_by, id)
+    r = cursor.execute(query, data)
+    db.get_db().commit()
 
-    response = make_response(jsonify({"message": "Issue successfully resolved!"}))
-    response.status_code = 200
+    if cursor.rowcount > 0:
+        response = make_response(jsonify({"message": "Issue {id} successfully resolved!"}))
+        response.status_code = 200
+    else: 
+        response = make_response(jsonify({"error": "Invalid Admin or Issue ID was entered."}), 400)
+
     return response
 
