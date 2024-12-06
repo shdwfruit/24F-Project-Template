@@ -3,9 +3,8 @@ import streamlit as st
 # set page layout
 st.set_page_config(layout = 'wide')
 
-# Set page title
-st.title("Manage Content Updates")
-st.divider()
+from modules.nav import SideBarLinks
+SideBarLinks(show_home=True)
 
 # Set page title
 def view_reported_issues_page():

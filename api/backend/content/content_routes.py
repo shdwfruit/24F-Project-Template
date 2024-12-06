@@ -41,7 +41,7 @@ def update_contents():
 
     query = f'''
                 INSERT INTO content_updates (path_id, updated_by, description)
-                VALUES 
+                VALUES
                 ({str(path_id)}, {str(updated_by)}, {description});
         '''
     
