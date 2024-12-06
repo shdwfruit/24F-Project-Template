@@ -81,7 +81,7 @@ if st.button("Update Content Update"):
     connection.commit()
     cursor.close()
     connection.close()
-    st.success("Content updae updated successfully!")
+    st.success("Content update updated successfully!")
     st.experimental_rerun()
 
 st.divider()
