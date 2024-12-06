@@ -14,7 +14,7 @@ mentors = Blueprint('mentor', __name__)
 #------------------------------------------------------------
 # mentor routes
 # Get mentors by language level, location, and teaching language
-@mentors.route('/get_mentee', methods=['GET'])
+@mentors.route('/get_mentees', methods=['GET'])
 def get_mentors(lang, lang_lvl):
     """
     This route is used by mentor to find mentees.
