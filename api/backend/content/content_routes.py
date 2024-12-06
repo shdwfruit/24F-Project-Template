@@ -73,3 +73,4 @@ def delete_report(id):
         response = make_response(jsonify({"error": "Invalid Content ID was entered."}), 400)
 
     return response
+
