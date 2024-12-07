@@ -7,7 +7,6 @@ st.set_page_config(page_title="Mentor Dashboard", layout="wide")
 # Page Title
 st.title("Mentor Dashboard")
 st.write("**Welcome, Mentor!**")
-st.divider()
 
 # Navigation Sidebar
 from modules.nav import SideBarLinks
