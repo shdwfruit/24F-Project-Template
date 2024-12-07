@@ -134,9 +134,8 @@ A brief introduction to the project and team.
 Overview of the REST API and implemented routes.
 A demo of the Streamlit front-end and interaction with the database.
 
-Additional Video on client interview
+Additional Video on possible user interview
 https://www.youtube.com/shorts/9mEPp0gXgt8
-
 
 -----------------------------------------------------------------------
 
