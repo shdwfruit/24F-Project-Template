@@ -61,7 +61,7 @@ def create_issue_report():
     db.get_db().commit()
 
     response = make_response(jsonify({'message': 'Issue report created successfully!'}))
-    response.status_code = 201
+    response.status_code = 200
     return response
 
 
@@ -136,7 +136,7 @@ def create_content_update():
     db.get_db().commit()
 
     response = make_response(jsonify({'message': 'Content update created successfully!'}))
-    response.status_code = 201
+    response.status_code = 200
     return response
 
 

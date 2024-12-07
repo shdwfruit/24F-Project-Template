@@ -117,6 +117,7 @@ if mentee_info:
 
                     if response.status_code == 200:
                         st.success("Session scheduled successfully!")
+                        st.rerun()
                     else:
                         st.error(f"Failed to schedule session. Server response: {response.text}")
                 else:

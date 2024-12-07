@@ -71,7 +71,7 @@ def create_mentee():
         cursor.execute(insert_query, query_data)
         db.get_db().commit()
         
-        # Return a 201 status to indicate resource creation
+        # Return a 200 status to indicate all good
         response = make_response(jsonify({"message": "Mentee successfully registered!"}))
         response.status_code = 200
         return response

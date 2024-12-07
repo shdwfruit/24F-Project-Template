@@ -49,8 +49,33 @@ def create_session():
         
         # Validate and convert IDs to integers
         try:
-            mentee_id = details['mentee_id']
-            mentor_id = details['mentor_id']
+            mentee_id = int(details['mentee_id'])
+            mentor_id = int(details['mentor_id'])
+            query = '''
+                INSERT INTO session (
+                    mentee_id,
+                    mentor_id,
+                    purpose,
+                    date,
+                    duration
+                ) VALUES (%s, %s, %s, %s, %s)
+            '''
+        
+            cursor = db.get_db().cursor()
+            cursor.execute(query, (
+                mentee_id,  # Using converted integer
+                mentor_id,  # Using converted integer
+                details['purpose'],
+                details['date'],
+                details['duration']
+            ))
+        
+            db.get_db().commit()
+        
+            response = make_response(jsonify({"message": "Session created successfully!"}))
+            response.status_code = 200
+            return response
+        
         except (ValueError, TypeError) as e:
             print(f"ID conversion error: {str(e)}")  # Debug print
             response = make_response(jsonify({
@@ -58,31 +83,6 @@ def create_session():
             })) 
             response.status_code = 400
             return response
-        
-        query = '''
-            INSERT INTO session (
-                mentee_id,
-                mentor_id,
-                purpose,
-                date,
-                duration
-            ) VALUES (%s, %s, %s, %s, %s)
-        '''
-        
-        cursor = db.get_db().cursor()
-        cursor.execute(query, (
-            mentee_id,  # Using converted integer
-            mentor_id,  # Using converted integer
-            details['purpose'],
-            details['date'],
-            details['duration']
-        ))
-        
-        db.get_db().commit()
-        
-        response = make_response(jsonify({"message": "Session created successfully!"}))
-        response.status_code = 200
-        return response
         
     except Exception as e:
         db.get_db().rollback()

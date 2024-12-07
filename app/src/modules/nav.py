@@ -9,9 +9,24 @@ import streamlit as st
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home", icon="🏠")
 
-
 def AboutPageNav():
     st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
+
+#### ------------------------ Mentee ------------------------
+def MenteeHomeNav():
+    st.sidebar.page_link("pages/00_Mentee_Home.py", label="Mentee Home")
+
+#### ------------------------ Mentor ------------------------
+def MentorHomeNav():
+    st.sidebar.page_link("pages/10_Mentor_Home.py", label="Mentor Home")
+
+#### ------------------------ Admin ------------------------
+def AdminHomeNav():
+    st.sidebar.page_link("pages/Admin_home.py", label="Admin Home")
+
+#### ------------------------ DM ------------------------
+def DMHomeNav():
+    st.sidebar.page_link("pages/Decision_Maker_Home.py", label="Decision Maker Home")
 
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
@@ -37,17 +52,21 @@ def SideBarLinks(show_home=False):
     if st.session_state["authenticated"]:
 
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
-        if st.session_state["role"] == "<Insert role 1>":
+        if st.session_state['role'] == 'mentee':
             # role functions, add later
-            rolePagesFunction()
+            MenteeHomeNav()
 
-        if st.session_state["role"] == "<Insert role 2>":
+        if st.session_state['role'] == 'mentor':
             # role functions, add later
-            rolePagesFunction()
+            MentorHomeNav()
 
-        if st.session_state["role"] == "<Insert role 3>":
+        if st.session_state['role'] == 'administrator':
             # role functions, add later
-            rolePagesFunction()
+            AdminHomeNav()
+
+        if st.session_state['role'] == 'decision_maker':
+            # role functions, add later
+            DMHomeNav()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
@@ -55,7 +74,5 @@ def SideBarLinks(show_home=False):
     if st.session_state["authenticated"]:
         # Always show a logout button if there is a logged in user
         if st.sidebar.button("Logout"):
-            del st.session_state["role"]
-            del st.session_state["authenticated"]
-            del st.session_state["id"]
+            st.session_state.clear()
             st.switch_page("Home.py")
