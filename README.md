@@ -128,14 +128,14 @@ Shut down and remove containers: docker compose down
 
 Demo Video
 Project Demo Video
-(Replace with the public link to your demo video)
+https://drive.google.com/file/d/1MigqumdnJMjeYmH1eF6pVWJv95to5wd8/view?usp=sharing
 The video includes:
 A brief introduction to the project and team.
 Overview of the REST API and implemented routes.
 A demo of the Streamlit front-end and interaction with the database.
 
-
-
+Additional Video on client interview
+https://www.youtube.com/shorts/9mEPp0gXgt8
 
 
 -----------------------------------------------------------------------
