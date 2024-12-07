@@ -11,114 +11,121 @@ SideBarLinks(show_home=True)
 st.title("Find a Mentor")
 st.divider()
 
-# Initialize session state
+# Initialize session state variables
 if 'selected_mentor' not in st.session_state:
-   st.session_state.selected_mentor = None
+    st.session_state.selected_mentor = None
 if 'mentor_data' not in st.session_state:
-   st.session_state.mentor_data = None
+    st.session_state.mentor_data = None
 if 'show_search_results' not in st.session_state:
-   st.session_state.show_search_results = False
+    st.session_state.show_search_results = False
 
-# Selection dropdowns
+# Selection dropdowns for mentor search
 language = st.selectbox(
-   "Select Teaching Language",
-   options=["Japanese", "Spanish", "Chinese", "French"]
+    "Select Teaching Language",
+    options=["Japanese", "Spanish", "Chinese", "French"]
 )
 
 level = st.selectbox(
-   "Select Language Level",
-   options=["Advanced", "Fluent"]
+    "Select Language Level",
+    options=["Advanced", "Fluent"]
 )
 
 def select_mentor(mentor):
-   st.session_state.selected_mentor = mentor
-   st.session_state.show_search_results = False
+    st.session_state.selected_mentor = mentor
+    st.session_state.show_search_results = False
 
-# Display mentor data
+# Search button to find mentors
 if st.button("Search"):
-   try:
-       st.session_state.mentor_data = requests.get(
-           'http://api:4000/me/mentors',
-           params={
-               'teaching_language': language,
-               'language_level': level
-           }
-       ).json()
-       st.session_state.show_search_results = True
-       
-   except Exception as e:
-       st.write("**Important**: Could not connect to api")
-       st.write(f"Error: {e}")
+    try:
+        response = requests.get(
+            'http://api:4000/me/mentors',
+            params={
+                'teaching_language': language,
+                'language_level': level
+            }
+        )
+        if response.status_code == 200:
+            st.session_state.mentor_data = response.json()
+            st.session_state.show_search_results = True
+        else:
+            st.error("Failed to retrieve mentor data. Please try again.")
+    except Exception as e:
+        st.write("**Important**: Could not connect to api")
+        st.write(f"Error: {e}")
 
-# Show search results
+# Show search results if any
 if st.session_state.show_search_results and st.session_state.mentor_data:
-   if not st.session_state.mentor_data:
-       st.info("Currently no mentor match")
-   else:
-       for mentor in st.session_state.mentor_data:
-           col1, col2 = st.columns([3, 1])
-           with col1:
-               st.write(f"**Name:** {mentor['first_name']} {mentor['last_name']}")
-               st.write(f"**Email:** {mentor['email']}")
-               st.write(f"**Teaching Language:** {mentor['teaching_language']}")
-               st.write(f"**Language Level:** {mentor['language_level']}")
-           with col2:
-               if st.button("Select Mentor", key=f"select_{mentor['id']}", on_click=select_mentor, args=(mentor,)):
-                   pass
-           st.divider()
+    if not st.session_state.mentor_data:
+        st.info("Currently no mentor match")
+    else:
+        for mentor in st.session_state.mentor_data:
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.write(f"**Name:** {mentor['first_name']} {mentor['last_name']}")
+                st.write(f"**Email:** {mentor['email']}")
+                st.write(f"**Teaching Language:** {mentor['teaching_language']}")
+                st.write(f"**Language Level:** {mentor['language_level']}")
+            with col2:
+                if st.button("Select Mentor", key=f"select_{mentor['id']}", on_click=select_mentor, args=(mentor,)):
+                    pass
+            st.divider()
 
-# Show registration form if mentor is selected
+# Show registration form if a mentor is selected
 if st.session_state.selected_mentor:
-   st.write("### Register as Mentee")
-   st.write(f"Selected Mentor: {st.session_state.selected_mentor['first_name']} {st.session_state.selected_mentor['last_name']}")
-   
-   with st.form("mentee_registration"):
-       first_name = st.text_input("First Name")
-       last_name = st.text_input("Last Name")
-       email = st.text_input("Email")
-       learning_language = st.selectbox(
-           "Learning Language", 
-           options=[st.session_state.selected_mentor['teaching_language']]
-       )
-       language_level = st.selectbox(
-           "Language Level",
-           options=["Beginner", "Intermediate", "Advanced", "Fluent"]
-       )
-       
-       if st.form_submit_button("Register"):
-           try:
-               payload = {
-                   'mentor_id': st.session_state.selected_mentor['id'],
-                   'first_name': first_name,
-                   'last_name': last_name,
-                   'email': email,
-                   'learning_language': learning_language,
-                   'language_level': language_level
-               }
-               
-               response = requests.post(
-                   'http://api:4000/me/create',
-                   json=payload,
-                   headers={'Content-Type': 'application/json'}
-               )
-               
-               if response.status_code == 201:
-                   st.success("Successfully registered as a mentee!")
-                   # Clear the selected mentor and reset search
-                   st.session_state.selected_mentor = None
-                   st.session_state.show_search_results = False
-               else:
-                   st.error(f"Registration failed. Please try again. Server response: {response.text}")
-                   
-           except Exception as e:
-               st.write("**Important**: Could not connect to api")
-               st.write(f"Error: {e}")
+    st.write("### Register as Mentee")
+    st.write(f"Selected Mentor: {st.session_state.selected_mentor['first_name']} {st.session_state.selected_mentor['last_name']}")
+
+    with st.form("mentee_registration"):
+        first_name = st.text_input("First Name")
+        last_name = st.text_input("Last Name")
+        email = st.text_input("Email")
+        learning_language = st.selectbox(
+            "Learning Language",
+            options=[st.session_state.selected_mentor['teaching_language']]
+        )
+        language_level = st.selectbox(
+            "Language Level",
+            options=["Beginner", "Intermediate", "Advanced", "Fluent"]
+        )
+
+        if st.form_submit_button("Register"):
+            try:
+                payload = {
+                    'mentor_id': st.session_state.selected_mentor['id'],
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'email': email,
+                    'learning_language': learning_language,
+                    'language_level': language_level
+                }
+
+                response = requests.post(
+                    'http://api:4000/me/create',
+                    json=payload,
+                    headers={'Content-Type': 'application/json'}
+                )
+
+                # Check for the 201 status code (Created)
+                if response.status_code == 201:
+                    st.success("Successfully registered as a mentee!")
+                    # Clear the selected mentor and reset search
+                    st.session_state.selected_mentor = None
+                    st.session_state.show_search_results = False
+                else:
+                    st.error(f"Registration failed. Please try again. Server response: {response.text}")
+
+            except Exception as e:
+                st.write("**Important**: Could not connect to the API")
+                st.write(f"Error: {e}")
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
-status = st.radio("Current Status", 
-                  ["Active", "Inactive"])
+status = st.radio("Current Status", ["Active", "Inactive"])
+
+# Ensure that st.session_state['id'] is defined elsewhere
+# (e.g., after user login)
 reported_by = st.session_state['id']
+
 if st.button('Report Issue'):
     if not description:
         st.error("Please enter a description")
@@ -130,7 +137,7 @@ if st.button('Report Issue'):
             "status": status,
             "description": description
         }
-        
+
         try:
             response = requests.post('http://api:4000/ir/report_issue', json=data)
             if response.status_code == 200:

@@ -45,19 +45,21 @@ def create_mentee():
     try:
         cursor = db.get_db().cursor()
         details = request.json
-        mentor_id = details[mentor_id]
-        first_name = details[first_name]
-        last_name = details[last_name]
-        email = details[email]
-        learning_language = details[learning_language]
-        language_level = details[language_level]
+        
+        # Access dictionary keys with strings
+        mentor_id = details['mentor_id']
+        first_name = details['first_name']
+        last_name = details['last_name']
+        email = details['email']
+        learning_language = details['learning_language']
+        language_level = details['language_level']
+        
+        # Fixed admin_id = 1 (Donald Campbell)
+        admin_id = 1
+        
         data = (mentor_id, admin_id, first_name, last_name, 
                 email, learning_language, language_level)
         
-        # Use fixed admin_id = 1 (Donald Campbell)
-        admin_id = 1
-        
-        # Insert new mentee
         insert_query = '''
             INSERT INTO mentee (
                 mentor_id, 
@@ -73,16 +75,18 @@ def create_mentee():
         cursor.execute(insert_query, data)
         db.get_db().commit()
         
+        # Return a 201 status to indicate resource creation
         response = make_response(jsonify({"message": "Mentee successfully registered!"}))
-        response.status_code = 200
+        response.status_code = 201
         return response
-        
+
     except Exception as e:
         db.get_db().rollback()
-        print(f"Error in create_mentee: {str(e)}")  # Debug print
+        print(f"Error in create_mentee: {str(e)}")
         response = make_response(jsonify({"error": str(e)}))
         response.status_code = 500
         return response
+
     
 @mentees.route('/verify', methods=['POST'])
 def verify_mentee():
