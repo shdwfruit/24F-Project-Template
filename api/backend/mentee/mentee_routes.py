@@ -44,18 +44,16 @@ def create_mentee():
     """
     try:
         cursor = db.get_db().cursor()
-        details = request.json
-        mentor_id = details[mentor_id]
-        first_name = details[first_name]
-        last_name = details[last_name]
-        email = details[email]
-        learning_language = details[learning_language]
-        language_level = details[language_level]
-        data = (mentor_id, admin_id, first_name, last_name, 
+        data = request.json
+        mentor_id = data['mentor_id']
+        admin_id = 1 # Use fixed admin_id = 1 (Donald Campbell)
+        first_name = data['first_name']
+        last_name = data['last_name']
+        email = data['email']
+        learning_language = data['learning_language']
+        language_level = data['language_level']
+        query_data = (mentor_id, admin_id, first_name, last_name, 
                 email, learning_language, language_level)
-        
-        # Use fixed admin_id = 1 (Donald Campbell)
-        admin_id = 1
         
         # Insert new mentee
         insert_query = '''
@@ -70,7 +68,7 @@ def create_mentee():
             ) VALUES (%s, %s, %s, %s, %s, %s, %s)
         '''
 
-        cursor.execute(insert_query, data)
+        cursor.execute(insert_query, query_data)
         db.get_db().commit()
         
         response = make_response(jsonify({"message": "Mentee successfully registered!"}))
@@ -84,11 +82,11 @@ def create_mentee():
         response.status_code = 500
         return response
     
-@mentees.route('/verify', methods=['POST'])
+@mentees.route('/verify', methods=['GET'])
 def verify_mentee():
     """Verify mentee by email and return their info"""
     print("Received verify request")  # Debug print
-    email = request.json.get('email')
+    email = request.args.get('email')
     print(f"Email received: {email}")  # Debug print
     
     query = '''
@@ -103,10 +101,7 @@ def verify_mentee():
     
     if result:
         # Convert result to dictionary with descriptive keys
-        columns = ['id', 'first_name', 'last_name', 'email', 'mentor_id']
-        response_data = dict(zip(columns, result))
-        print(f"Sending response: {response_data}")  # Debug print
-        response = make_response(jsonify(response_data))
+        response = make_response(jsonify(result))
         response.status_code = 200
     else:
         response = make_response(jsonify({"error": "Mentee not found"}))
@@ -138,16 +133,22 @@ def get_mentee_id():
 @mentees.route('/get_mentor_id/<int:id>', methods=['GET'])
 def get_mentor_with_mentee_id(id):
 
-    query = f'''
+    query = '''
                 SELECT mentor_id
                 FROM mentee
-                WHERE mentee_id = {id};
+                WHERE mentee_id = %s;
     '''
 
     cursor = db.get_db().cursor()
-    cursor.execute(query)
-    theData = cursor.fetchall()
+    cursor.execute(query, (id,))
+    theData = cursor.fetchone()
+    print(f"debug print: {theData}")  # Debug print
 
-    response = make_response(jsonify(theData))
-    response.status_code = 200
-    return response
+    if theData:
+        # Return mentor_id as a JSON object
+        response = jsonify(theData)
+        response.status_code = 200
+    else:
+        # Return error if mentee_id is not found
+        response = jsonify({"error": "Mentee not found"})
+        response.status_code = 404

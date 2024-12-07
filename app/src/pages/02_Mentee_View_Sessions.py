@@ -25,8 +25,8 @@ if not mentee_info:
         if submit_button:
             try:
                 # Verify mentee by email
-                payload = {'email': email}
-                response = requests.post('http://api:4000/me/verify', json=payload)
+                response = requests.get('http://api:4000/me/verify', 
+                                         params={'email': email})
 
                 if response.status_code == 200:
                     mentee_data = response.json()
@@ -89,8 +89,6 @@ if mentee_info:
                         st.error(f"Failed to schedule session. Server response: {response.text}")
             except Exception as e:
                 st.error(f"Error scheduling session: {str(e)}")
-        else:
-            st.error(f"Error fetching mentor ID")
 
     # Display existing sessions
     st.write("### My Sessions")
