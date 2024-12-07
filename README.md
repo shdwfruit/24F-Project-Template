@@ -5,6 +5,7 @@ This repository contains the project NU Global Connect, a data-driven applicatio
 Project Overview
 
 NU Global Connect is a data-driven application designed to prepare Northeastern students for international internships and co-ops by fostering cultural awareness and adaptability. With Northeastern’s expanding global footprint—including 13 campuses across the U.S., U.K., and Canada, and over 70 Dialogue of Civilizations programs worldwide—students frequently engage in diverse cultural environments. However, many lack the structured resources needed to navigate new workplace cultures and communicate effectively in intercultural settings.
+
 This app bridges that gap by providing a comprehensive, personalized, and interactive approach to cultural preparedness. Leveraging student progress and engagement data, NU Global Connect adapts its content to ensure relevance and impact. It addresses critical pain points, such as limited access to tailored cultural training and language practice tools specific to a student’s target country.
 
 Through features like interactive cultural etiquette modules, AI-driven language practice, and a progress-tracking dashboard, students gain practical skills in intercultural communication. The platform empowers them to transition seamlessly into international settings with confidence and competence.
@@ -59,39 +60,35 @@ Flask API: http://localhost:5000
 Features and Functionality
 
 
-Application Features
+Personas and Application Features
 
-User Personas description:
+Mentees (Emma): Students of Northeastern preparing for the various international experiential learning opportunities provided, such as Dialogues of Civilizations, International Co-ops and study abroad experiences. To ensure these students have a compelling and successful experiential learning experience abroad, they joined NU GlobalConnect to participate in modules and workshops, and more importantly provide them to engage with a mentor who has been in a similar experience before,  which enable them to have greater cultural awareness during their time abroad, which further gives them the opportunity to explore further opportunities, interpret their surroundings and more. 
 
-Mentees: Students preparing for global experiences can access cultural learning paths, vocabulary practice, and mentor sessions.
+    Key Functions: 
+    1. Find a mentor: Mentees can search for appropriate mentors, which have the skillset and the past experiences who can advise them further on their journey. For example a mentee who is pursuing a Spring Co-op in Japan may look for a mentor who has previously done a Co-op in Japan and can teach him almost everything from what weather may the mentee expect to what is the right business etiquettes to follow in the Japanese work environment. 
+    2. View my Sessions: Mentees can register for a new session with their associated mentor and also view upcoming sessions for easy access and efficient management. 
+    3. View my learning path: The mentees can further view their learning path, where they can see which modules they are currently enrolled in, and can further report an issue which would be sent to the system administrator to be solved.
 
-Mentors: Experienced peers who guide mentees in language and cultural preparation.
-System Administrators: Maintain the app and monitor performance, content updates, and bug reports.
+2. Mentor (Alejandro): Mentors are essentially student-volunteers at Northeastern who wish to provide their guidance based on their international experiences through Northeastern’s comprehensive set of international experiences that offer a unique opportunity to experientially learn. An example of a mentor would be a sophomore who spent his freshman year in London as a London Scholar guiding an incoming London scholar. The sophomore can further guide the freshman on what kind of opportunities and environment the freshman can experience during his time in London. A key difference in London’s academic system is that they do not have weekly or bi-weekly assignments, grades are typically dependent on a project and a final exam. The mentor can guide their mentees on how to navigate through a new and unique academic system, allowing them to excel during their time in London. 
 
-Decision Makers: Analyze progress data and refine cultural modules to improve outcomes.
+    Key Features
+    1. Find a mentee: Mentors can look for mentees, who they can effectively guide so that the mentees can maximize their international experiential learning experience. 
+    2. View My Sessions: Mentors can further view and manage their sessions. This page also allows them to view the immediate feedback they provided to the mentees, which can act as a quick reminder of what stage their mentees are, or what work is still required.
+    3. View Mentee’s Learning Path: A unique feature NU GlobalConnect implements is allowing Mentor’s to view the Mentee’s learning path. This enables them to understand the student’s aim, workload and more. 
 
-Persona functions - 
+3. System Administrator (Priya): Software Engineer at Northeastern who manages the platform to ensure that its running smoothly, and handle any key issues and also access key analytics. 
 
-Emma (Mentee):
-- Search for mentors.
-- Access scenario practice and vocabulary modules.
-- Track the learning progress with feedback.
+	Key Features: 
+    1. Manage Content Updates: The system administrator can manage the contents part of the modules to ensure that the content being delivered by the NU GLobal Connect system towards the Mentors and Mentees is appropriate and accurate in nature. 
+    2. View Reported Issues: As a system administrator, the software engineer can access, resolve and delete the reported issues by mentees and mentors using NU GlobalConnect.  Furthermore, they can also report issues that can be seen by other administrators to resolve. 
 
-Alejandro (Mentor):
-- Match with mentees.
-- Provide feedback and track mentee progress.
-- Get recognition for mentoring hours.
+4. Decision Maker (Dr. Smith): In charge of global experiences at Northeastern, the decision maker views key data and analytics part of NU GlobalConnect, allowing them to make data-driven decisions that can improve the international experiences Northeastern provides as part of its wide range of experiential learning opportunities. For instance, in a feedback provided if a student says he would like a module that can teach him about housing abroad or business etiquettes in a different country, the decision maker can implement a new module which allows students to engage in their preferred topics. 
 
-Priya (System Administrator):
-- Manage the content updates.
-- Monitor and resolve issue reports.
-- View engagement analytics.
-
-Dr. Smith (Decision Maker):
-- Analyze student engagement and module performance.
-- Receive feedback to improve the curriculum.
-- Generate insightful reports on student progress.
-
+	Key Features: 
+Engagement Insights: Here the decision maker can view the number of engaged students for each module to understand the popularity and need for each module. 
+Progress Visualizations: Decision makers have the chance to access the progress for a specific mentee through their unique id. 
+Feedback Analysis: Decision makers can also see feedback on particular sessions, workshops and modules which allows them to gauge on what needs to be improved and what is currently working well. 
+Cultural Competence Trends: Here, the decision maker can view how many completions each module has and the average completion time in days, which allows the decision maker to manage how difficult and reasonable modules are for mentees. 
 
 
 REST API
