@@ -13,7 +13,7 @@ st.title("My Sessions")
 st.divider()
 
 # Initialize mentee_info variable
-mentee_info = None
+mentee_info = {}
 
 # Email verification section
 if not mentee_info:
@@ -67,15 +67,14 @@ if mentee_info:
         if st.form_submit_button("Schedule Session"):
             try:
                 # Get mentor ID
-                mentor_response = requests.get(f'http://api:4000/me/get_mentor_id/{mentee_info["id"]}')
+                mentor_response = requests.get(f'http://api:4000/me/get_mentor_id/{st.session_state.id}')
                 if mentor_response.status_code == 200:
                     mentor_data = mentor_response.json()
-                    mentor_id = mentor_data['mentor_id']
 
                     # Prepare payload for scheduling session
                     payload = {
-                        'mentee_id': mentee_info['id'],
-                        'mentor_id': mentor_id,
+                        'mentee_id': st.session_state.id,
+                        'mentor_id': mentor_data['id'],
                         'purpose': purpose,
                         'date': date.strftime('%Y-%m-%d'),
                         'duration': duration
@@ -88,10 +87,10 @@ if mentee_info:
                         st.success("Session scheduled successfully!")
                     else:
                         st.error(f"Failed to schedule session. Server response: {response.text}")
-                else:
-                    st.error(f"Error fetching mentor ID: {mentor_response.text}")
             except Exception as e:
                 st.error(f"Error scheduling session: {str(e)}")
+        else:
+            st.error(f"Error fetching mentor ID")
 
     # Display existing sessions
     st.write("### My Sessions")

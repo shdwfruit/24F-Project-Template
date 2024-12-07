@@ -41,7 +41,7 @@ def get_mentee_sessions(mentee_id):
 def create_session():
     """Create a new session"""
     try:
-        details = request.json
+        details = request.json()
         print(f"Received details: {details}")  # Debug print
         
         # Validate and convert IDs to integers
@@ -78,7 +78,7 @@ def create_session():
         db.get_db().commit()
         
         response = make_response(jsonify({"message": "Session created successfully!"}))
-        response.status_code = 201
+        response.status_code = 200
         return response
         
     except Exception as e:

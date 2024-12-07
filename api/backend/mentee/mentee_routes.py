@@ -69,13 +69,12 @@ def create_mentee():
                 language_level
             ) VALUES (%s, %s, %s, %s, %s, %s, %s)
         '''
-        
-        cursor = db.get_db().cursor()
+
         cursor.execute(insert_query, data)
         db.get_db().commit()
         
         response = make_response(jsonify({"message": "Mentee successfully registered!"}))
-        response.status_code = 201
+        response.status_code = 200
         return response
         
     except Exception as e:
