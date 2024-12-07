@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # Set page configuration
 st.set_page_config(page_title="View Scenarios", layout="wide")
@@ -10,19 +11,17 @@ SideBarLinks(show_home=True)
 st.title("View Scenarios")
 st.divider()
 
-# Mock Data for Scenario Practice
-scenarios = [
-    {"description": "Basic conversation scenario", "difficulty_level": "Beginner"},
-    {"description": "Negotiation scenario", "difficulty_level": "Intermediate"},
-    {"description": "Technical presentation", "difficulty_level": "Advanced"},
-]
+try:
+    data = requests.get('http://api:4000/c/get_scenarios').json()
+    # Display Scenarios
+    st.subheader("Scenario Practice")
+    for scenario in data:
+        st.write(f"**Description:** {scenario['description']}")
+        st.write(f"**Difficulty Level:** {scenario['difficulty_level']}")
+        st.divider()
 
-# Display Scenarios
-st.subheader("Scenario Practice")
-for scenario in scenarios:
-    st.write(f"**Description:** {scenario['description']}")
-    st.write(f"**Difficulty Level:** {scenario['difficulty_level']}")
-    st.divider()
+except Exception as e:
+    st.error(f"Error viewing scenarios: {str(e)}")
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")

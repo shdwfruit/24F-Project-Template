@@ -12,42 +12,26 @@ SideBarLinks(show_home=True)
 st.title("Manage My Sessions")
 st.divider()
 
-# Mock Data for Sessions and Mentors
-mock_mentor = {"id": 1, "name": "John Doe"}  # Single mentor assigned to the mentee
-sessions = [
-    {
-        "purpose": "Language practice",
-        "date": "2024-11-01 10:00",
-        "duration": "01:30:00",
-        "mentor": "John Doe",
-        "feedback": "Great progress made.",
-    },
-    {
-        "purpose": "Cultural immersion",
-        "date": "2024-11-02 14:00",
-        "duration": "02:00:00",
-        "mentor": "John Doe",
-        "feedback": "Needs improvement in grammar.",
-    },
-]
-
 # Helper function to parse datetime from string
 def parse_datetime(date_str):
-    return datetime.strptime(date_str, "%Y-%m-%d %H:%M")
-
+    return datetime.strptime(date_str, "%Y-%m-%d")
 
 # Initialize session state for the currently active session being edited
 if "editing_session" not in st.session_state:
     st.session_state["editing_session"] = None
 
-# Display Existing Sessions with Update Option
-st.subheader("Your Sessions")
-for idx, session in enumerate(sessions):
-    st.write(f"**Purpose:** {session['purpose']}")
-    st.write(f"**Date:** {session['date']}")
-    st.write(f"**Duration:** {session['duration']}")
-    st.write(f"**Mentor:** {session['mentor']}")
-    st.write(f"**Feedback:** {session['feedback']}")
+try:
+    response = requests.get(f'http://api:4000/s/mentee/{st.session_state.id}').json()
+    # Display Existing Sessions with Update Option
+    st.subheader("Your Sessions")
+    for idx, session in enumerate(response):
+        st.divider()
+        st.write(f"**Purpose:** {session['purpose']}")
+        st.write(f"**Date:** {session['date']}")
+        st.write(f"**Duration:** {session['duration']}")
+        st.write(f"**Mentor:** {session['mentor_name']}")
+except Exception as e:
+    st.error(f"Error connecting to server: {str(e)}")
 
     # Update Session Button
     if st.button(f"Edit Session {idx + 1}"):
@@ -99,48 +83,6 @@ for idx, session in enumerate(sessions):
                 st.success(f"Session {idx + 1} updated successfully!")
                 st.session_state["editing_session"] = None  # Clear editing state
     st.divider()
-
-# Request a New Session Section
-st.subheader("Request a New Session")
-
-# Dropdown for Mentor Selection
-mentor_name = st.selectbox(
-    "Select your mentor", [mock_mentor["name"], "No mentor assigned"]
-)
-
-# Input for Session Purpose
-session_purpose = st.text_input("Session Purpose", placeholder="Enter the purpose of the session")
-
-# Date-Time Picker with Future Validation
-session_datetime = st.date_input("Session Date", min_value=datetime.today().date())
-session_time = st.time_input("Session Time", value=datetime.now().time())
-
-# Combine date and time
-combined_datetime = datetime.combine(session_datetime, session_time)
-
-# Display Combined Date-Time and Check if in the Future
-if combined_datetime < datetime.now():
-    st.warning("The session date and time must be in the future.")
-
-# Fixed Duration for Sessions
-session_duration = "01:00:00"  # Default to 1 hour
-
-# Request Session Button
-if st.button("Request Session"):
-    if mentor_name == "No mentor assigned":
-        st.error("Please select a mentor to request a session.")
-    elif session_purpose.strip() == "":
-        st.error("Please enter a purpose for the session.")
-    elif combined_datetime < datetime.now():
-        st.error("The session date and time must be in the future.")
-    else:
-        # Mock Database Update
-        st.success(
-            f"Session requested successfully with {mentor_name}!\n"
-            f"**Purpose:** {session_purpose}\n"
-            f"**Date and Time:** {combined_datetime.strftime('%Y-%m-%d %H:%M')}\n"
-            f"**Duration:** {session_duration}"
-        )
 
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")

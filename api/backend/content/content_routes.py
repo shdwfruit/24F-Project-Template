@@ -89,3 +89,19 @@ def get_vocab():
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+@contents.route('/get_scenarios', methods=['GET'])
+def get_scenarios():
+
+    query = '''
+                SELECT description, difficulty_level
+                FROM scenario_practice
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response

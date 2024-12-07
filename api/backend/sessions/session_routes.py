@@ -40,6 +40,39 @@ def get_mentee_sessions(mentee_id):
     response.status_code = 200
     return response
 
+@sessions.route('/mentor/<int:mentor_id>', methods=['GET'])
+def get_mentor_sessions(mentor_id):
+    """Get all sessions for a mentor"""
+    query = '''
+        SELECT s.id, s.purpose, s.date, s.duration,
+               m.first_name, m.last_name, m.email
+        FROM session s
+        JOIN mentor m ON s.mentor_id = m.id
+        WHERE s.mentor_id = %s
+        ORDER BY s.date DESC
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (mentor_id,))
+    results = cursor.fetchall()
+    print(f"Raw results: {results}")  # Debug the raw output
+    for row in results:
+        print(f"Row content: {row}, Type: {type(row)}")  # Debug print
+    
+    sessions = []
+    for row in results:
+        sessions.append({
+            "id": row['id'],
+            "purpose": row['purpose'],
+            "date": row['date'].strftime('%Y-%m-%d'),
+            "duration": str(row['duration']),
+            "mentor_name": f"{row['first_name']} {row['last_name']}",
+            "mentor_email": row['email']
+        })
+    
+    response = make_response(jsonify(sessions))
+    response.status_code = 200
+    return response
+
 @sessions.route('/create', methods=['POST'])
 def create_session():
     """Create a new session"""
