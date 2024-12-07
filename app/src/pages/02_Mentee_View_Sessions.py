@@ -14,6 +14,8 @@ st.divider()
 
 # Initialize mentee_info variable
 mentee_info = {}
+if 'mentee_info' not in st.session_state:
+    st.session_state['mentee_info'] = None
 
 # Email verification section
 if not mentee_info:
@@ -34,11 +36,18 @@ if not mentee_info:
                         st.error("Email not found. Please verify your email address.")
                     else:
                         mentee_info = mentee_data
+                        st.session_state['mentee_info'] = mentee_info
                         st.success("Email verified successfully!")
                 else:
                     st.error(f"Server returned status code: {response.status_code}")
             except Exception as e:
                 st.error(f"Could not verify email: {str(e)}")
+
+# Check if mentee_info is already in session state
+if 'mentee_info' in st.session_state:
+    mentee_info = st.session_state.mentee_info
+else:
+    mentee_info = None  # Set default if not found
 
 # Show session management after verification
 if mentee_info:
@@ -66,19 +75,42 @@ if mentee_info:
 
         if st.form_submit_button("Schedule Session"):
             try:
+                # Ensure mentee ID exists
+                if 'id' not in st.session_state or st.session_state.id is None:
+                    st.error("Mentee ID is missing. Please log in again.")
+                    st.stop()
+
+                # Validate inputs
+                if not purpose.strip():
+                    st.error("Session purpose cannot be empty.")
+                    st.stop()
+
+                # Debug input values
+                print(f"Mentee ID: {st.session_state.id}")
+                print(f"Purpose: {purpose}")
+                print(f"Date: {date}")
+                print(f"Duration: {duration}")
+
                 # Get mentor ID
-                mentor_response = requests.get(f'http://api:4000/me/get_mentor_id/{st.session_state.id}')
+                mentor_url = f'http://api:4000/me/get_mentor_id/{st.session_state.id}'
+                print(f"Mentor API URL: {mentor_url}")  # Debug URL
+
+                mentor_response = requests.get(mentor_url)
+                print(f"Mentor API Response: {mentor_response.status_code}, {mentor_response.text}")  # Debug response
+
                 if mentor_response.status_code == 200:
                     mentor_data = mentor_response.json()
 
                     # Prepare payload for scheduling session
                     payload = {
                         'mentee_id': st.session_state.id,
-                        'mentor_id': mentor_data['id'],
+                        'mentor_id': mentor_data['mentor_id'],
                         'purpose': purpose,
                         'date': date.strftime('%Y-%m-%d'),
                         'duration': duration
                     }
+
+                    print(f"Payload: {payload}")  # Debug payload
 
                     # Schedule session
                     response = requests.post('http://api:4000/s/create', json=payload)
@@ -87,10 +119,13 @@ if mentee_info:
                         st.success("Session scheduled successfully!")
                     else:
                         st.error(f"Failed to schedule session. Server response: {response.text}")
+                else:
+                    st.error(f"Failed to fetch mentor ID. Status code: {mentor_response.status_code}")
             except Exception as e:
                 st.error(f"Error scheduling session: {str(e)}")
 
-    # Display existing sessions
+    st.divider()
+
     st.write("### My Sessions")
     try:
         response = requests.get(f"http://api:4000/s/mentee/{mentee_info['id']}")

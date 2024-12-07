@@ -137,8 +137,8 @@ def get_mentor_with_mentee_id(id):
 
     query = '''
                 SELECT mentor_id
-                FROM mentee
-                WHERE mentee_id = %s;
+                FROM mentee m
+                WHERE m.id = %s;
     '''
 
     cursor = db.get_db().cursor()
@@ -150,7 +150,9 @@ def get_mentor_with_mentee_id(id):
         # Return mentor_id as a JSON object
         response = jsonify(theData)
         response.status_code = 200
+        return response
     else:
         # Return error if mentee_id is not found
         response = jsonify({"error": "Mentee not found"})
         response.status_code = 404
+        return response

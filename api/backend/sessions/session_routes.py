@@ -21,16 +21,19 @@ def get_mentee_sessions(mentee_id):
     cursor = db.get_db().cursor()
     cursor.execute(query, (mentee_id,))
     results = cursor.fetchall()
+    print(f"Raw results: {results}")  # Debug the raw output
+    for row in results:
+        print(f"Row content: {row}, Type: {type(row)}")  # Debug print
     
     sessions = []
     for row in results:
         sessions.append({
-            "id": row[0],
-            "purpose": row[1],
-            "date": row[2].strftime('%Y-%m-%d'),
-            "duration": str(row[3]),
-            "mentor_name": f"{row[4]} {row[5]}",
-            "mentor_email": row[6]
+            "id": row['id'],
+            "purpose": row['purpose'],
+            "date": row['date'].strftime('%Y-%m-%d'),
+            "duration": str(row['duration']),
+            "mentor_name": f"{row['first_name']} {row['last_name']}",
+            "mentor_email": row['email']
         })
     
     response = make_response(jsonify(sessions))
@@ -41,13 +44,13 @@ def get_mentee_sessions(mentee_id):
 def create_session():
     """Create a new session"""
     try:
-        details = request.json()
+        details = request.json
         print(f"Received details: {details}")  # Debug print
         
         # Validate and convert IDs to integers
         try:
-            mentee_id = int(details['mentee_id'])
-            mentor_id = int(details['mentor_id'])
+            mentee_id = details['mentee_id']
+            mentor_id = details['mentor_id']
         except (ValueError, TypeError) as e:
             print(f"ID conversion error: {str(e)}")  # Debug print
             response = make_response(jsonify({
