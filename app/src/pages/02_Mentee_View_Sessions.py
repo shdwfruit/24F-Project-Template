@@ -37,6 +37,7 @@ if not mentee_info:
                     else:
                         mentee_info = mentee_data
                         st.session_state['mentee_info'] = mentee_info
+                        st.session_state.id = mentee_info['id']
                         st.success("Email verified successfully!")
                 else:
                     st.error(f"Server returned status code: {response.status_code}")
@@ -77,7 +78,7 @@ if mentee_info:
             try:
                 # Ensure mentee ID exists
                 if 'id' not in st.session_state or st.session_state.id is None:
-                    st.error("Mentee ID is missing. Please log in again.")
+                    st.error("Mentee ID is missing. Please enter email again.")
                     st.stop()
 
                 # Validate inputs
@@ -117,7 +118,6 @@ if mentee_info:
 
                     if response.status_code == 200:
                         st.success("Session scheduled successfully!")
-                        st.rerun()
                     else:
                         st.error(f"Failed to schedule session. Server response: {response.text}")
                 else:
@@ -129,7 +129,7 @@ if mentee_info:
 
     st.write("### My Sessions")
     try:
-        response = requests.get(f"http://api:4000/s/mentee/{mentee_info['id']}")
+        response = requests.get(f"http://api:4000/s/mentee/{st.session_state.id}")
         if response.status_code == 200:
             sessions = response.json()
 
