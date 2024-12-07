@@ -73,7 +73,7 @@ def create_mentee():
         
         # Return a 201 status to indicate resource creation
         response = make_response(jsonify({"message": "Mentee successfully registered!"}))
-        response.status_code = 201
+        response.status_code = 200
         return response
 
     except Exception as e:
