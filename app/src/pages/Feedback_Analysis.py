@@ -2,36 +2,38 @@ import streamlit as st
 import requests
 
 # Set page configuration
-st.set_page_config(page_title="System Administrator Dashboard", layout="wide")
+st.set_page_config(page_title="Feedback Analysis", layout="wide")
 
+# Page Title
+st.title("Feedback Analysis")
+st.divider()
+
+# Navigation Sidebar
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
-# Set page title
-st.title("Manage Content Updates")
-st.divider()
+# Main content
+st.subheader("Review and Organize Student Feedback")
 
-# Page Title
-st.title("System Administrator Dashboard")
-st.write("Welcome, Priya! Choose an action below:")
+feedback_data = {}
 
-# Action Buttons
-col1, col2, col3 = st.columns(3)
+try:
+    feedback_data = requests.get('http://api:4000/dm/feedback').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to API for feedback data")
+    st.write(f"Error: {e}")
 
-with col1:
-    if st.button("Manage Content Updates", type="primary"):
-        st.switch_page("pages/Admin_content_updates.py")
+if feedback_data:
+    for data in feedback_data:
+        st.write(f"**Session ID:** {data['session_id']}")
+        st.write(f"**Feedback:** {data['feedback']}")
+        st.write(f"**Session Purpose:** {data['purpose']}")
+        st.write(f"**Session Date:** {data['date']}")
+        st.divider()
+else:
+    st.write("No feedback data available.")
 
-with col2:
-    if st.button("View Reported Issues", type="primary"):
-        st.switch_page("pages/Admin_reported_issues.py")
-
-with col3:
-    if st.button("View Analytics", type="primary"):
-        st.switch_page("pages/Admin_Analytics.py")
-
-st.divider()
-
+# Report an issue section
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
 status = st.radio("Current Status", 

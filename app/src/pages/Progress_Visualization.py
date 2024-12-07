@@ -2,34 +2,36 @@ import streamlit as st
 import requests
 
 # Set page configuration
-st.set_page_config(page_title="Decision Maker Dashboard", layout="wide")
+st.set_page_config(page_title="Progress Visualization", layout="wide")
 
 # Page Title
-st.title("Decision Maker Dashboard")
-st.write("**Welcome, Dr. Smith!**")
+st.title("Progress Visualization")
 st.divider()
 
 # Navigation Sidebar
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
-# Create buttons for navigation
-st.subheader("Navigate to:")
+# Main content
+st.subheader("Visualization of Student Progress Over Time")
 
-if st.button("Student Engagement Insights", type="primary"):
-    st.switch_page("pages/Student_Engagement_Insights.py")
-    
-if st.button("Progress Visualization", type="primary"):
-    st.switch_page("pages/Progress_Visualization.py")
-    
-if st.button("Feedback Analysis", type="primary"):
-    st.switch_page("pages/Feedback_Analysis.py")
-    
-if st.button("Cultural Competence Trends", type="primary"):
-    st.switch_page("pages/Cultural_Competence_Trends.py")
+mentee_id = st.number_input("Enter Mentee ID for Progress Visualization", min_value=1, step=1, value=1)
+progress_data = {}
 
-# Divider
-st.divider()
+try:
+    progress_data = requests.get(f'http://api:4000/dm/progress/{mentee_id}').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to API for progress data")
+    st.write(f"Error: {e}")
+
+if progress_data:
+    for data in progress_data:
+        st.write(f"**Mentee ID:** {data['mentee_id']}")
+        st.write(f"**Status:** {data['status']}")
+        st.write(f"**Completion Date:** {data['completion_date']}")
+        st.divider()
+else:
+    st.write("No progress data available for visualization.")
 
 # Report an issue section
 st.subheader("Report an issue")

@@ -2,36 +2,37 @@ import streamlit as st
 import requests
 
 # Set page configuration
-st.set_page_config(page_title="System Administrator Dashboard", layout="wide")
+st.set_page_config(page_title="Cultural Competence Trends", layout="wide")
 
+# Page Title
+st.title("Cultural Competence Trends")
+st.divider()
+
+# Navigation Sidebar
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
-# Set page title
-st.title("Manage Content Updates")
-st.divider()
+# Main content
+st.subheader("Automated Reports on Cultural Competence Trends")
 
-# Page Title
-st.title("System Administrator Dashboard")
-st.write("Welcome, Priya! Choose an action below:")
+competence_data = {}
 
-# Action Buttons
-col1, col2, col3 = st.columns(3)
+try:
+    competence_data = requests.get('http://api:4000/dm/trends').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to API for competence trends data")
+    st.write(f"Error: {e}")
 
-with col1:
-    if st.button("Manage Content Updates", type="primary"):
-        st.switch_page("pages/Admin_content_updates.py")
+if competence_data:
+    for data in competence_data:
+        st.write(f"**Module Name:** {data['module_name']}")
+        st.write(f"**Completions:** {data['completions']}")
+        st.write(f"**Average Completion Time:** {data['avg_completion_time']} days")
+        st.divider()
+else:
+    st.write("No data available for cultural competence trends.")
 
-with col2:
-    if st.button("View Reported Issues", type="primary"):
-        st.switch_page("pages/Admin_reported_issues.py")
-
-with col3:
-    if st.button("View Analytics", type="primary"):
-        st.switch_page("pages/Admin_Analytics.py")
-
-st.divider()
-
+# Report an issue section
 st.subheader("Report an issue")
 description = st.text_area("Description (Functional, Visual, etc.)")
 status = st.radio("Current Status", 
