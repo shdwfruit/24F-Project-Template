@@ -2,34 +2,36 @@ import streamlit as st
 import requests
 
 # Set page configuration
-st.set_page_config(page_title="Decision Maker Dashboard", layout="wide")
+st.set_page_config(page_title="Feedback Analysis", layout="wide")
 
 # Page Title
-st.title("Decision Maker Dashboard")
-st.write("**Welcome, Dr. Smith!**")
+st.title("Feedback Analysis")
 st.divider()
 
 # Navigation Sidebar
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
-# Create buttons for navigation
-st.subheader("Navigate to:")
+# Main content
+st.subheader("Review and Organize Student Feedback")
 
-if st.button("Student Engagement Insights", type="primary"):
-    st.switch_page("pages/Student_Engagement_Insights.py")
-    
-if st.button("Progress Visualization", type="primary"):
-    st.switch_page("pages/Progress_Visualization.py")
-    
-if st.button("Feedback Analysis", type="primary"):
-    st.switch_page("pages/Feedback_Analysis.py")
-    
-if st.button("Cultural Competence Trends", type="primary"):
-    st.switch_page("pages/Cultural_Competence_Trends.py")
+feedback_data = {}
 
-# Divider
-st.divider()
+try:
+    feedback_data = requests.get('http://api:4000/dm/feedback').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to API for feedback data")
+    st.write(f"Error: {e}")
+
+if feedback_data:
+    for data in feedback_data:
+        st.write(f"**Session ID:** {data['session_id']}")
+        st.write(f"**Feedback:** {data['feedback']}")
+        st.write(f"**Session Purpose:** {data['purpose']}")
+        st.write(f"**Session Date:** {data['date']}")
+        st.divider()
+else:
+    st.write("No feedback data available.")
 
 # Report an issue section
 st.subheader("Report an issue")

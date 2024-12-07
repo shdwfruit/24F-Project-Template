@@ -2,34 +2,35 @@ import streamlit as st
 import requests
 
 # Set page configuration
-st.set_page_config(page_title="Decision Maker Dashboard", layout="wide")
+st.set_page_config(page_title="Cultural Competence Trends", layout="wide")
 
 # Page Title
-st.title("Decision Maker Dashboard")
-st.write("**Welcome, Dr. Smith!**")
+st.title("Cultural Competence Trends")
 st.divider()
 
 # Navigation Sidebar
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
-# Create buttons for navigation
-st.subheader("Navigate to:")
+# Main content
+st.subheader("Automated Reports on Cultural Competence Trends")
 
-if st.button("Student Engagement Insights", type="primary"):
-    st.switch_page("pages/Student_Engagement_Insights.py")
-    
-if st.button("Progress Visualization", type="primary"):
-    st.switch_page("pages/Progress_Visualization.py")
-    
-if st.button("Feedback Analysis", type="primary"):
-    st.switch_page("pages/Feedback_Analysis.py")
-    
-if st.button("Cultural Competence Trends", type="primary"):
-    st.switch_page("pages/Cultural_Competence_Trends.py")
+competence_data = {}
 
-# Divider
-st.divider()
+try:
+    competence_data = requests.get('http://api:4000/dm/trends').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to API for competence trends data")
+    st.write(f"Error: {e}")
+
+if competence_data:
+    for data in competence_data:
+        st.write(f"**Module Name:** {data['module_name']}")
+        st.write(f"**Completions:** {data['completions']}")
+        st.write(f"**Average Completion Time:** {data['avg_completion_time']} days")
+        st.divider()
+else:
+    st.write("No data available for cultural competence trends.")
 
 # Report an issue section
 st.subheader("Report an issue")

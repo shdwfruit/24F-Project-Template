@@ -2,34 +2,34 @@ import streamlit as st
 import requests
 
 # Set page configuration
-st.set_page_config(page_title="Decision Maker Dashboard", layout="wide")
+st.set_page_config(page_title="Student Engagement Insights", layout="wide")
 
 # Page Title
-st.title("Decision Maker Dashboard")
-st.write("**Welcome, Dr. Smith!**")
+st.title("Student Engagement Insights")
 st.divider()
 
 # Navigation Sidebar
 from modules.nav import SideBarLinks
 SideBarLinks(show_home=True)
 
-# Create buttons for navigation
-st.subheader("Navigate to:")
+# Main content
+st.subheader("Insights on Student Engagement with Modules")
 
-if st.button("Student Engagement Insights", type="primary"):
-    st.switch_page("pages/Student_Engagement_Insights.py")
-    
-if st.button("Progress Visualization", type="primary"):
-    st.switch_page("pages/Progress_Visualization.py")
-    
-if st.button("Feedback Analysis", type="primary"):
-    st.switch_page("pages/Feedback_Analysis.py")
-    
-if st.button("Cultural Competence Trends", type="primary"):
-    st.switch_page("pages/Cultural_Competence_Trends.py")
+engagement_data = {}
 
-# Divider
-st.divider()
+try:
+    engagement_data = requests.get('http://api:4000/dm/engagement').json()
+except Exception as e:
+    st.write("**Important**: Could not connect to API for engagement data")
+    st.write(f"Error: {e}")
+
+if engagement_data:
+    for data in engagement_data:
+        st.write(f"**Module Name:** {data['module_name']}")
+        st.write(f"**Engaged Students:** {data['engaged_students']}")
+        st.divider()
+else:
+    st.write("No data available for student engagement.")
 
 # Report an issue section
 st.subheader("Report an issue")

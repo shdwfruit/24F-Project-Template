@@ -11,13 +11,13 @@ SideBarLinks(show_home=True)
 st.title("Find a Mentor")
 st.divider()
 
-# Initialize session state
+# Initialize session state variables
 if 'selected_mentor' not in st.session_state:
-   st.session_state.selected_mentor = None
+    st.session_state.selected_mentor = None
 if 'mentor_data' not in st.session_state:
-   st.session_state.mentor_data = None
+    st.session_state.mentor_data = None
 if 'show_search_results' not in st.session_state:
-   st.session_state.show_search_results = False
+    st.session_state.show_search_results = False
 
 def select_mentor(mentor):
     st.session_state.selected_mentor = mentor
@@ -25,30 +25,33 @@ def select_mentor(mentor):
 
 # Selection dropdowns
 language = st.selectbox(
-   "Select Teaching Language",
-   options=["Japanese", "Spanish", "Chinese", "French"]
+    "Select Teaching Language",
+    options=["Japanese", "Spanish", "Chinese", "French"]
 )
 
 level = st.selectbox(
-   "Select Language Level",
-   options=["Advanced", "Fluent"]
+    "Select Language Level",
+    options=["Advanced", "Fluent"]
 )
 
 # Display mentor data
 if st.button("Search"):
-   try:
-       st.session_state.mentor_data = requests.get(
-           'http://api:4000/me/mentors',
-           params={
-               'teaching_language': language,
-               'language_level': level
-           }
-       ).json()
-       st.session_state.show_search_results = True
-       
-   except Exception as e:
-       st.write("**Important**: Could not connect to api")
-       st.write(f"Error: {e}")
+    try:
+        response = requests.get(
+            'http://api:4000/me/mentors',
+            params={
+                'teaching_language': language,
+                'language_level': level
+            }
+        )
+        if response.status_code == 200:
+            st.session_state.mentor_data = response.json()
+            st.session_state.show_search_results = True
+        else:
+            st.error("Failed to retrieve mentor data. Please try again.")
+    except Exception as e:
+        st.write("**Important**: Could not connect to api")
+        st.write(f"Error: {e}")
 
 # Show search results
 if st.session_state.show_search_results:
@@ -70,7 +73,7 @@ if st.session_state.show_search_results:
                 on_click=select_mentor,
                 args=(mentor,))
 
-# Show registration form if mentor is selected
+# Show registration form if a mentor is selected
 if st.session_state.selected_mentor:
     st.write("### Register as Mentee")
     st.write(f"Selected Mentor: {st.session_state.selected_mentor['first_name']} {st.session_state.selected_mentor['last_name']}")

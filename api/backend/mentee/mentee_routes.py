@@ -71,16 +71,18 @@ def create_mentee():
         cursor.execute(insert_query, query_data)
         db.get_db().commit()
         
+        # Return a 201 status to indicate resource creation
         response = make_response(jsonify({"message": "Mentee successfully registered!"}))
-        response.status_code = 200
+        response.status_code = 201
         return response
-        
+
     except Exception as e:
         db.get_db().rollback()
-        print(f"Error in create_mentee: {str(e)}")  # Debug print
+        print(f"Error in create_mentee: {str(e)}")
         response = make_response(jsonify({"error": str(e)}))
         response.status_code = 500
         return response
+
     
 @mentees.route('/verify', methods=['GET'])
 def verify_mentee():
