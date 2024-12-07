@@ -11,7 +11,7 @@ from backend.db_connection import db
 analytics = Blueprint('analytics', __name__)
 
 #------------------------------------------------------------
-
+# Routes for getting engagement data for each module
 @analytics.route('/engagement_data', methods=['GET'])
 def get_engagement_data():
 
